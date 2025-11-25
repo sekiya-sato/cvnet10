@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/ソリューション項目/">
+    <File Path="Doc/development-memo2025.md" />
+    <File Path="readme.md" />
+  </Folder>
+  <Project Path="CodeShare/CodeShare.csproj" />
+  <Project Path="Cvnet10Base/Cvnet10Base.csproj" />
+  <Project Path="Cvnet10Server/Cvnet10Server.csproj" />
+  <Project Path="Cvnet10Svtest/Cvnet10Svtest.csproj" />
+  <Project Path="Cvnet10Wpftest/Cvnet10Wpftest.csproj" Id="16f72051-055b-4ef7-bd3f-ccd324a2cd14" />
+</Solution>
