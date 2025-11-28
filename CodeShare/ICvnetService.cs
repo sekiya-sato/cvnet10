@@ -14,21 +14,22 @@ public class CvnetMsg {
 	/// </summary>
 	[DataMember(Order = 1)]
 	public required CvnetFlag Flag { get; set; }
-    /// <summary>
-    /// コード
-    /// </summary>
-    [DataMember(Order = 2)]
-    public int Code;
-    /// <summary>
-    /// メッセージ型
-    /// </summary>
-    [DataMember(Order = 3)]
-    public Type DataType { get; set; } = typeof(string);
-    /// <summary>
-    /// メッセージ本体
-    /// </summary>
-    [DataMember(Order = 4)]
-    public string? DataMsg { get; set; }
+	/// <summary>
+	/// コード（リターンコード、その他）
+	/// </summary>
+	[DataMember(Order = 2)]
+	public int Code;
+	/// <summary>
+	/// メッセージ型
+	/// </summary>
+	[DataMember(Order = 3)]
+	public Type DataType { get; set; } = typeof(string);
+	/// <summary>
+	/// メッセージ本体
+	/// </summary>
+	[DataMember(Order = 4)]
+	public string? DataMsg { get; set; }
+
 }
 /// <summary>
 /// 共通メッセージフラグ
@@ -238,32 +239,6 @@ public interface ICvnetService {
 	Task<CvnetMsg> QueryMsgAsync(CvnetMsg request, CallContext context = default);
 
 	/*
-	/// <summary>
-	/// 一般リクエストを送信する
-	/// [Send general request]
-	/// </summary>
-	/// <param name="request"></param>
-	/// <param name="context"></param>
-	/// <returns></returns>
-	[OperationContract]
-	Task<CvnetMsg> QueryMsgAsync(CvnetMsg request, CallContext context = default);
-
-	/// <summary>
-	/// テーブル操作リクエストを送信する
-	/// [Send table operation request]
-	/// </summary>
-	/// <param name="request"></param>
-	/// <param name="context"></param>
-	/// <returns></returns>
-	[OperationContract]
-	Task<CvnetMsg> QueryTableAsync(CvnetMsg request, CallContext context = default);
-	/// <summary>
-	/// Json形式テーブル操作リクエストを送信する
-	/// [Send table operation request in JSON format]
-	/// </summary>
-	/// <param name="request"></param>
-	/// <param name="context"></param>
-	/// <returns></returns>
 	[OperationContract]
 	Task<CvnetMsg> QueryJsonAsync(CvnetMsg request, CallContext context = default);
 	/// <summary>
@@ -275,11 +250,10 @@ public interface ICvnetService {
 	/// <returns></returns>
 	[OperationContract]
 	Task<BinaryMsg> FileOperationAsync(BinaryMsg request, CallContext context = default);
-
+	*/
 	[OperationContract]
 	Task<LoginReply> LoginAsync(LoginRequest UserRequest, CallContext context = default);
 
 	[OperationContract]
 	Task<LoginReply> LoginRefleshAsync(LoginRefresh UserRequest, CallContext context = default);
-	*/
 }

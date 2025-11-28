@@ -1,9 +1,18 @@
 using Cvnet10Server.Services;
 using Grpc.Net.Compression;
+using Microsoft.AspNetCore.HttpOverrides;
+using NLog;
+using NLog.Web;
 using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddNLogWeb();
+
 
 
 builder.Services.AddCodeFirstGrpc((options => {
@@ -12,14 +21,22 @@ builder.Services.AddCodeFirstGrpc((options => {
     // サーバーから圧縮済みレスポンスを返す際に使うアルゴリズム名
     options.ResponseCompressionAlgorithm = "gzip";
     options.EnableDetailedErrors = true;
-    options.MaxReceiveMessageSize = 100 * 1024 * 1024; // 100 MB
-    options.MaxSendMessageSize = 100 * 1024 * 1024; // 100 MB
+    options.MaxReceiveMessageSize = 800 * 1024 * 1024; // 800 MB
+    options.MaxSendMessageSize = 800 * 1024 * 1024; // 800 MB
 }));
 
-// Add services to the container.
-//builder.Services.AddGrpc();
+builder.WebHost.ConfigureKestrel(serverOptions => {
+    // TODO: Kestrel デフォルトのオプションは必要に応じて追加する(2024/08/15)
+    // [TODO: Add default options for Kestrel as needed]
+    serverOptions.Limits.MaxRequestBodySize = 838_860_800; // 800 MB
+    serverOptions.Limits.MaxConcurrentConnections = 100; // 最大同時接続数 [Maximum number of simultaneous connections]
+    serverOptions.Limits.Http2.MaxStreamsPerConnection = 100; // 最大ストリーム数 [Maximum number of streams]
+});
+builder.Services.AddHttpContextAccessor(); // HttpContextを取得可能にする [Make HttpContext accessible]
 
 var app = builder.Build();
+var logger = app.Logger;
+logger.LogDebug("Application Start ------------------------------------");
 // リクエスト／レスポンスヘッダをログするミドルウェア
 app.Use(async (context, next) => {
     var logger = app.Logger;
@@ -32,6 +49,10 @@ app.Use(async (context, next) => {
     // レスポンスヘッダ（トレーラはここで見えない場合あり）
     foreach (var h in context.Response.Headers)
         logger.LogInformation("RES HDR: {Key} = {Value}", h.Key, h.Value.ToString());
+});
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions {
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
 // Configure the HTTP request pipeline.

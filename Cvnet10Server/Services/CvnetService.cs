@@ -1,53 +1,78 @@
 ﻿using CodeShare;
 using Cvnet10Base;
-using Cvnet10Server;
-using Grpc.Core;
-using Microsoft.Data.Sqlite;
-using NPoco;
-using ProtoBuf.Grpc;
 using Newtonsoft.Json;
+using ProtoBuf.Grpc;
+using System.Collections;
 
 
 namespace Cvnet10Server.Services;
+
 public class CvnetService : ICvnetService {
 	private readonly ILogger<GreeterService> _logger;
 	public CvnetService(ILogger<GreeterService> logger) {
 		_logger = logger;
 	}
-    // 共通オプション（必要に応じてカスタマイズ／コンバータを追加）
-    private readonly JsonSerializerSettings jsonOptions = new JsonSerializerSettings {
-        NullValueHandling = NullValueHandling.Ignore,
-        Formatting = Formatting.None,
-    };
 
+	// 共通オプション（必要に応じてカスタマイズ／コンバータを追加）
+	private readonly JsonSerializerSettings jsonOptions = new JsonSerializerSettings {
+		NullValueHandling = NullValueHandling.Ignore,
+		Formatting = Formatting.None,
+	};
 
-    public Task<CvnetMsg> QueryMsgAsync(CvnetMsg request, CallContext context = default) {
-		var result = new CvnetMsg() { Flag = CvnetFlag.Msg800_Error_Start};
+	public Task<CvnetMsg> QueryMsgAsync(CvnetMsg request, CallContext context = default) {
+		var result = new CvnetMsg() { Flag = CvnetFlag.Msg800_Error_Start };
 		result.Code = -1;
 
-
-
-        if (request.Flag == CvnetFlag.Msg001_CopyReply) {
+		if (request.Flag == CvnetFlag.Msg001_CopyReply) {
 			result.Code = 0;
-            result.Flag = request.Flag;
-            result.DataType = request.DataType;
+			result.Flag = request.Flag;
+			result.DataType = request.DataType;
 			result.DataMsg = request.DataMsg;
 		}
 		if (request.Flag == CvnetFlag.Msg002_GetVersion) {
 			result.Code = 0;
-			result.DataType = typeof(List<decimal>);
-			List<decimal> versions = new List<decimal>();
-			versions.Add(1.002m);
-			versions.Add(3.1415m);
-            result.DataMsg = JsonConvert.SerializeObject(versions, jsonOptions);
+			result.DataType = typeof(string);
+			result.DataMsg = Common.Version;
 		}
-		if(request.Flag == CvnetFlag.Msg003_GetEnv) {
-            result.Code = 0;
-			//匿名型をつくる
-			(decimal, string, SysLogin) envs = ( 3.1415m,  "Hello, Cvnet10!", new SysLogin { Id=2345});
-            result.DataType = envs.GetType();
-			result.DataMsg = JsonConvert.SerializeObject(envs, jsonOptions);
+		if (request.Flag == CvnetFlag.Msg003_GetEnv) {
+			result.Code = 0;
+            // 環境変数を取得して Dictionary<string,string> に変換、JSON シリアライズして返す
+            var envVars = Environment.GetEnvironmentVariables();
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (DictionaryEntry entry in envVars) {
+                var key = entry.Key?.ToString() ?? string.Empty;
+                var value = entry.Value?.ToString() ?? string.Empty;
+                dict[key] = value;
+            }
+
+            result.DataType = typeof(Dictionary<string, string>);
+            result.DataMsg = Common.SerializeObject(dict);
         }
         return Task.FromResult(result);
+	}
+	public Task<LoginReply> LoginAsync(LoginRequest UserRequest, CallContext context = default) {
+		var reply = new LoginReply {
+			JwtMessage = string.Empty, // 必須プロパティを初期化
+			Result = 0,
+			Expire = DateTime.MinValue
+		};
+		// 未実装エラーを返す
+		throw new NotImplementedException("LoginAsync is not implemented yet.");
+
+		// 必要なロジックをここに追加
+		// return Task.FromResult(reply);
+	}
+
+	public Task<LoginReply> LoginRefleshAsync(LoginRefresh UserRequest, CallContext context = default) {
+		var reply = new LoginReply {
+			JwtMessage = string.Empty, // 必須プロパティを初期化
+			Result = 0,
+			Expire = DateTime.MinValue
+		};
+		// 未実装エラーを返す
+		throw new NotImplementedException("LoginRefleshAsync is not implemented yet.");
+
+		// 必要なロジックをここに追加
+		// return Task.FromResult(reply);
 	}
 }
