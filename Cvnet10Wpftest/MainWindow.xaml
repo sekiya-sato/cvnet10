@@ -26,6 +26,96 @@
 				CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="2"
 				/>
 		<TextBox HorizontalAlignment="Left" Height="48" Margin="18,10,18,10" TextWrapping="Wrap" d:Text="TextBox" MinWidth="600"   Text="{Binding Message}" Grid.Column="1"/>
+        <Grid x:Name="SubGrid" Grid.Column="1" HorizontalAlignment="Center" Height="696" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="866">
+            <Border Padding="10" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Background="White">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- 基本情報 -->
+                        <TextBlock Text="システム管理マスタ" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="会社名:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Name, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="郵便番号:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.PostalCode, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="住所1:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Address1, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="住所2:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Address2, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="住所3:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Address3, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="電話:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Tel, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="管理者メール:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Mail, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="ホームページ:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Hp, TargetNullValue='(なし)'}"/>
+                        </StackPanel>
 
-	</Grid>
+                        <!-- 数値系 -->
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <TextBlock Width="160" Text="自社締日:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.Simebi, TargetNullValue='0'}"/>
+                            <TextBlock Width="24"/>
+                            <TextBlock Width="160" Text="修正有効日数:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.ModifyDaysEx, TargetNullValue='0'}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="先付有効日数:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.ModifyDaysPre, TargetNullValue='0'}"/>
+                        </StackPanel>
+
+                        <!-- 銀行口座等 -->
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <TextBlock Width="160" Text="振込先1:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.BankAccount1, TargetNullValue=''}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="振込先2:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.BankAccount2, TargetNullValue=''}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Width="160" Text="振込先3:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.BankAccount3, TargetNullValue=''}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <TextBlock Width="160" Text="期首年月日:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstSysman.FiscalStartDate, TargetNullValue=''}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <TextBlock Width="160" Text="得意先 店種:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding MstTokui.TenType, TargetNullValue=''}"/>
+                        </StackPanel>
+                        <!-- サブテーブル（税率など） -->
+                        <TextBlock Text="消費税一覧" FontSize="14" FontWeight="Bold" Margin="0,10,0,6"/>
+                        <DataGrid ItemsSource="{Binding MstSysman.Jsub}" AutoGenerateColumns="False" Height="200" CanUserAddRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                                <DataGridTextColumn Header="税率" Binding="{Binding TaxRate}" Width="80"/>
+                                <DataGridTextColumn Header="開始日" Binding="{Binding DateFrom}" Width="120"/>
+                                <DataGridTextColumn Header="新税率" Binding="{Binding TaxNewRate}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>            
+        </Grid>
+
+    </Grid>
 </Window>

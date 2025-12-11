@@ -3,6 +3,8 @@ using Cvnet10Base;
 using Newtonsoft.Json;
 using ProtoBuf.Grpc;
 using System.Collections;
+using Microsoft.Data.Sqlite;
+using Oracle.ManagedDataAccess.Client;
 
 
 namespace Cvnet10Server.Services;
@@ -29,12 +31,12 @@ public class CvnetService : ICvnetService {
 			result.DataType = request.DataType;
 			result.DataMsg = request.DataMsg;
 		}
-		if (request.Flag == CvnetFlag.Msg002_GetVersion) {
+		else if (request.Flag == CvnetFlag.Msg002_GetVersion) {
 			result.Code = 0;
 			result.DataType = typeof(string);
 			result.DataMsg = Common.Version;
 		}
-		if (request.Flag == CvnetFlag.Msg003_GetEnv) {
+		else if (request.Flag == CvnetFlag.Msg003_GetEnv) {
 			result.Code = 0;
             // 環境変数を取得して Dictionary<string,string> に変換、JSON シリアライズして返す
             var envVars = Environment.GetEnvironmentVariables();
@@ -48,7 +50,27 @@ public class CvnetService : ICvnetService {
             result.DataType = typeof(Dictionary<string, string>);
             result.DataMsg = Common.SerializeObject(dict);
         }
-        return Task.FromResult(result);
+		else if (request.Flag == CvnetFlag.MSg004_ConvertDb) {
+			result.Code = 0;
+			var fromDb = new ExDatabase(new OracleConnection("User Id=CV00PKG;Password=CV00PKG;Data Source=192.168.9.243/cvnet;"));
+			var toDb = new ExDatabase(new SqliteConnection("Data Source=sample.db"));
+			var start = DateTime.Now;
+			var cnvDb = new ConvertDb(fromDb, toDb);
+			var dict = new Dictionary<string, string>();
+			try {
+				cnvDb.ConvertAll();
+				dict["Status"] = "Success";
+				var timespan = DateTime.Now - start;
+				dict["Timesec"] = timespan.TotalSeconds.ToString();
+			}
+			catch (Exception ex) {
+				dict["Status"] = "Error";
+				dict["Message"] = ex.Message;
+			}
+			result.DataType = typeof(Dictionary<string, string>);
+			result.DataMsg = Common.SerializeObject(dict);
+		}
+		return Task.FromResult(result);
 	}
 	public Task<LoginReply> LoginAsync(LoginRequest UserRequest, CallContext context = default) {
 		var reply = new LoginReply {

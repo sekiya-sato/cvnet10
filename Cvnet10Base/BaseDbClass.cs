@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Cvnet10Base;
 
 /// <summary>
-/// 基底データClass(Id,Vdc,Vdu) Id_??=joinキー,Fg_=0/1フラグ,En_=enum値,Disp0=表示用
+/// 基底データクラス(Id,Vdc,Vdu) Id_??=joinキー,Fg_=0/1フラグ,En_=enum値,Disp0=表示用
 /// </summary>
 public partial class BaseDbClass : ObservableObject {
 	/// <summary>
@@ -48,6 +48,47 @@ public partial class BaseDbClass : ObservableObject {
 	[ObservableProperty]
 	[property: ResultColumn]
 	string? disp0;
+}
+/// <summary>
+/// 住所を持つ共通基底クラス
+/// </summary>
+public partial class BaseDbHasAddress : BaseDbClass {
+	/// <summary>
+	/// 郵便番号
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(30)]
+	string? postalCode;
+	/// <summary>
+	/// 住所1
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(60)]
+	string? address1;
+	/// <summary>
+	/// 住所2
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(60)]
+	string? address2;
+	/// <summary>
+	/// 住所3
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(60)]
+	string? address3;
+	/// <summary>
+	/// 電話番号
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	string? tel;
+	/// <summary>
+	/// メールアドレス
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(120)]
+	string? mail;
 }
 
 /// <summary>
@@ -93,55 +134,17 @@ public partial class SysLogin : BaseDbClass {
 	[property: ColumnSizeDml(14)]
 	string? lastDate;
 }
-
-
 /// <summary>
 /// システム：システム管理テーブル
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterSysman : BaseDbClass {
+public partial class MasterSysman : BaseDbHasAddress {
 	/// <summary>
 	/// 自社名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
 	string? name;
-	/// <summary>
-	/// 郵便番号
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(30)]
-	string? postalCode;
-	/// <summary>
-	/// 住所1
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address1;
-	/// <summary>
-	/// 住所2
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address2;
-	/// <summary>
-	/// 住所3
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address3;
-	/// <summary>
-	/// 電話番号
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(20)]
-	string? tel;
-	/// <summary>
-	/// メールアドレス
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(30)]
-	string? mail;
 	/// <summary>
 	/// ホームページ
 	/// </summary>
@@ -218,7 +221,6 @@ public partial class MasterSysTax: ObservableObject {
 	[ObservableProperty]
 	int taxNewRate;
 }
-
 /// <summary>
 /// 名称テーブル
 /// </summary>
@@ -248,70 +250,11 @@ public partial class MasterMeisho : BaseDbClass {
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
 	string? ryaku;
-}
-
-/// <summary>
-/// 顧客テーブル
-/// </summary>
-[PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterEndCustomer : BaseDbClass {
 	/// <summary>
-	/// 顧客名
+	/// よみがな
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(40)]
-	string? name;
-	/// <summary>
-	/// 顧客カナ
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(40)]
+	[property: ColumnSizeDml(100)]
 	string? kana;
-	/// <summary>
-	/// 郵便番号
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(30)]
-	string? postalCode;
-	/// <summary>
-	/// 住所1
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address1;
-	/// <summary>
-	/// 住所2
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address2;
-	/// <summary>
-	/// 住所3
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(60)]
-	string? address3;
-	/// <summary>
-	/// 電話番号
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(20)]
-	string? tel;
-	/// <summary>
-	/// メールアドレス
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(120)]
-	string? mail;
-	/// <summary>
-	/// ランク
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(8)]
-	string? rank;
-
-
-
 }
-
 

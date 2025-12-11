@@ -10,7 +10,41 @@ namespace Cvnet10Base {
 			_fromDb = fromDb;
 			_toDb = toDb;
 		}
-		public void CnvMasterSys() {
+		#region 文字列変換サブロジック
+		private string? getString(Dictionary<string, object> rec, string key) {
+			string? ret = null;
+			if (rec.ContainsKey(key)) {
+				ret = rec[key]?.ToString();
+			}
+			if (ret == ".")
+				ret = null;
+			return ret;
+		}
+		// 新規：常に非 null を返すオーバーロード（デフォルト値を指定）
+		private string getString(Dictionary<string, object> rec, string key, string defaultValue) {
+			return getString(rec, key) ?? defaultValue;
+		}
+
+		private int getDataInt(Dictionary<string, object> rec, string key) {
+			var data = getString(rec, key);
+			if (data == null)
+				return 0;
+			if (int.TryParse(data, out int val) == false)
+				return 0;
+
+			return val;
+		}
+		#endregion
+
+		public void ConvertAll() {
+			CnvMasterSys();
+			CnvMasterMeisho();
+		}
+
+		/// <summary>
+		/// システム管理マスタ変換 HC$master_syskanri HC$master_systax
+		/// </summary>
+		public int CnvMasterSys() {
 			var mstSys = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$master_syskanri");
 			var recSys = mstSys[0];
 			var mstTax = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$master_systax order by 消費税CD");
@@ -32,7 +66,6 @@ namespace Cvnet10Base {
 				FiscalStartDate = getString(recSys, "期首年月日"),
 				Jsub = new List<MasterSysTax>(),
 			};
-			int cnt = 0;
 			foreach(var rec in mstTax)	 {
 				var tax = new MasterSysTax() {
 					Id = getDataInt(rec, "消費税CD"),
@@ -44,28 +77,31 @@ namespace Cvnet10Base {
 			}
 			_toDb.CreateTable(typeof(MasterSysman));
 			_toDb.Insert<MasterSysman>(newSys);
-
-
+			return 1;
 		}
-
-
-		private string? getString(Dictionary<string, object> rec, string key) {
-			string? ret = null;
-			if (rec.ContainsKey(key)) {
-				ret = rec[key]?.ToString();
+		/// <summary>
+		/// 名称マスタ変換 HC$master_meisho
+		/// </summary>
+		public int CnvMasterMeisho() {
+			var mstMeisho = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$master_meisho where 名称区分>'.' order by 名称区分,名称CD");
+			_toDb.CreateTable(typeof(MasterMeisho));
+			if (mstMeisho.Count > 0) {
+				var meishoList = new List<MasterMeisho>();
+				foreach (var rec in mstMeisho) {
+					var meisho = new MasterMeisho() {
+						Kubun = getString(rec, "名称区分", "."),
+						Code = getString(rec, "名称CD","."),
+						Name = getString(rec, "名称"),
+						Ryaku = getString(rec, "略称"),
+						Kana = getString(rec, "カナ"),
+					};
+					meishoList.Add(meisho);
+				}
+				_toDb.BeginTransaction();
+				_toDb.InsertBulk<MasterMeisho>(meishoList);
+				_toDb.CompleteTransaction();
 			}
-			if (ret == ".")
-				ret = null;
-			return ret;
-		}
-		private int getDataInt(Dictionary<string, object> rec, string key)  {
-			var data = getString(rec, key);
-			if(data == null)
-				return 0;
-			if(int.TryParse(data, out int val) == false)
-				return 0;
-
-			return val;
+			return mstMeisho.Count;
 		}
 
 	}
