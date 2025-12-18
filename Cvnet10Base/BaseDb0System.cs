@@ -155,7 +155,7 @@ public partial class MasterSysman : BaseDbHasAddress {
 	/// 自社締め日 1-31,99
 	/// </summary>
 	[ObservableProperty]
-	int simebi;
+	int shimeBi;
 	/// <summary>
 	/// 修正有効日数
 	/// </summary>
@@ -188,8 +188,8 @@ public partial class MasterSysman : BaseDbHasAddress {
 	/// 期首年月日
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(14)]
-	string? fiscalStartDate;
+	[property: ColumnSizeDml(8)]
+	string fiscalStartDate="19010101";
 	/// <summary>
 	/// 消費税率リスト
 	/// </summary>
@@ -213,8 +213,8 @@ public partial class MasterSysTax: ObservableObject {
 	/// 新消費税開始日(yyyyMMdd)
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(14)]
-	string? dateFrom;
+	[property: ColumnSizeDml(8)]
+	string dateFrom = "19010101";
 	/// <summary>
 	/// 新消費税率 (%) 例:10
 	/// </summary>
@@ -256,5 +256,21 @@ public partial class MasterMeisho : BaseDbClass {
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
 	string? kana;
+}
+
+/// <summary>
+/// 汎用詳細クラス
+/// </summary>
+public partial class DetailDbClass : ObservableObject {
+	/// <summary>
+	/// 予備項目1
+	/// </summary>
+	[ObservableProperty]
+	string? yobi1;
+	/// <summary>
+	/// 予備項目1
+	/// </summary>
+	[ObservableProperty]
+	string? yobi2;
 }
 

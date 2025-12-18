@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
+using static System.Net.WebRequestMethods;
 
 
 namespace Cvnet10Wpftest.ViewModels {
-    public partial class MainViewModel : ObservableObject {
+	public partial class MainViewModel : ObservableObject {
 		[RelayCommand]
 		private void Close(System.Windows.Window w) {
 			w.Close();
@@ -51,7 +52,39 @@ namespace Cvnet10Wpftest.ViewModels {
 				Message = $"Unexpected error: {ex.Message}";
 			}
 		}
+		[RelayCommand]
+		private async Task Test02() {
+			var path = @"C:\gitroot\wrk\cv147\cv32data-new.db";
+			var sqliteps = "587625D93E8412671901B1787A2611C7";
+			var builder = new SqliteConnectionStringBuilder {
+				DataSource = path,
+	//			Password = sqliteps,
+			}.ToString();
+			try {
+				var connstr = $"Data Source={path}; Password={sqliteps};";
 
+
+
+
+				using var connection = new SqliteConnection(builder);
+				await connection.OpenAsync(); // 接続を明示的に開く（パスワード検証）
+
+				ExDatabase db = new ExDatabase(connection);
+				db.CreateTable(typeof(MasterEndCustomer),true);
+
+				// ここでデータベース操作を実行
+				// 例: var data = db.Fetch<SomeTable>();
+
+				Message = $"DB接続成功 {DateTime.Now.ToLongTimeString()}";
+			}
+			catch (SqliteException ex) {
+				// エラーコード 26 = "file is not a database" (パスワード不一致)
+				Message = $"パスワードエラー: {ex.Message}";
+			}
+			catch (Exception ex) {
+				Message = $"接続エラー: {ex.Message}";
+			}
+		}
 	}
 }
 

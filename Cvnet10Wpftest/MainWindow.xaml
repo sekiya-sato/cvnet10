@@ -7,25 +7,25 @@
 		xmlns:vm="clr-namespace:Cvnet10Wpftest.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
-	<Window.DataContext>
-		<vm:MainViewModel/>
-	</Window.DataContext>
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="10*"/>
-			<RowDefinition Height="90*"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="15*"/>
-			<ColumnDefinition Width="85*"/>
-			<ColumnDefinition Width="15*"/>
-		</Grid.ColumnDefinitions>
-		<Button Content="Test01" Margin="10,10,10,10" Command="{Binding Test01Command}"/>
-		<Button Content="終了"  Margin="10,10,10,10"  Command="{Binding CloseCommand}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="90*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="85*"/>
+            <ColumnDefinition Width="15*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Test01" Margin="10,10,10,10" Command="{Binding Test01Command}"/>
+        <Button Content="終了"  Margin="10,10,10,10"  Command="{Binding CloseCommand}"
 				CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="2"
 				/>
-		<TextBox HorizontalAlignment="Left" Height="48" Margin="18,10,18,10" TextWrapping="Wrap" d:Text="TextBox" MinWidth="600"   Text="{Binding Message}" Grid.Column="1"/>
+        <TextBox HorizontalAlignment="Left" Height="48" Margin="18,10,18,10" TextWrapping="Wrap" d:Text="TextBox" MinWidth="600"   Text="{Binding Message}" Grid.Column="1"/>
         <Grid x:Name="SubGrid" Grid.Column="1" HorizontalAlignment="Center" Height="696" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="866">
             <Border Padding="10" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Background="White">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -68,7 +68,7 @@
                         <!-- 数値系 -->
                         <StackPanel Orientation="Horizontal" Margin="0,6">
                             <TextBlock Width="160" Text="自社締日:" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding MstSysman.Simebi, TargetNullValue='0'}"/>
+                            <TextBlock Text="{Binding MstSysman.ShimeBi, TargetNullValue='0'}"/>
                             <TextBlock Width="24"/>
                             <TextBlock Width="160" Text="修正有効日数:" FontWeight="SemiBold"/>
                             <TextBlock Text="{Binding MstSysman.ModifyDaysEx, TargetNullValue='0'}"/>
@@ -114,8 +114,9 @@
 
                     </StackPanel>
                 </ScrollViewer>
-            </Border>            
+            </Border>
         </Grid>
+        <Button Content="Test02" Margin="10,10,10,637" Command="{Binding Test02Command}" Grid.Row="1"/>
 
     </Grid>
 </Window>

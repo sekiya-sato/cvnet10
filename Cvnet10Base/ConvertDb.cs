@@ -57,20 +57,20 @@ namespace Cvnet10Base {
 				Tel = getString(recSys, "TEL"),
 				Mail = getString(recSys, "管理者MAIL"),
 				Hp = getString(recSys, "ホームページ"),
-				Simebi = getDataInt(recSys,"自社締日"),
+				ShimeBi = getDataInt(recSys,"自社締日"),
 				ModifyDaysEx = getDataInt(recSys,"修正有効日数"),
 				ModifyDaysPre = getDataInt(recSys,"先付有効日数"),
 				BankAccount1 = getString(recSys, "振込先1"),
 				BankAccount2 = getString(recSys, "振込先2"),
 				BankAccount3 = getString(recSys, "振込先3"),
-				FiscalStartDate = getString(recSys, "期首年月日"),
+				FiscalStartDate = getString(recSys, "期首年月日", "19010101"),
 				Jsub = new List<MasterSysTax>(),
 			};
 			foreach(var rec in mstTax)	 {
 				var tax = new MasterSysTax() {
 					Id = getDataInt(rec, "消費税CD"),
 					TaxRate = getDataInt(rec, "消費税率"),
-					DateFrom = getString(rec, "新消費税開始日"),
+					DateFrom = getString(rec, "新消費税開始日", "19010101"),
 					TaxNewRate = getDataInt(rec,"新消費税率"),
 				};
 				newSys.Jsub.Add(tax);
