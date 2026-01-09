@@ -283,6 +283,13 @@ public partial class MasterShohin : BaseDbHasAddress, IBaseCodeName {
 	[property: ColumnSizeDml(120)]
 	string? memo;
 	/// <summary>
+	/// 原価リスト
+	/// </summary>
+	[ObservableProperty]
+	[property: SerializedColumn]
+	[property: ColumnSizeDml(1000)]
+	List<MasterShohinGenka>? jgenka;
+	/// <summary>
 	/// 色サイズリスト
 	/// </summary>
 	[ObservableProperty]
@@ -363,3 +370,24 @@ public partial class MasterShohinGrade : ObservableObject {
 	[ObservableProperty]
 	int percent;
 }
+/// <summary>
+/// 原価マスター
+/// </summary>
+public partial class MasterShohinGenka: ObservableObject {
+	/// <summary>
+	/// 行No
+	/// </summary>
+	[ObservableProperty]
+	int no;
+	/// <summary>
+	/// 原価
+	/// </summary>
+	[ObservableProperty]
+	int tankaGenka;
+	/// <summary>
+	/// 仕入単価
+	/// </summary>
+	[ObservableProperty]
+	int tankaShiire;
+}
+
