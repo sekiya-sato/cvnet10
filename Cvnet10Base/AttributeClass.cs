@@ -1,4 +1,14 @@
-﻿using System;
+﻿// ファイル概要:
+// - Cvnet10Base で利用するコメント/スキーマ注釈属性と列型メタデータを提供します。
+// - CommentAttribute や ColumnSizeDmlAttribute を通じて DB モデルのメタ情報を表現します。
+// 依存関係:
+// - System 名前空間のみを利用する軽量ユーティリティ。その他層からも参照されます。
+// 変更ポリシー:
+// - 既存の属性の引数・意味を変えると既存テーブル生成コードに影響するので互換を維持してください。
+// - 新しいメタ情報は既存属性を拡張するより新規属性で提供し、利用テーブル側に周知します。
+// COPILOT: 属性追加時は ExDatabase と ConvertDb に反映が必要か確認し、サンプルテーブルで動作検証すること。
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

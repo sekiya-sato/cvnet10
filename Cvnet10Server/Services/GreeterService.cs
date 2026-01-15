@@ -1,4 +1,14 @@
-﻿using CodeShare;
+﻿// ファイル概要:
+// - gRPC のサンプル/診断用サービス IGreeter を実装し、Hello 応答と Sqlite 操作用 API を提供します。
+// - SQLite を使った簡易テーブル操作や JSON 応答を通じて接続確認に利用されます。
+// 依存関係:
+// - CodeShare DTO, Microsoft.Data.Sqlite, NPoco, Cvnet10Base モデル, Newtonsoft.Json。
+// 変更ポリシー:
+// - サンプル用とはいえ DB 作成/更新ロジックが含まれるため、本番データを扱う前提ではトランザクションやマイグレーションを見直してください。
+// - 文字列テンプレートや SQL を変更する際は SQL インジェクション対策としてパラメータ化を検討します。
+// COPILOT: 新しいデモメソッドを追加する際はリソース解放(`using var connection`)を維持し、ILogger で十分な診断情報を出力すること。
+
+using CodeShare;
 using Cvnet10Server;
 using Grpc.Core;
 using Microsoft.Data.Sqlite;

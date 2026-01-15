@@ -1,3 +1,13 @@
+// ファイル概要:
+// - Cvnet10Server のエントリーポイント。gRPC ホストを構成し、サービスと中間ウェアを登録します。
+// - Kestrel 制限、圧縮、ForwardedHeaders などランタイム設定を集中管理します。
+// 依存関係:
+// - ASP.NET Core gRPC スタック、ProtoBuf.Grpc.Server、NLog。
+// 変更ポリシー:
+// - builder.Services への登録を変更する際は DI スコープや configure 順序に注意し、複数環境設定(appsettings)を整合させます。
+// - ログや中間ウェアを追加する前にパフォーマンス/セキュリティへの影響を確認してください。
+// COPILOT: 新しいサービスをマップする場合は .MapGrpcService<> とルートハンドラーを適切に配置し、ヘルスチェックやメトリクスの露出も検討すること。
+
 using Cvnet10Server.Services;
 using Grpc.Net.Compression;
 using Microsoft.AspNetCore.HttpOverrides;

@@ -1,4 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// ファイル概要:
+// - システム系の基底エンティティ (BaseDbClass など) とシステムマスター群のデータモデルを定義します。
+// - ObservableObject/NPoco 属性を併用し、DB と MVVM 双方のモデルとして利用されます。
+// 依存関係:
+// - CommunityToolkit.Mvvm.ComponentModel と NPoco 属性、System.Text.Json シリアライゼーション。
+// 変更ポリシー:
+// - プロパティ名や ColumnSizeDml の変更は DB スキーマと移行処理に影響するため慎重に行ってください。
+// - 消費税率などビジネスロジックを変更する際は ConvertDb と関連 ViewModel の動作を確認します。
+// COPILOT: 新しい列を追加する場合は AttributeClass のメタ情報も活用し、サーバー/クライアント双方の DTO 更新を忘れないこと。
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
 using System.Text.Json.Serialization;
 

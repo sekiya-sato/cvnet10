@@ -1,4 +1,14 @@
-﻿using ProtoBuf.Grpc;
+﻿// ファイル概要:
+// - Cvnet10 のサーバー/クライアントで共有する共通 gRPC 契約と DTO 群を定義します。
+// - 一般メッセージ、ログイン、ファイル操作などの要求/応答モデルと ICvnetService を含みます。
+// 依存関係:
+// - ProtoBuf.Grpc と System.ServiceModel 属性を用いたコードファースト gRPC over HTTP/2。
+// 変更ポリシー:
+// - 既存の DataMember Order や CvnetFlag の整数値を変更すると互換性が壊れるため固定してください。
+// - 新しい操作や DTO を追加する場合は ICvnetService と Cvnet10Server.Services.CvnetService の両方を同期更新します。
+// COPILOT: DTO を拡張する際はイミュータブル化を優先し、共通クライアントの JSON サンプル/テストも同時更新すること。
+
+using ProtoBuf.Grpc;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 

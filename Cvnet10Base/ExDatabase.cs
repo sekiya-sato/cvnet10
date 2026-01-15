@@ -1,4 +1,14 @@
-﻿using NPoco;
+﻿// ファイル概要:
+// - NPoco.Database を拡張し、テーブル生成/DDL/コメント付与など DB ユーティリティを提供します。
+// - MariaDB/SQLite/Oracle をサポートし、ConvertDb やサービス層から共通的に利用されます。
+// 依存関係:
+// - NPoco、本体モデルの属性(TableDmlAttribute など)、System.Data.*。
+// 変更ポリシー:
+// - SQL 文字列を変更する際は各 DB プロバイダーでの互換性とインデックス作成手順を確認してください。
+// - 例外時はログを残す前提のため、新規 catch を追加する場合も NLog への出力を維持します。
+// COPILOT: 新しい DB タイプ対応を追加する際は GetSqlCreateTable/IsExistTable/CreateIndex など全メソッドを網羅的に更新すること。
+
+using NPoco;
 using System;
 using System.Collections.Generic;
 using System.Data;

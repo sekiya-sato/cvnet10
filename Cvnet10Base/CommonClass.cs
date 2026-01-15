@@ -1,4 +1,14 @@
-﻿using System;
+﻿// ファイル概要:
+// - 共通ユーティリティ `Common` を定義し、バージョン情報と JSON シリアライザ設定を共有します。
+// - サーバー/クライアント双方で同一のシリアライズポリシーを維持するための集中管理ポイントです。
+// 依存関係:
+// - Newtonsoft.Json の JsonConvert API。
+// 変更ポリシー:
+// - jsonOptions のデフォルトを変える場合はクライアントとの互換性影響をレビューし、バージョン番号を更新します。
+// - Serialize/Deserialize のシグネチャを変更せず、必要ならオーバーロードを追加してください。
+// COPILOT: JSON 設定を拡張する際は null/既定値の扱いをテストでカバーし、必要なら TypeConverter を追加検討すること。
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

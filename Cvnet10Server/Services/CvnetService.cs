@@ -1,4 +1,14 @@
-﻿using CodeShare;
+﻿// ファイル概要:
+// - gRPC サーバーとして ICvnetService を実装し、共通メッセージ/ログイン/DB 変換の要求に応答します。
+// - Oracle→SQLite 変換や環境情報取得などサーバー固有のユースケースを集約します。
+// 依存関係:
+// - CodeShare DTO/契約, Cvnet10Base の DB ユーティリティ, Newtonsoft.Json, Oracle.ManagedDataAccess, Microsoft.Data.Sqlite。
+// 変更ポリシー:
+// - 新しい CvnetFlag を扱う場合はスイッチ分岐の既存挙動に影響がないか確認し、共通 DTO を同期更新してください。
+// - DB 接続文字列や ConvertDb ロジックを変更する際は構成ファイルと例外処理を見直します。
+// COPILOT: 非同期処理を追加する場合は I/O バウンド操作を async/await 化し、CallContext や CancellationToken を透過的に扱うこと。
+
+using CodeShare;
 using Cvnet10Base;
 using Newtonsoft.Json;
 using ProtoBuf.Grpc;
@@ -78,7 +88,7 @@ public class CvnetService : ICvnetService {
 			Result = 0,
 			Expire = DateTime.MinValue
 		};
-		// 未実装エラーを返す
+		// TODO [CVNET-SERVICE] ログイン処理を実装 userid, password の検証、JWT トークンの発行など
 		throw new NotImplementedException("LoginAsync is not implemented yet.");
 
 		// 必要なロジックをここに追加
@@ -91,7 +101,7 @@ public class CvnetService : ICvnetService {
 			Result = 0,
 			Expire = DateTime.MinValue
 		};
-		// 未実装エラーを返す
+		// TODO [CVNET-SERVICE] ログイントークンのリフレッシュ処理を実装
 		throw new NotImplementedException("LoginRefleshAsync is not implemented yet.");
 
 		// 必要なロジックをここに追加
