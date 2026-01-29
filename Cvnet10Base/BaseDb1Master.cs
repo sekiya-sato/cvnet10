@@ -1,16 +1,8 @@
-﻿// ファイル概要:
-// - 基幹マスター群(社員・顧客・商品など)のデータモデルをまとめたクラス集です。
-// - ColumnSizeDml/SerializedColumn を通じて DB スキーマと JSON サブ構造を定義します。
-// 依存関係:
-// - CommunityToolkit.Mvvm.ComponentModel での ObservableObject、自前属性(AttributeClass) および NPoco。
-// 変更ポリシー:
-// - プロパティ名や型、デフォルト値は DB 移行ツール(ConvertDb)とバインディングに影響するため互換を維持してください。
-// - Jsub/Jdetail などリスト構造を変更する際はバージョン管理のためマイグレーション手順を用意します。
-// COPILOT: マスターを追加する際は IBaseCodeName 実装や ColumnSizeDml 指定の整合を確認し、関連 ViewModel/サービスでの参照を更新すること。
+﻿
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
-using System.Globalization;
+using Cvnet10Base.Share;
 
 namespace Cvnet10Base;
 

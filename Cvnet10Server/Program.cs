@@ -8,14 +8,21 @@
 // - ログや中間ウェアを追加する前にパフォーマンス/セキュリティへの影響を確認してください。
 // COPILOT: 新しいサービスをマップする場合は .MapGrpcService<> とルートハンドラーを適切に配置し、ヘルスチェックやメトリクスの露出も検討すること。
 
+using Cvnet10Base;
+using Cvnet10Server;
+using Cvnet10Server.Models;
 using Cvnet10Server.Services;
 using Grpc.Net.Compression;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
 using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
-
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +51,50 @@ builder.WebHost.ConfigureKestrel(serverOptions => {
 });
 builder.Services.AddHttpContextAccessor(); // HttpContextを取得可能にする [Make HttpContext accessible]
 
+#region 認証関係の処理 ================================================== 
+builder.Services.AddAuthorization(options => {
+	options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy => {
+		policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+		policy.RequireClaim(ClaimTypes.Name);
+	});
+});
+
+builder.Services.AddAuthentication(options => { })
+.AddScheme<AuthenticationSchemeOptions, Cvnet10Server.Handlers.CustomJwtAuthHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
+
+// appsettings.json から設定を取得する [Retrieve settings from appsettings.json]
+if (builder.Configuration.GetSection("WebAuthJwt") != null) {
+	var seckey = builder.Configuration.GetSection("WebAuthJwt")?.GetSection("SecretKey")?.Value ?? "veryveryhardsecurity-keys.needtoolong";
+	builder.Services.Configure<JwtBearerOptions>(options => {
+		options.TokenValidationParameters = new TokenValidationParameters {
+			ValidateIssuer = true,
+			ValidIssuer = builder.Configuration.GetSection("WebAuthJwt").GetSection("Issuer").Value, // トークン発行者 [Token issuer]
+			ValidateAudience = false,
+			ValidAudience = builder.Configuration.GetSection("WebAuthJwt").GetSection("Audience").Value, // トークンの受信者(検証しない) [Token recipient (not validated)]
+			ValidateLifetime = true,
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(seckey)),  // トークンの署名を検証するためのキー 16バイト以上 [Key to verify token signature, 16 bytes or more]
+			ValidateIssuerSigningKey = true,
+			ClockSkew = TimeSpan.Zero // WTのLifeTime検証の際の時間のずれを設定するという謎プロパティで、デフォルトは 5分 
+									  // [A mysterious property that sets the time difference during WT Lifetime validation, with a default of 5 minutes]
+		};
+	});
+}
+#endregion
+
+
+/*
+// ToDo : スケジューラの処理
+builder.Services.AddHostedScheduler
+// Other(if need) : MCVコントローラの処理
+builder.Services.AddControllers();
+ */
+var connStr = builder.Configuration.GetConnectionString("sqlite")
+	?? throw new InvalidOperationException("Connection string 'sqlite' is not configured.");
+builder.Services.AddSingleton<ExDatabase>(sp => {
+	// ファクトリメソッドを使用してインスタンスを生成
+	return ExSqliteDatabase.GetDbConn(connStr);
+});
+
 var app = builder.Build();
 var logger = app.Logger;
 logger.LogDebug("Application Start ------------------------------------");
@@ -64,10 +115,21 @@ app.Use(async (context, next) => {
 app.UseForwardedHeaders(new ForwardedHeadersOptions {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+/*
+// ToDo : 認証関係の処理
+app.UseAuthentication();
+app.UseAuthorization();
+// Other(if need) : MVCコントローラの処理
+app.MapControllers();
+ */
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
-app.MapGrpcService<CvnetService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapGrpcService<LoginService>();
+app.MapGrpcService<CvnetCoreService>();
+app.MapGet("/", () => $"Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909 <BR> 現在時刻は {DateTime.Now}");
 
+var appInit = new AppInit(app.Configuration);
+appInit.Init();
 app.Run();
+
+LogManager.Shutdown();

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
+	<ProjectReference Include="..\..\Cvnet10Base\Cvnet10Base.csproj" />
   </ItemGroup>
 
 </Project>
