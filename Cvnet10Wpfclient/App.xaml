@@ -1,0 +1,9 @@
+﻿<Application x:Class="Cvnet10Wpfclient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Cvnet10Wpfclient"
+             StartupUri="Views/MainMenuView.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

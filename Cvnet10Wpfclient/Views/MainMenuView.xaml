@@ -1,0 +1,39 @@
+﻿<Window x:Class="Cvnet10Wpfclient.Views.MainMenuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cvnet10Wpfclient.Views"
+        xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="MainMenuView" Height="760" Width="1024">
+    <Window.DataContext>
+        <vm:MainMenuViewModel />
+    </Window.DataContext>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="4" Grid.Column="4" Content="終了" Margin="0,0,23,10" Command="{Binding ExitCommand}" HorizontalAlignment="Right" Width="132" Height="56" VerticalAlignment="Bottom"/>
+        <Button Content="{Binding TestConnectButtonText}" HorizontalAlignment="Left" Height="36" Margin="22,75,0,0" Grid.Row="4" VerticalAlignment="Top" Width="173" Command="{Binding TestConnectCommand}"/>
+    </Grid>
+</Window>

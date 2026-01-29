@@ -1,12 +1,3 @@
-// ファイル概要:
-// - 販売トランザクション(売上ヘッダー/明細)のモデルを定義し、履歴データを保持します。
-// - Tran0Uriage と Tran0UriageMeisai がシリアライズ可能な構造で格納されます。
-// 依存関係:
-// - CommunityToolkit.Mvvm.ComponentModel と NPoco、Cvnet10Base のカスタム属性。
-// 変更ポリシー:
-// - ColumnSizeDml や日付フォーマット(yyyyMMdd)を変更する場合は既存 DB データとの互換性を確認してください。
-// - 明細リスト構造(jmeisai)のフィールド追加時はデシリアライズとレポート出力の更新が必要です。
-// COPILOT: トランザクション種別を増やす際は新クラスを追加し、ConvertDb と API レイヤーのテストケースを用意すること。
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;

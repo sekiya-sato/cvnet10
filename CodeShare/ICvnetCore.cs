@@ -1,14 +1,4 @@
-﻿// ファイル概要:
-// - Cvnet10 のサーバー/クライアントで共有する共通 gRPC 契約と DTO 群を定義します。
-// - 一般メッセージ、ログイン、ファイル操作などの要求/応答モデルと ICvnetService を含みます。
-// 依存関係:
-// - ProtoBuf.Grpc と System.ServiceModel 属性を用いたコードファースト gRPC over HTTP/2。
-// 変更ポリシー:
-// - 既存の DataMember Order や CvnetFlag の整数値を変更すると互換性が壊れるため固定してください。
-// - 新しい操作や DTO を追加する場合は ICvnetService と Cvnet10Server.Services.CvnetService の両方を同期更新します。
-// COPILOT: DTO を拡張する際はイミュータブル化を優先し、共通クライアントの JSON サンプル/テストも同時更新すること。
-
-using ProtoBuf.Grpc;
+﻿using ProtoBuf.Grpc;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 
@@ -157,55 +147,6 @@ public enum CvnetFlag {
 	Msg999_Zetc = 9999
 }
 /// <summary>
-/// ログインリクエスト
-/// </summary>
-[DataContract]
-public class LoginRequest {
-	[DataMember(Order = 1)]
-	public required string Name { get; set; }
-	[DataMember(Order = 2)]
-	public required string LoginId { get; set; }
-	[DataMember(Order = 3)]
-	public required string CryptPassword { get; set; }
-	[DataMember(Order = 4)]
-	public required DateTime LoginDate { get; set; }
-}
-/// <summary>
-/// ログインリプライ
-/// </summary>
-[DataContract]
-public class LoginReply {
-	/// <summary>
-	/// JSON Web Token Message
-	/// </summary>
-	[DataMember(Order = 1)]
-	public required string JwtMessage { get; set; }
-	/// <summary>
-	/// 成功=0 失敗=-1
-	/// </summary>
-	[DataMember(Order = 2)]
-	public int Result { get; set; }
-
-	/// <summary>
-	/// 新しいJWTの有効期限(LocalTime)
-	/// [Expiration time of the new JWT (LocalTime)]
-	/// </summary>
-	[DataMember(Order = 3)]
-	public DateTime Expire { get; set; }
-}
-/// <summary>
-/// ログインリフレッシュ
-/// </summary>
-[DataContract]
-public class LoginRefresh {
-	/// <summary>
-	/// 認証済みのトークン
-	/// [Authenticated token]
-	/// </summary>
-	[DataMember(Order = 1)]
-	public required string Token { get; set; }
-}
-/// <summary>
 /// ファイル送受信メッセージ
 /// </summary>
 [DataContract]
@@ -241,7 +182,7 @@ public class FileOperation {
 /// [Contract: gRPC Public Service]
 /// </summary>
 [ServiceContract]
-public interface ICvnetService {
+public interface ICvnetCoreService {
 	/// <summary>
 	/// 一般リクエストを送信する
 	/// [Send general request]
@@ -265,9 +206,4 @@ public interface ICvnetService {
 	[OperationContract]
 	Task<BinaryMsg> FileOperationAsync(BinaryMsg request, CallContext context = default);
 	*/
-	[OperationContract]
-	Task<LoginReply> LoginAsync(LoginRequest UserRequest, CallContext context = default);
-
-	[OperationContract]
-	Task<LoginReply> LoginRefleshAsync(LoginRefresh UserRequest, CallContext context = default);
 }

@@ -1,15 +1,8 @@
-﻿// ファイル概要:
-// - 取引先(得意先・仕入先)関連の共通テーブルモデルと詳細オブジェクトを定義します。
-// - BaseDbHasAddress を継承し、取引条件や支払情報を保持します。
-// 依存関係:
-// - CommunityToolkit.Mvvm.ComponentModel と NPoco、Cvnet10Base の属性群。
-// 変更ポリシー:
-// - EnumTokui や ColumnSizeDml の値を変更すると移行や帳票に影響するため互換性を重視してください。
-// - 支払条件項目を追加する際は MasterTokuiDetail / MasterShiireDetail と関連サービスの整合を確認します。
-// COPILOT: 新しい取引先区分を追加する場合は EnumTokui と関連 UI バインディング、DB 初期データを必ず同期させること。
+﻿
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
+using Cvnet10Base.Share;
 
 namespace Cvnet10Base;
 
