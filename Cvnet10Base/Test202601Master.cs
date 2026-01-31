@@ -9,7 +9,7 @@ namespace Cvnet10Base {
 	/// テスト用商品マスター
 	/// </summary>
 	[PrimaryKey("Id", AutoIncrement = true)]
-	public partial class Test202601Master: BaseDbHasAddress, IBaseCodeName,IBaseGetListSql {
+	public partial class Test202601Master: BaseDbHasAddress, IBaseCodeName, IBaseGetViewDefinition {
 		/// <summary>
 		/// コード
 		/// </summary>
@@ -79,7 +79,7 @@ namespace Cvnet10Base {
 		string? mei_Tenji;
 
 
-		readonly static string listSql = """
+		readonly static string viewSql = """
 select T.*, m1.Name as Mei_Brand, m2.Name as  Mei_Item, m3.Name as  Mei_Tenji
 from Test202601Master T
 left join MasterMeisho m1 on T.Id_MeiBrand = m1.Id
@@ -102,9 +102,52 @@ order by T.Id
 		Test202601Master m,
 		json_each(m.Jcolsiz);
 """;
-		public string GetListSql() {
-			return listSql;
+		public string GetViewDefinition() {
+			return viewSql;
 		}
+	}
+
+	public partial class Test202601MasterJan : Test202601Master {
+
+		/// <summary>
+		/// 色
+		/// </summary>
+		[ObservableProperty]
+		long id_MeiCol;
+		/// <summary>
+		/// サイズ
+		/// </summary>
+		[ObservableProperty]
+		long id_MeiSiz;
+		/// <summary>
+		/// JANコード1
+		/// </summary>
+		[ObservableProperty]
+		string? jan1;
+		/// <summary>
+		/// JANコード2
+		/// </summary>
+		[ObservableProperty]
+		string? jan2;
+		/// <summary>
+		/// JANコード3
+		/// </summary>
+		[ObservableProperty]
+		string? jan3;
+
+		/// <summary>
+		/// カラー名
+		/// </summary>
+		[ObservableProperty]
+		[property: ResultColumn]
+		string? mei_Col;
+		[ObservableProperty]
+		[property: ResultColumn]
+		/// <summary>
+		/// サイズ名
+		/// </summary>
+		string? mei_Siz;
+
 	}
 
 

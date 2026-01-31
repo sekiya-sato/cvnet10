@@ -149,7 +149,7 @@ public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 /// 商品マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterShohin : BaseDbHasAddress, IBaseCodeName {
+public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// <summary>
 	/// コード
 	/// </summary>
@@ -326,7 +326,7 @@ public partial class MasterShohin : BaseDbHasAddress, IBaseCodeName {
 /// 商品色サイズJANマスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterShohinColSiz : BaseDbClass, IBaseGetListSql {
+public partial class MasterShohinColSiz : BaseDbClass, IBaseGetViewDefinition {
 	/// <summary>
 	/// 商品
 	/// </summary>
@@ -370,14 +370,14 @@ public partial class MasterShohinColSiz : BaseDbClass, IBaseGetListSql {
 	/// サイズ名
 	/// </summary>
 	string? mei_Siz;
-	readonly static string listSql = """
+	readonly static string viewSql = """
 select T.*, m1.Name as Mei_Col, m2.Name as  Mei_Siz
 from MasterShohinColSiz T
 left join MasterMeisho m1 on T.id_MeiCol = m1.Id
 left join MasterMeisho m2 on T.id_MeiSiz = m2.Id
 """;
-	public  string GetListSql() {
-		return listSql;
+	public  string GetViewDefinition() {
+		return viewSql;
 	}
 
 

@@ -1,6 +1,7 @@
 ﻿# プロジェクトの目的
 
 サーバ、クライアント間をgRPCで接続し、本格的なオープンソース販売管理パッケージとして公開することを目的としています。
+AIアシスタントはこのファイルではなく .github/copilot-instructions.md を参照してください。
 
 # 目次
 
@@ -12,21 +13,12 @@
   - [Cvnet10Server](#Cvnet10Server)
   - [Cvnet10Wpfclient](#Cvnet10Wpfclient)
 
-# ソリューション概要
+# ソリューション概要 Cvnet10.slnx
 
 本ソリューションは、販売管理ドメインを gRPC ベースで分散実装するための統合環境です。
 契約定義（CodeShare）、共通ドメインロジック（Cvnet10Base）、gRPC サーバ（Cvnet10Server）、GUI クライアント（Cvnet10Wpfclient）が役割分担し、
 .NET 10 / C# 14 の最新機能と ProtoBuf.Grpc / CommunityToolkit.Mvvm などの NuGet パッケージで構築されています。
 サーバー-クライアント間の通信は共通 DTO と JSON/ProtoBuf シリアライズを併用し、将来的な OSS 販売管理パッケージ公開を見据えたスケーラブルなアーキテクチャになっています。
-
-# 使用するフレームワーク等
-
-protobuf-net.Grpc protobuf-net.Grpc.AspNetCore Grpc.Net.Client : サーバー・クライアント間通信の基盤として採用。高速かつ型安全な RPC を実現。
-CommunityToolkit.Mvvm : クライアント側の UI ロジックを整理し、保守性を向上。
-NPoco : 軽量ORM として利用し、データベース操作の効率化とコードの簡潔化を図る。
-Newtonsoft.Json : Microsoft のNugetパッケージではなくNewtonsoft.Json を使ってください。
-Microsoft.AspNetCore.Authentication.JwtBearer : サーバーの認証基盤として利用し、セキュリティを強化。
-
 
 # プロジェクト別概要
 
@@ -61,11 +53,6 @@ Microsoft.AspNetCore.Authentication.JwtBearer : サーバーの認証基盤と�
 	- Cvnet10Server, Cvnet10Wpfclient の基本的な gRPC 通信と認証ロジックが完了しています。
 - 2026/01/30
 	- 概念検証として、ITest202601 , Test202601Service を追加し、WpfClientから Joinを含んだビューを一覧取得
-
-
-
-
-
 
 
 
