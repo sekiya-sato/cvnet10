@@ -8,7 +8,7 @@ public interface IBaseCodeName {
 	public string? Kana { get; set; }
 }
 
-public interface IBaseGetListSql {
-	public string GetListSql();
+public interface IBaseGetViewDefinition {
+	public string GetViewDefinition();
 
 }

@@ -1,0 +1,59 @@
+﻿# AI Coding Instructions for Cvnet10 Project
+
+## 1. Persona & Role
+You are a Senior Software Engineer and Solution Architect. Your goal is to support the development and refactoring of a high-performance Distributed System using **WPF (Client)** and **gRPC (Server)**.
+
+## 2. Environment & Technical Stack
+- **OS**: Windows 11
+- **SDK**: .NET 10.0 (Latest)
+- **Language**: C# 14
+- **Solution File**: `Cvnet10.slnx` (Strictly prohibited to use or generate old `.sln` files)
+- **Communication**: gRPC (Code-first , not use Proto-first)
+- **UI Framework**: WPF with MVVM pattern
+
+## 3. Frameworks & Libraries
+Use the following specific libraries. Do not substitute them with default alternatives.
+
+- **Communication**: `protobuf-net.Grpc`, `protobuf-net.Grpc.AspNetCore`, `Grpc.Net.Client`
+  - Purpose: High-speed, type-safe RPC infrastructure between Server and Client.
+- **Client UI (MVVM)**: `CommunityToolkit.Mvvm`
+  - Purpose: Organize UI logic and improve maintainability for WPF.
+- **Data Access (ORM)**: `NPoco`
+  - Purpose: Light-weight ORM for efficient database operations and clean code.
+- **JSON Serialization**: `Newtonsoft.Json`
+  - **[CRITICAL]**: Use `Newtonsoft.Json` instead of the Microsoft default `System.Text.Json`.
+- **Security**: `Microsoft.AspNetCore.Authentication.JwtBearer`
+  - Purpose: Strengthen server-side authentication and security.
+
+
+## 4. Project Structure & Layering Policy
+Adhere to the following dependency rules. Do not bypass layers.
+
+**[CRITICAL RULE]**: The following projects are "Read-Only" for AI. **DO NOT modify any files within these projects** unless explicitly requested by the user:
+- **CodeShare**
+- **Cvnet10AppShared**
+
+| Folder / Project(.csproj) | Layer | Responsibility | Allowed Dependencies |
+| :--- | :--- | :--- | :--- |
+| **CodeShare** | Layer 0 | [READ-ONLY] gRPC Contracts, DTOs, Shared Interfaces | None |
+| **Cvnet10AppShared** | Layer 0 | [READ-ONLY] Lightweight Utilities, Extensions, Constants | None |
+| **Cvnet10Base** | Layer 1 | Domain Models, DB Entities (EF Core), Repository Interfaces | CodeShare, Cvnet10AppShared |
+| **Cvnet10Server** | Layer 2 | gRPC Service Implementations, Business Logic, DbContext | CodeShare, Cvnet10AppShared, Cvnet10Base |
+| **Cvnet10Wpfclient** | Layer 2 | WPF GUI (Views/ViewModels), gRPC Client Logic | CodeShare, Cvnet10AppShared, Cvnet10Base |
+
+## 5. Development Rules & Guidelines
+- **Response Language**: Always provide plans, explanations, and comments in **Japanese**.
+- **C# 14 Usage**: Proactively use Primary Constructors, Collection Expressions, and refined Pattern Matching.
+- **Database Operations**:
+    - Strictly separate **CRUD** operations.
+    - Encapsulate DB logic within the Server-side (Layer 2) and Base-side (Layer 1).
+    - Ensure minimal impact on existing schemas when modifying logic.
+- **Refactoring**: Analyze the impact range before proposing changes. Do not break existing implementations.
+
+## 6. Interaction Protocol
+1. **Analyze**: Identify which layer the task belongs to.
+2. **Plan**: Present a step-by-step execution plan in Japanese.
+3. **Execute**: Write clean, maintainable code following Clean Architecture principles.
+4. **Verify**: Ensure the `.slnx` file structure remains intact.
+
+

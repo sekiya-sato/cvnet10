@@ -94,19 +94,26 @@ public partial class CvnetCoreService : ICvnetCoreService {
 		else if (request.Flag == CvnetFlag.MSg005_Test) {
 			result.Code = 0;
 			var start = DateTime.Now;
-			_db.CreateTable<MasterShain>(isForce: true);
 
-			var result0 = _db.Fetch<Dictionary<string, object>>("""
+			var result0 = _db.Fetch<Test202601MasterJan>("""
 				SELECT 
-				    m.Id,
-				    m.Code, -- PRD001等
-				    m.Name, -- ブランドA...等
+				    m.*,
 				    -- JSON内の各フィールドを展開
-				    json_extract(value, '$.Id_MeiCol') AS Id_MeiCol,
-				    json_extract(value, '$.Id_MeiSiz') AS Id_MeiSiz,
-				    json_extract(value, '$.Mei_Col')   AS ColorName,
-				    json_extract(value, '$.Mei_Siz')   AS SizeName,
-				    json_extract(value, '$.Jan2')      AS SizeCode
+				    json_extract(json_each.value, '$.Id_MeiCol') AS Id_MeiCol,
+				    json_extract(json_each.value, '$.Id_MeiSiz') AS Id_MeiSiz,
+				    json_extract(json_each.value, '$.Mei_Col')   AS Mei_Col,
+				    json_extract(json_each.value, '$.Mei_Siz')   AS Mei_Siz,
+				    json_extract(json_each.value, '$.Jan1')      AS Jan1,
+				    json_extract(json_each.value, '$.Jan2')      AS Jan2,
+				    json_extract(json_each.value, '$.Jan3')      AS Jan3
+				FROM 
+				    Test202601Master m,
+				    json_each(m.Jcolsiz);
+				""");
+
+			var result1 = _db.Fetch<Test202601Master>("""
+				SELECT 
+				    m.*,json_each.value AS Disp0
 				FROM 
 				    Test202601Master m,
 				    json_each(m.Jcolsiz);
