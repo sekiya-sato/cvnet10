@@ -5,7 +5,9 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 
-namespace Cvnet10Base;
+using Cvnet10Base;
+
+namespace Cvnet10DomainLogic;
 
 /// <summary>
 /// データベース操作用Class mariaDB依存部分(主にDDL)

@@ -23,6 +23,8 @@ using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
 using System.Security.Claims;
 using System.Text;
+using Cvnet10DomainLogic;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

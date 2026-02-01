@@ -1,5 +1,6 @@
-﻿
-namespace Cvnet10Base;
+﻿using Cvnet10Base;
+
+namespace Cvnet10DomainLogic;
 /// <summary>
 /// データベースを変換するクラス
 /// </summary>

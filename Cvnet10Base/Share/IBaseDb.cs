@@ -10,5 +10,9 @@ public interface IBaseCodeName {
 
 public interface IBaseGetViewDefinition {
 	public string GetViewDefinition();
+}
+public interface IBaseSerializeMeisho {
+	public bool SerializeMeisho { get; set; }
 
 }
+

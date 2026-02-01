@@ -134,6 +134,31 @@ namespace Cvnet10Wpfclient.ViewModels {
 			Debug.WriteLine(payload ?? "---");
 			return await Task.FromResult($"取得件数: {TestMasters.Count}");
 		}
+		/*
+		async Task<string> Test202601Msg(GrpcChannel channel) {
+			var coreService = channel.CreateGrpcService<ITest202601Service>();
+			AppCurrent.LoginJwt = dummyToken;
+			var msg = new Test202601Msg { Code = 202601 };
+			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+			var payload = string.IsNullOrWhiteSpace(reply.DataMsg) ? "[]" : reply.DataMsg;
+			var list = Common.DeserializeObject<List<Test202601Master>>(payload) ?? [];
+			TestMasters = new ObservableCollection<Test202601Master>(list);
+			SelectedTestMaster = TestMasters.FirstOrDefault();
+			Debug.WriteLine(payload ?? "---");
+			return await Task.FromResult($"取得件数: {TestMasters.Count}");
+		}*/
+		async Task<string> Test202601Msg2(GrpcChannel channel) {
+			var coreService = channel.CreateGrpcService<ICvnetCoreService>();
+			AppCurrent.LoginJwt = dummyToken;
+			var msg = new CvnetMsg { Code =202601, Flag = CvnetFlag.Msg701_TestCase001 };
+			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+			var payload = string.IsNullOrWhiteSpace(reply.DataMsg) ? "[]" : reply.DataMsg;
+			var list = Common.DeserializeObject<List<Test202601Master>>(payload) ?? [];
+			TestMasters = new ObservableCollection<Test202601Master>(list);
+			SelectedTestMaster = TestMasters.FirstOrDefault();
+			Debug.WriteLine(payload ?? "---");
+			return await Task.FromResult($"取得件数: {TestMasters.Count}");
+		}
 
 
 	}

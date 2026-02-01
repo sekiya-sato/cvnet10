@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using Microsoft.Data.Sqlite;
+using Cvnet10DomainLogic;
 
 
 namespace Cvnet10Server.Models;
