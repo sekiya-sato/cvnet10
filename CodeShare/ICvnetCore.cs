@@ -119,6 +119,13 @@ public enum CvnetFlag {
 	/// [JSON-based response]
 	/// </summary>
 	Msg404_JsonQueryResponse = 403,
+
+	/// <summary>
+	/// テスト用メッセージ開始値
+	/// </summary>
+	Msg700_Test_Start = 7700,
+	Msg701_TestCase001 =7701,
+	Msg702_TestCase002 =7702,
 	/// <summary>
 	/// Abs()がこの値より大きいものはエラー
 	/// [Values where Abs() exceeds this value are errors]

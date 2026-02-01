@@ -37,8 +37,9 @@ Adhere to the following dependency rules. Do not bypass layers.
 | :--- | :--- | :--- | :--- |
 | **CodeShare** | Layer 0 | [READ-ONLY] gRPC Contracts, DTOs, Shared Interfaces | None |
 | **Cvnet10AppShared** | Layer 0 | [READ-ONLY] Lightweight Utilities, Extensions, Constants | None |
-| **Cvnet10Base** | Layer 1 | Domain Models, DB Entities (EF Core), Repository Interfaces | CodeShare, Cvnet10AppShared |
-| **Cvnet10Server** | Layer 2 | gRPC Service Implementations, Business Logic, DbContext | CodeShare, Cvnet10AppShared, Cvnet10Base |
+| **Cvnet10Base** | Layer 1 | Data Models, DB Entities (NPoco) | CodeShare, Cvnet10AppShared |
+| **Cvnet10DomainLogic** | Layer 1.5 | Business Logic, Domain Services, Calculations | CodeShare, Cvnet10AppShared, Cvnet10Base |
+| **Cvnet10Server** | Layer 2 | gRPC Service Implementations, DbContext(ExDatabase) by DI | CodeShare, Cvnet10AppShared, Cvnet10Base, Cvnet10DomainLogic |
 | **Cvnet10Wpfclient** | Layer 2 | WPF GUI (Views/ViewModels), gRPC Client Logic | CodeShare, Cvnet10AppShared, Cvnet10Base |
 
 ## 5. Development Rules & Guidelines

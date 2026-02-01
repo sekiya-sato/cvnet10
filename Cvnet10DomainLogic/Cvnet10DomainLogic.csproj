@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
+    <ProjectReference Include="..\Cvnet10AppShared\Cvnet10AppShared.csproj" />
+    <ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
+  </ItemGroup>
+
+</Project>

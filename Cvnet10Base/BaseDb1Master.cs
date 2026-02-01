@@ -3,8 +3,28 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
 using Cvnet10Base.Share;
+using Newtonsoft.Json;
 
 namespace Cvnet10Base;
+
+/// <summary>
+/// 汎用カテゴリ名称マスター
+/// </summary>
+public partial class MasterGeneralMeisho : ObservableObject, IBaseSerializeMeisho {
+	[ObservableProperty]
+	string kubun = "";
+	[ObservableProperty]
+	string? kubunName;
+	[ObservableProperty]
+	long id_MeiCode;
+	[ObservableProperty]
+	string? name;
+	[JsonIgnore]  // DB には保存しない
+	public bool SerializeMeisho { get; set; } = false;
+	public bool ShouldSerializeKubunName() => SerializeMeisho;
+	public bool ShouldSerializeName() => SerializeMeisho;
+
+}
 
 /// <summary>
 /// 社員マスター
@@ -326,7 +346,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 /// 商品色サイズJANマスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterShohinColSiz : BaseDbClass, IBaseGetViewDefinition {
+public partial class MasterShohinColSiz : BaseDbClass, IBaseGetViewDefinition, IBaseSerializeMeisho {
 	/// <summary>
 	/// 商品
 	/// </summary>
@@ -364,12 +384,26 @@ public partial class MasterShohinColSiz : BaseDbClass, IBaseGetViewDefinition {
 	[ObservableProperty]
 	[property: ResultColumn]
 	string? mei_Col;
-	[ObservableProperty]
-	[property: ResultColumn]
 	/// <summary>
 	/// サイズ名
 	/// </summary>
+	[ObservableProperty]
+	[property: ResultColumn]
 	string? mei_Siz;
+
+	/// <summary>
+	/// JSON シリアライズ時に Mei_Col / Mei_Siz を含めるか (デフォルト: false)
+	/// [Whether to include Mei_Col/Mei_Siz in JSON serialization (Default: false)]
+	/// </summary>
+	[JsonIgnore]  // DB には保存しない
+	public bool SerializeMeisho { get; set; } = false;
+
+	// ✅ JSON Serialize時に mei_Col を含めるか制御
+	public bool ShouldSerializeMei_Col() => SerializeMeisho;
+
+	// ✅ JSON Serialize時に mei_Siz を含めるか制御
+	public bool ShouldSerializeMei_Siz() => SerializeMeisho;
+
 	readonly static string viewSql = """
 select T.*, m1.Name as Mei_Col, m2.Name as  Mei_Siz
 from MasterShohinColSiz T

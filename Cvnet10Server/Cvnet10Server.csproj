@@ -20,6 +20,7 @@
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
     <ProjectReference Include="..\Cvnet10AppShared\Cvnet10AppShared.csproj" />
     <ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
+    <ProjectReference Include="..\Cvnet10DomainLogic\Cvnet10DomainLogic.csproj" />
   </ItemGroup>
 
 </Project>

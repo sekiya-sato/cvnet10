@@ -49,7 +49,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 				httpClient.Timeout = TimeSpan.FromSeconds(30);
 				using var channel = GrpcChannel.ForAddress(AppCurrent.Url, new GrpcChannelOptions { HttpClient = httpClient });
 				// TestConnectButtonText = await TestQueryMsgAsync(channel);
-				TestConnectButtonText = await TestQueryMsg(channel);
+				//TestConnectButtonText = await TestQueryMsg(channel);
+				TestConnectButtonText = await Test202601Msg2(channel);
 			}
 			catch (RpcException rpcEx) {
 				TestConnectButtonText = $"gRPC: {rpcEx.Status.Detail}";
