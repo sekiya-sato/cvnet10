@@ -75,8 +75,7 @@ public partial class CvnetCoreService {
 		ret.Code = 0;
 		ret.DataType = param.ResultType;
 		// 特定のテーブル型かどうかで判定
-		var firstItem = list.FirstOrDefault();
-		if (firstItem?.GetType().Name == "Test202601Master") {
+		if (param.TableType.Name == "Test202601Master") {
 			var masterList = list.Cast<Test202601Master>();
 			masterList.LoadAllJcolsizMeishoNames(_db, true);
 			masterList.LoadAllGeneralMeishoNames(_db, true);
