@@ -62,5 +62,48 @@ namespace Cvnet10Wpfclient.ViewModels {
 				TestConnectButtonText = $"ERR: {ex.Message}";
 			}
 		}
+		[RelayCommand]
+		public async Task TestMsgCnv(){
+			TestConnectButtonText = "接続中...";
+			try {
+				using var httpClient = new HttpClient();
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
+				httpClient.Timeout = TimeSpan.FromSeconds(30);
+				using var channel = GrpcChannel.ForAddress(AppCurrent.Url, new GrpcChannelOptions { HttpClient = httpClient });
+				// TestConnectButtonText = await TestQueryMsgAsync(channel);
+				//TestConnectButtonText = await TestQueryMsg(channel);
+				TestConnectButtonText = await Test202601Msg3(channel);
+			}
+			catch (RpcException rpcEx) {
+				TestConnectButtonText = $"gRPC: {rpcEx.Status.Detail}";
+			}
+			catch (HttpRequestException httpEx) {
+				TestConnectButtonText = $"HTTP ERR: {httpEx.Message}";
+			}
+			catch (Exception ex) {
+				TestConnectButtonText = $"ERR: {ex.Message}";
+			}
+		}
+		[RelayCommand]
+		public async Task TestMsg000() {
+			TestConnectButtonText = "接続中...";
+			try {
+				using var httpClient = new HttpClient();
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
+				httpClient.Timeout = TimeSpan.FromSeconds(30);
+				using var channel = GrpcChannel.ForAddress(AppCurrent.Url, new GrpcChannelOptions { HttpClient = httpClient });
+				TestConnectButtonText = await Test202601Msg4(channel);
+			}
+			catch (RpcException rpcEx) {
+				TestConnectButtonText = $"gRPC: {rpcEx.Status.Detail}";
+			}
+			catch (HttpRequestException httpEx) {
+				TestConnectButtonText = $"HTTP ERR: {httpEx.Message}";
+			}
+			catch (Exception ex) {
+				TestConnectButtonText = $"ERR: {ex.Message}";
+			}
+		}
+
 	}
 }

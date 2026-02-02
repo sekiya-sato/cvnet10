@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cvnet10DomainLogic.Tests/Cvnet10DomainLogic.Tests.csproj" />
+  </Folder>
   <Folder Name="/ソリューション項目/">
     <File Path="readme.md" />
   </Folder>

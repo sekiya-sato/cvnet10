@@ -80,7 +80,8 @@ public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName, IBaseGe
 	string? mei_Tenji;
 
 	[ObservableProperty]
-	[property: ColumnSizeDml(500)]
+	[property: SerializedColumn]
+	[property: ColumnSizeDml(1000)]
 	List<MasterGeneralMeisho>? listMeisho;
 
 	readonly static string viewSql = """
