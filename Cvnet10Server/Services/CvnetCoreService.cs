@@ -43,19 +43,19 @@ public partial class CvnetCoreService : ICvnetCoreService {
 		var dict0 = new Dictionary<string, string>();
 
 		switch (request.Flag) {
-			case CvnetFlag.Msg001_CopyReply:
+			case CvnetFlag.Msg001_CopyReply: // エコー
 				result.Code = 0;
 				result.Flag = request.Flag;
 				result.DataType = request.DataType;
 				result.DataMsg = request.DataMsg;
 				break;
-			case CvnetFlag.Msg002_GetVersion:
+			case CvnetFlag.Msg002_GetVersion: // 内部バージョン取得
 				result.Code = 0;
 				result.Flag = request.Flag;
-				result.DataType = typeof(string);
-				result.DataMsg = Common.Version;
+				result.DataType = typeof(VersionInfo);
+				result.DataMsg = Common.SerializeObject(AppInit.Ver);
 				break;
-			case CvnetFlag.Msg003_GetEnv:
+			case CvnetFlag.Msg003_GetEnv: // 環境変数取得
 				result.Code = 0;
 				result.Flag = request.Flag;
 				// 環境変数を取得して Dictionary<string,string> に変換、JSON シリアライズして返す
@@ -69,18 +69,19 @@ public partial class CvnetCoreService : ICvnetCoreService {
 				result.DataType = typeof(Dictionary<string, string>);
 				result.DataMsg = Common.SerializeObject(dict0);
 				break;
-			case CvnetFlag.MSg004_ConvertDb:
+			case CvnetFlag.MSg004_ConvertDb: // DB変換処理を実装する
+			case CvnetFlag.MSg004_ConvertDbInit:
+				var initFlg = request.Flag == CvnetFlag.MSg004_ConvertDbInit;
 				result.Code = 0;
-				// ToDo : DB変換処理を実装する
 				var oracleConnectionString = _configuration.GetConnectionString("oracle");
 				if (string.IsNullOrWhiteSpace(oracleConnectionString))
 					throw new InvalidOperationException("Connection string 'oracle' is missing. Configure it in appsettings.json under ConnectionStrings.");
-				// "User Id=CV00PKG;Password=CV00PKG;Data Source=192.168.9.243/cvnet;"
+				// 
 				var fromDb = new ExDatabase(new OracleConnection(oracleConnectionString));
 				var cnvDb = new ConvertDb(fromDb, _db);
 				dict0 = new Dictionary<string, string>();
 				try {
-					cnvDb.ConvertAll();
+					cnvDb.ConvertAll(initFlg);
 					dict0["Status"] = "Success";
 					var timespan = DateTime.Now - start;
 					dict0["Timesec"] = timespan.TotalSeconds.ToString();
