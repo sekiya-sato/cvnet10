@@ -57,4 +57,9 @@ Adhere to the following dependency rules. Do not bypass layers.
 3. **Execute**: Write clean, maintainable code following Clean Architecture principles.
 4. **Verify**: Ensure the `.slnx` file structure remains intact.
 
+## 7. Each Agent Role  ( .github/copilot/ フォルダ )
+- Orchestrator.agent.md # Overall direction and business rules
+- Planner.agent.md # Architecture and implementation policy
+- Impl.agent.md # Coding and coding standards
+- Reviewer.agent.md # Review perspectives and quality standards
 

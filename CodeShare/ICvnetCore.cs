@@ -52,13 +52,17 @@ public enum CvnetFlag {
 	/// </summary>
 	Msg003_GetEnv = 3,
 	/// <summary>
-	/// データベースの変換
+	/// データベースの変換(テーブル初期化なし)
 	/// </summary>
-	MSg004_ConvertDb = 4,
+	MSg004_ConvertDb = 40,
+	/// <summary>
+	/// データベースの変換(テーブル初期化あり)
+	/// </summary>
+	MSg004_ConvertDbInit = 41,
 	/// <summary>
 	/// テスト
 	/// </summary>
-	MSg005_Test = 5,
+	MSg005_Test = 50,
 	/// <summary>
 	/// DBデータを取得する Message=QueryDbDef
 	/// [Get DB data Message=QueryDbDef]
