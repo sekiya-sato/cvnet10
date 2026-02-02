@@ -69,9 +69,9 @@ public partial class CvnetCoreService : ICvnetCoreService {
 				result.DataType = typeof(Dictionary<string, string>);
 				result.DataMsg = Common.SerializeObject(dict0);
 				break;
-			case CvnetFlag.MSg004_ConvertDb: // DB変換処理を実装する
-			case CvnetFlag.MSg004_ConvertDbInit:
-				var initFlg = request.Flag == CvnetFlag.MSg004_ConvertDbInit;
+			case CvnetFlag.MSg040_ConvertDb: // DB変換処理を実装する
+			case CvnetFlag.MSg041_ConvertDbInit:
+				var initFlg = request.Flag == CvnetFlag.MSg041_ConvertDbInit;
 				result.Code = 0;
 				var oracleConnectionString = _configuration.GetConnectionString("oracle");
 				if (string.IsNullOrWhiteSpace(oracleConnectionString))
@@ -92,6 +92,15 @@ public partial class CvnetCoreService : ICvnetCoreService {
 				}
 				result.DataType = typeof(Dictionary<string, string>);
 				result.DataMsg = Common.SerializeObject(dict0);
+				break;
+			case CvnetFlag.Msg101_GetDbQuerySingle: // 単レコードの取得
+				result = subLogicMsg101(request, context);
+				break;
+			case CvnetFlag.Msg102_GetDbExecuteSingle: // 単レコードの修正
+				result = subLogicMsg102(request, context);
+				break;
+			case CvnetFlag.Msg103_GetDbQueryMulti: // 複数レコードの取得
+				result = subLogicMsg103(request, context);
 				break;
 			case CvnetFlag.Msg700_Test_Start:
 				result = subLogicMsg700(request, context);

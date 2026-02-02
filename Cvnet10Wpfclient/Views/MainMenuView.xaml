@@ -96,5 +96,7 @@
         </Grid>
         <Button Grid.Row="2" Content="終了" Width="132" Height="56" HorizontalAlignment="Right" Margin="0,10,0,0"
                 Command="{Binding ExitCommand}" />
+        <Button Content="Test MsgCnv" Command="{Binding TestMsgCnvCommand}" HorizontalAlignment="Left" Height="26" Margin="271,0,0,0" VerticalAlignment="Top" Width="102"/>
+        <Button Content="クエリ test" Command="{Binding TestMsg000Command}" HorizontalAlignment="Left" Height="26" Margin="394,0,0,0" VerticalAlignment="Top" Width="102"/>
     </Grid>
 </Window>

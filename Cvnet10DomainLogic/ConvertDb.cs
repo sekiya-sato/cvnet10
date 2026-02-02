@@ -38,8 +38,10 @@ public class ConvertDb {
 	#endregion
 
 	public void ConvertAll(bool isInit=true) {
+		/*
 		CnvMasterSys(isInit);
 		CnvMasterMeisho(isInit);
+		 */
 	}
 
 	/// <summary>

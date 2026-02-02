@@ -30,6 +30,9 @@ public class CvnetMsg {
 	[DataMember(Order = 4)]
 	public string? DataMsg { get; set; }
 
+	[DataMember(Order = 5)]
+	public string? Option { get; set; }
+
 }
 /// <summary>
 /// 共通メッセージフラグ
@@ -54,15 +57,15 @@ public enum CvnetFlag {
 	/// <summary>
 	/// データベースの変換(テーブル初期化なし)
 	/// </summary>
-	MSg004_ConvertDb = 40,
+	MSg040_ConvertDb = 40,
 	/// <summary>
 	/// データベースの変換(テーブル初期化あり)
 	/// </summary>
-	MSg004_ConvertDbInit = 41,
+	MSg041_ConvertDbInit = 41,
 	/// <summary>
 	/// テスト
 	/// </summary>
-	MSg005_Test = 50,
+	MSg050_Test = 50,
 	/// <summary>
 	/// DBデータを取得する Message=QueryDbDef
 	/// [Get DB data Message=QueryDbDef]
