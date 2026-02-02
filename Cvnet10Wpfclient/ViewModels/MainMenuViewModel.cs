@@ -136,24 +136,62 @@ namespace Cvnet10Wpfclient.ViewModels {
 		}
 
 		[RelayCommand]
-		public void UpdateRecord() {
+		public async Task UpdateRecord() {
 			// TODO: 修正処理を実装
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
-			MessageEx.ShowInformationDialog($"修正ボタンがクリックされました（未実装）\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+			using var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
+			httpClient.Timeout = TimeSpan.FromSeconds(30);
+			using var channel = GrpcChannel.ForAddress(AppCurrent.Url, new GrpcChannelOptions { HttpClient = httpClient });
+			var coreService = channel.CreateGrpcService<ICvnetCoreService>();
+			AppCurrent.LoginJwt = dummyToken;
+			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg102_GetDbExecuteSingle };
+			msg.DataType = typeof(Test202601Master);
+			msg.DataMsg = Common.SerializeObject(new ParamExecute {
+
+				ExecuteType = ParamExecuteType.Update,
+				Id = SelectedTestMaster.Id,
+				TableType = typeof(Test202601Master),
+				JsonData = Common.SerializeObject(SelectedTestMaster!)
+			});
+			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
+			if (item != null) {
+				// 修正の場合、特に不要
+			}
+			MessageEx.ShowInformationDialog($"修正しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
 		}
 
 		[RelayCommand]
-		public void DeleteRecord() {
+		public async Task DeleteRecord() {
 			// TODO: 削除処理を実装
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
 			if (MessageEx.ShowQuestionDialog($"コード「{SelectedTestMaster.Code}」を削除しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-				MessageEx.ShowInformationDialog("削除処理を実行します（未実装）", owner: ClientLib.GetActiveView(this));
+				using var httpClient = new HttpClient();
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
+				httpClient.Timeout = TimeSpan.FromSeconds(30);
+				using var channel = GrpcChannel.ForAddress(AppCurrent.Url, new GrpcChannelOptions { HttpClient = httpClient });
+				var coreService = channel.CreateGrpcService<ICvnetCoreService>();
+				AppCurrent.LoginJwt = dummyToken;
+				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg102_GetDbExecuteSingle };
+				msg.DataType = typeof(Test202601Master);
+				msg.DataMsg = Common.SerializeObject(new ParamExecute {
+
+					ExecuteType = ParamExecuteType.Delete,
+					Id = SelectedTestMaster.Id,
+					TableType = typeof(Test202601Master),
+					JsonData = Common.SerializeObject(SelectedTestMaster!)
+				});
+				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+				var code = SelectedTestMaster.Code;
+				TestMasters.Remove(SelectedTestMaster);
+				MessageEx.ShowInformationDialog($"削除しました\nコード: {code}", owner: ClientLib.GetActiveView(this));
 			}
 		}
 	}
