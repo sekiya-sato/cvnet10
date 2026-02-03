@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Cvnet10Wpfclient.Views {
-    /// <summary>
-    /// MainMenuView.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MainMenuView : Window {
-        public MainMenuView() {
-            InitializeComponent();
+namespace Cvnet10Wpfclient.Views;
+
+public partial class MainMenuView : Window {
+    public MainMenuView() {
+        InitializeComponent();
+    }
+
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e) {
+        if (e.ChangedButton == MouseButton.Left && e.ButtonState == MouseButtonState.Pressed) {
+            DragMove();
         }
     }
 }
