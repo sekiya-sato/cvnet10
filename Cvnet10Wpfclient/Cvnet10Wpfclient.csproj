@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>cvnet.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="cvnet.ico" />
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
     <ProjectReference Include="..\Cvnet10AppShared\Cvnet10AppShared.csproj" />
 		<ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
@@ -35,5 +37,10 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<DependentUpon>appsettings.json</DependentUpon>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Resources\UIColors.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 </Project>

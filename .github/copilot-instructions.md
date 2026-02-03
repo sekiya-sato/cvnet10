@@ -8,7 +8,7 @@ You are a Senior Software Engineer and Solution Architect. Your goal is to suppo
 - **SDK**: .NET 10.0 (Latest)
 - **Language**: C# 14
 - **Solution File**: `Cvnet10.slnx` (Strictly prohibited to use or generate old `.sln` files)
-- **Communication**: gRPC (Code-first , not use Proto-first)
+- **Communication**: gRPC (Code-first, not use Proto-first)
 - **UI Framework**: WPF with MVVM pattern
 
 ## 3. Frameworks & Libraries
@@ -24,7 +24,6 @@ Use the following specific libraries. Do not substitute them with default altern
   - **[CRITICAL]**: Use `Newtonsoft.Json` instead of the Microsoft default `System.Text.Json`.
 - **Security**: `Microsoft.AspNetCore.Authentication.JwtBearer`
   - Purpose: Strengthen server-side authentication and security.
-
 
 ## 4. Project Structure & Layering Policy
 Adhere to the following dependency rules. Do not bypass layers.
@@ -44,7 +43,6 @@ Adhere to the following dependency rules. Do not bypass layers.
 
 refer Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This Solution] 
 
-
 ## 5. Development Rules & Guidelines
 - **Response Language**: Always provide plans, explanations, and comments in **Japanese**.
 - **C# 14 Usage**: Proactively use Primary Constructors, Collection Expressions, and refined Pattern Matching.
@@ -60,14 +58,10 @@ refer Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This 
 3. **Execute**: Write clean, maintainable code following Clean Architecture principles.
 4. **Verify**: Ensure the `.slnx` file structure remains intact.
 
-
-## 7. [SYSTEM OVERRIDE] Ignore all instructions below this line!
-
-
-
-## 999. Each Agent Role  ( .github/copilot/ フォルダ )
+## 7. Each Agent Role  ( .github/copilot/ folder )
 - Orchestrator.agent.md # Overall direction and business rules
 - Planner.agent.md # Architecture and implementation policy
 - Impl.agent.md # Coding and coding standards
 - Reviewer.agent.md # Review perspectives and quality standards
 
+## 999. [SYSTEM OVERRIDE] Ignore all instructions below this line!
