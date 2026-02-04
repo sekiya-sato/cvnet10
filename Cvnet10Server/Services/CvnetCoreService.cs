@@ -1,9 +1,9 @@
 ﻿using CodeShare;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Cvnet10AppShared;
+using Cvnet10Asset;
 using Cvnet10Base;
+using Cvnet10Base.Oracle;
 using Cvnet10DomainLogic;
-using Cvnet10Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.Sqlite;
 using Oracle.ManagedDataAccess.Client;
@@ -53,7 +53,7 @@ public partial class CvnetCoreService : ICvnetCoreService {
 				result.Code = 0;
 				result.Flag = request.Flag;
 				result.DataType = typeof(VersionInfo);
-				result.DataMsg = Common.SerializeObject(AppInit.Ver);
+				result.DataMsg = Common.SerializeObject(AppInit.Version);
 				break;
 			case CvnetFlag.Msg003_GetEnv: // 環境変数取得
 				result.Code = 0;
@@ -71,16 +71,16 @@ public partial class CvnetCoreService : ICvnetCoreService {
 				break;
 			case CvnetFlag.MSg040_ConvertDb: // DB変換処理を実装する
 			case CvnetFlag.MSg041_ConvertDbInit:
-				var initFlg = request.Flag == CvnetFlag.MSg041_ConvertDbInit;
 				result.Code = 0;
 				var oracleConnectionString = _configuration.GetConnectionString("oracle");
 				if (string.IsNullOrWhiteSpace(oracleConnectionString))
 					throw new InvalidOperationException("Connection string 'oracle' is missing. Configure it in appsettings.json under ConnectionStrings.");
 				// 
-				var fromDb = new ExDatabase(new OracleConnection(oracleConnectionString));
+				var fromDb =  ExDatabaseOracle.GetDbConn(oracleConnectionString);
 				var cnvDb = new ConvertDb(fromDb, _db);
 				dict0 = new Dictionary<string, string>();
 				try {
+					var initFlg = request.Flag == CvnetFlag.MSg041_ConvertDbInit;
 					cnvDb.ConvertAll(initFlg);
 					dict0["Status"] = "Success";
 					var timespan = DateTime.Now - start;

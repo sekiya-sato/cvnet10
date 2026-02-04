@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,20 +7,19 @@
   </PropertyGroup>
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
-	<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.2.10" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="6.1.0" />
 	<PackageReference Include="NLog.Targets.Network" Version="6.0.0" />
-	<PackageReference Include="NPoco" Version="6.1.0" />
 	<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.2.2" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
-    <ProjectReference Include="..\Cvnet10AppShared\Cvnet10AppShared.csproj" />
+    <ProjectReference Include="..\Cvnet10Asset\Cvnet10Asset.csproj" />
+    <ProjectReference Include="..\Cvnet10BaseOracle\Cvnet10BaseOracle.csproj" />
+    <ProjectReference Include="..\Cvnet10BaseSqlite\Cvnet10BaseSqlite.csproj" />
     <ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
-    <ProjectReference Include="..\Cvnet10DomainLogic\Cvnet10DomainLogic.csproj" />
+	  <ProjectReference Include="..\Cvnet10DomainLogic\Cvnet10DomainLogic.csproj" />
   </ItemGroup>
 
 </Project>

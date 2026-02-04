@@ -64,8 +64,11 @@ AIアシスタントはこのファイルではなく .github/copilot-instructio
 	- Cvnet10Server, Cvnet10Wpfclient の基本的な gRPC 通信と認証ロジックが完了しています。
 - 2026/01/30
 	- 概念検証として、ITest202601 , Test202601Service を追加し、WpfClientから Joinを含んだビューを一覧取得
-- 2026/02/01
+- 2026/02/01-02/03
 	- Cvnet10Base を Cvnet10Base, Cvnet10DomainLogic に分割、データ定義とビジネスロジックを分離して実装
+	- gRPCサービスにCRUDの汎用基本操作を追加
+	- Cvnet10Wpfclient のメインメニューを修正
 
 
+# ToDo 残作業
 

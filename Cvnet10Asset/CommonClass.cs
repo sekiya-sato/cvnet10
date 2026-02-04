@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 
-namespace Cvnet10AppShared;
+namespace Cvnet10Asset;
 public sealed class Common {
 	public static string Version { get; } = "1.00.00";
 

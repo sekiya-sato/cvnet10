@@ -3,42 +3,42 @@ using NPoco;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
-using Microsoft.Data.Sqlite;
 using Cvnet10DomainLogic;
+using Oracle.ManagedDataAccess.Client;
 
 
-namespace Cvnet10Server.Models;
+namespace Cvnet10Base.Oracle;
 
 /// <summary>
 /// SqliteDB用のデータベースクラス
 /// [Database class for SqliteDB]
 /// </summary>
-public partial class ExSqliteDatabase : ExDatabase {
+public partial class ExDatabaseOracle : ExDatabase {
 
-	public ExSqliteDatabase(DbConnection conn) : base(conn) {
+	public ExDatabaseOracle(DbConnection conn) : base(conn) {
 		if (conn != null) {
 			if (conn.State == ConnectionState.Closed)
 				conn.Open();
 		}
 	}
-	public static ExSqliteDatabase GetDbConn(string dbfile, bool isOpen=true) {
-		var conn = new SqliteConnection($"Data Source={dbfile}");
+	public static ExDatabaseOracle GetDbConn(string connectionString, bool isOpen=true) {
+		var conn = new OracleConnection(connectionString);
 		if (isOpen) {
 			conn.Open();
 		}
-		var db = new ExSqliteDatabase(conn);
+		var db = new ExDatabaseOracle(conn);
 		return db;
 	}
 	public override void Open() {
-		if (Connection is SqliteConnection) {
-			var connInner = (SqliteConnection)Connection;
+		if (Connection is OracleConnection) {
+			var connInner = (OracleConnection)Connection;
 			if(connInner.State == ConnectionState.Closed)
 				connInner.Open();
 		}
 	}
 	public override void Close() {
-		if (Connection is SqliteConnection) {
-			var connInner = (SqliteConnection)Connection;
+		if (Connection is OracleConnection) {
+			var connInner = (OracleConnection)Connection;
 			if (connInner.State == ConnectionState.Open) {
 				this.KeepConnectionAlive = false;
 				connInner.Close();
@@ -49,7 +49,7 @@ public partial class ExSqliteDatabase : ExDatabase {
 
 	/// <summary>
 	/// クラスの中に含まれるプロパティの配列を"Name database型"で返す
-	/// [Returns an array of properties contained in the class as "Name database type"]
+	/// Todo : Oracle用に修正すること 2026/02/04
 	/// </summary>
 	/// <param name="classT"></param>
 	/// <returns></returns>
