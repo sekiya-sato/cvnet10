@@ -14,14 +14,14 @@
     <PackageReference Include="Grpc.Net.Client" Version="2.76.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="NLog" Version="6.0.7" />
+    <PackageReference Include="NLog" Version="6.1.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="cvnet.ico" />
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
-    <ProjectReference Include="..\Cvnet10AppShared\Cvnet10AppShared.csproj" />
+    <ProjectReference Include="..\Cvnet10Asset\Cvnet10Asset.csproj" />
 		<ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
   </ItemGroup>
 	<ItemGroup>

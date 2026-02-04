@@ -1,5 +1,5 @@
 ﻿using Cvnet10Base;
-using Cvnet10Server.Models;
+using Cvnet10DomainLogic;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -13,12 +13,14 @@ public class AppInit {
 	readonly DateTime buildDate = new DateTime(2026,2,1);
 	static VersionInfo? _ver;
 
-	public static VersionInfo Ver {
+	/// <summary>
+	/// アプリケーションのバージョン情報を取得します。
+	/// </summary>
+	public static VersionInfo Version {
 		get {
 			return _ver ?? throw new ArgumentNullException(nameof(VersionInfo));
 		}
 	}
-
 
 	public AppInit(IConfiguration configuration) {
 		_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -30,12 +32,11 @@ public class AppInit {
 		};
 	}
 
-	public void Init() {
-		var sqliteFileName = _configuration.GetConnectionString("sqlite");
-		if (string.IsNullOrWhiteSpace(sqliteFileName))
-			throw new InvalidOperationException("Connection string 'sqlite' is missing. Configure it in appsettings.json under ConnectionStrings.");
+	/// <summary>
+	/// 初期化 Asp.net Core の Run()の前に呼び出される
+	/// </summary>
+	public void Init(ExDatabase db) {
 
-		var db = ExSqliteDatabase.GetDbConn(sqliteFileName);
 		// システムテーブル
 		db.CreateTable<SysLogin>();
 		db.CreateTable<SysHistJwt>();

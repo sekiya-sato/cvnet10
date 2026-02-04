@@ -1,5 +1,5 @@
 ﻿using CodeShare;
-using Cvnet10AppShared;
+using Cvnet10Asset;
 using Cvnet10Base;
 using ProtoBuf.Grpc;
 using System.ComponentModel;

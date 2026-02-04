@@ -1,4 +1,4 @@
-﻿namespace Cvnet10AppShared;
+﻿namespace Cvnet10Asset;
 
 /*
 private static int _field = 1;

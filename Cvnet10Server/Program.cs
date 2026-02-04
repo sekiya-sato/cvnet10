@@ -10,7 +10,6 @@
 
 using Cvnet10Base;
 using Cvnet10Server;
-using Cvnet10Server.Models;
 using Cvnet10Server.Services;
 using Grpc.Net.Compression;
 using Microsoft.AspNetCore.Authentication;
@@ -94,7 +93,7 @@ var connStr = builder.Configuration.GetConnectionString("sqlite")
 	?? throw new InvalidOperationException("Connection string 'sqlite' is not configured.");
 builder.Services.AddSingleton<ExDatabase>(sp => {
 	// ファクトリメソッドを使用してインスタンスを生成
-	return ExSqliteDatabase.GetDbConn(connStr);
+	return Cvnet10Base.Sqlite.ExDatabaseSqlite.GetDbConn(connStr);
 });
 
 var app = builder.Build();
@@ -131,7 +130,7 @@ app.MapGrpcService<CvnetCoreService>();
 app.MapGet("/", () => $"Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909 <BR> 現在時刻は {DateTime.Now}");
 
 var appInit = new AppInit(app.Configuration);
-appInit.Init();
+appInit.Init(Cvnet10Base.Sqlite.ExDatabaseSqlite.GetDbConn(connStr));
 app.Run();
 
 LogManager.Shutdown();

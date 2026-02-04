@@ -30,16 +30,19 @@ Adhere to the following dependency rules. Do not bypass layers.
 
 **[CRITICAL RULE]**: The following projects are "Read-Only" for AI. **DO NOT modify any files within these projects** unless explicitly requested by the user:
 - **CodeShare**
-- **Cvnet10AppShared**
+- **Cvnet10Asset**
 
 | Folder / Project(.csproj) | Layer | Responsibility | Allowed Dependencies |
 | :--- | :--- | :--- | :--- |
 | **CodeShare** | Layer 0 | [READ-ONLY] gRPC Contracts, DTOs, Shared Interfaces | None |
-| **Cvnet10AppShared** | Layer 0 | [READ-ONLY] Lightweight Utilities, Extensions, Constants | None |
+| **Cvnet10Asset** | Layer 0 | [READ-ONLY] Lightweight Utilities, Extensions, Constants | None |
 | **Cvnet10Base** | Layer 1 | Data Models, DB Entities (NPoco) | None |
-| **Cvnet10DomainLogic** | Layer 1.5 | Business Logic, Domain Services, Calculations | CodeShare, Cvnet10AppShared, Cvnet10Base |
-| **Cvnet10Server** | Layer 2 | gRPC Service Implementations, DbContext(ExDatabase) by DI | CodeShare, Cvnet10AppShared, Cvnet10Base, Cvnet10DomainLogic |
-| **Cvnet10Wpfclient** | Layer 2 | WPF GUI (Views/ViewModels), gRPC Client Logic | CodeShare, Cvnet10AppShared, Cvnet10Base |
+| **Cvnet10BaseMariadb** | Layer 1.2 | Database Connection for MariaDB (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10BaseOracle** | Layer 1.2 | Database Connection for Oracle (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10BaseSqlite** | Layer 1.2 | Database Connection for Sqlite (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10DomainLogic** | Layer 1.5 | Business Logic, Domain Services, Calculations | Cvnet10Base |
+| **Cvnet10Server** | Layer 2 | gRPC Service Implementations, DbContext(ExDatabase) by DI | CodeShare, Cvnet10Asset, Cvnet10Base, Cvnet10DomainLogic |
+| **Cvnet10Wpfclient** | Layer 2 | WPF GUI (Views/ViewModels), gRPC Client Logic | CodeShare, Cvnet10Asset, Cvnet10Base |
 
 refer Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This Solution] 
 

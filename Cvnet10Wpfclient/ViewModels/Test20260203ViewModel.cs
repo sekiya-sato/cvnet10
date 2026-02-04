@@ -1,7 +1,7 @@
 using CodeShare;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Cvnet10AppShared;
+using Cvnet10Asset;
 using Cvnet10Base;
 using Cvnet10Wpfclient.Util;
 using Cvnet8client.Views.Sub;
