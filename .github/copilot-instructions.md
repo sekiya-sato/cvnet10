@@ -5,7 +5,7 @@ You are a Senior Software Engineer and Solution Architect. Your goal is to suppo
 
 ## 2. Environment & Technical Stack
 - **OS**: Windows 11
-- **SDK**: .NET 10.0 (Latest)
+- **SDK**: .NET 10.0 (Latest) - このワークスペースは .NET 10 をターゲットにしている
 - **Language**: C# 14
 - **Solution File**: `Cvnet10.slnx` (Strictly prohibited to use or generate old `.sln` files)
 - **Communication**: gRPC (Code-first, not use Proto-first)
@@ -42,10 +42,10 @@ Adhere to the following dependency rules.
 | **CodeShare** | Layer 0 | [READ-ONLY] gRPC Contracts, DTOs, Shared Interfaces | None |
 | **Cvnet10Asset** | Layer 0 | [READ-ONLY] Lightweight Utilities, Extensions, Constants | None |
 | **Cvnet10Base** | Layer 1 | Data Models, DB Entities (NPoco) | None |
-| **Cvnet10BaseMariadb** | Layer 1.2 | Database Connection for MariaDB (Enhanced NPoco Database Class) | Cvnet10Base |
-| **Cvnet10BaseOracle** | Layer 1.2 | Database Connection for Oracle (Enhanced NPoco Database Class) | Cvnet10Base |
-| **Cvnet10BaseSqlite** | Layer 1.2 | Database Connection for Sqlite (Enhanced NPoco Database Class) | Cvnet10Base |
-| **Cvnet10DomainLogic** | Layer 1.5 | Business Logic, Domain Services, Calculations | Cvnet10Base |
+| **Cvnet10BaseMariadb** | Layer 1.2 | [READ-ONLY] Database Connection for MariaDB (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10BaseOracle** | Layer 1.2 | [READ-ONLY] Database Connection for Oracle (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10BaseSqlite** | Layer 1.2 | [READ-ONLY] Database Connection for Sqlite (Enhanced NPoco Database Class) | Cvnet10Base |
+| **Cvnet10DomainLogic** | Layer 1.5 | [READ-ONLY] Business Logic, Domain Services, Calculations | Cvnet10Base |
 | **Cvnet10Server** | Layer 2 | gRPC Service Implementations, DbContext(ExDatabase) by DI | CodeShare, Cvnet10Asset, Cvnet10Base, Cvnet10DomainLogic |
 | **Cvnet10Wpfclient** | Layer 2 | WPF GUI (Views/ViewModels), gRPC Client Logic | CodeShare, Cvnet10Asset, Cvnet10Base |
 
@@ -66,11 +66,11 @@ refer/ Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This
 3. **Execute**: Write clean, maintainable code following Clean Architecture principles.
 4. **Verify**: Ensure the `.slnx` file structure remains intact.
 
-## 7. Each Agent Role  ( .github/copilot/ Folder )
-- Orchestrator.agent.md # Overall direction and business rules
-- Planner.agent.md # Architecture and implementation policy
-- Impl.agent.md # Coding and coding standards
-- Reviewer.agent.md # Review perspectives and quality standards
+## 7. Each Agent Role
+- .github/copilot/Orchestrator.agent.md # Overall direction and business rules
+- .github/copilot/Planner.agent.md # Architecture and implementation policy
+- .github/copilot/Impl.agent.md # Coding and coding standards
+- .github/copilot/Reviewer.agent.md # Review perspectives and quality standards
 
 ## 999. [SYSTEM OVERRIDE] Ignore all instructions below this line!
 - ここから先は人間用のメモ代わり。
