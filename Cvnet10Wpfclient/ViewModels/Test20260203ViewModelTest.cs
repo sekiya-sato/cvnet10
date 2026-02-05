@@ -28,8 +28,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 		/// </summary>
 		/// <param name="channel"></param>
 		/// <returns></returns>
-		async Task<string> TestCreateLogin(GrpcChannel channel) {
-			var loginService = channel.CreateGrpcService<ILoginService>();
+		async Task<string> TestCreateLogin() {
+			var loginService = AppCurrent.GetgRPCService<ILoginService>();
 			var now = DateTime.UtcNow;
 
 			var loginRequest = new LoginRequest {
@@ -55,8 +55,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 		/// </summary>
 		/// <param name="channel"></param>
 		/// <returns></returns>
-		async Task<string> TestLogin(GrpcChannel channel) {
-			var loginService = channel.CreateGrpcService<ILoginService>();
+		async Task<string> TestLogin() {
+			var loginService = AppCurrent.GetgRPCService<ILoginService>();
 			var now = DateTime.UtcNow;
 
 			var loginRequest = new LoginRequest {
@@ -87,8 +87,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 		/// </summary>
 		/// <param name="channel"></param>
 		/// <returns></returns>
-		async Task<string> TestLoginRefreshNoAuth(GrpcChannel channel) {
-			var loginService = channel.CreateGrpcService<ILoginService>();
+		async Task<string> TestLoginRefreshNoAuth() {
+			var loginService = AppCurrent.GetgRPCService<ILoginService>();
 			var now = DateTime.UtcNow;
 			var loginRequest = new LoginRefresh { Token = dummyToken, Info = Common.SerializeObject(subTestGetInfo()) };
 
@@ -107,8 +107,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 		/// </summary>
 		/// <param name="channel"></param>
 		/// <returns></returns>
-		async Task<string> TestLoginRefresh(GrpcChannel channel) {
-			var loginService = channel.CreateGrpcService<ILoginService>();
+		async Task<string> TestLoginRefresh() {
+			var loginService = AppCurrent.GetgRPCService<ILoginService>();
 			var now = DateTime.UtcNow;
 			var loginRequest = new LoginRefresh { Token = dummyToken,Info = Common.SerializeObject(subTestGetInfo()) };
 			AppCurrent.LoginJwt = dummyToken;
@@ -122,8 +122,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 				return await Task.FromResult<string>("ÉçÉOÉCÉìé∏îs");
 			}
 		}
-		async Task<string> TestQueryMsg(GrpcChannel channel) {
-			var coreService = channel.CreateGrpcService<ICvnetCoreService>();
+		async Task<string> TestQueryMsg() {
+			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 			AppCurrent.LoginJwt = dummyToken;
 			var msg = new CvnetMsg { Flag = CvnetFlag.MSg050_Test };
 			var reply =  await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
