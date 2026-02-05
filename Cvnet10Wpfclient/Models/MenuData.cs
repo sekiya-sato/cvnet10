@@ -94,7 +94,7 @@ public class MenuData : ObservableObject {
 					Header = "名称マスタメンテ",
 					AddInfo = "Generic name setup",
 					ViewType = typeof(MasterMeishoMenteView),
-					IsDialog = true
+					IsDialog = false
 				},
 				new MenuData { Header = "得意先マスタメンテ", AddInfo = "準備中" },
 				new MenuData { Header = "社員LOGINマスタ", AddInfo = "準備中" }

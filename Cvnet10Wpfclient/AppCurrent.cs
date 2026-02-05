@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Threading;
 
 
 namespace Cvnet10Wpfclient {
@@ -61,14 +62,16 @@ namespace Cvnet10Wpfclient {
 		/// </summary>
 		/// <returns></returns>
 		public static CallContext GetDefaultCallContext() {
+			return GetDefaultCallContext(CancellationToken.None);
+		}
+		public static CallContext GetDefaultCallContext(CancellationToken cancellationToken) {
 			var callOptions = new CallOptions(headers: new Metadata {
 					new Metadata.Entry("X-ClientId", ClientId.ToString()),
 					new Metadata.Entry("Authorization", $"Bearer {LoginJwt}"),
-				});
-			var callContext = new CallContext(
-							callOptions: callOptions,
-							flags: CallContextFlags.CaptureMetadata);
-			return callContext;
+				}, cancellationToken: cancellationToken);
+			return new CallContext(
+						callOptions: callOptions,
+						flags: CallContextFlags.CaptureMetadata);
 		}
 		/// <summary>
 		/// gRPCサービスを取得する
