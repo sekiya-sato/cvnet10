@@ -1,11 +1,10 @@
 ﻿using Cvnet10Wpfclient.Util;
 using Grpc.Core;
-using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc;
-using ProtoBuf.Grpc.Client;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Net.Http;
 
 
 namespace Cvnet10Wpfclient {
@@ -18,6 +17,8 @@ namespace Cvnet10Wpfclient {
 		private static string? _url;
 		private static string? _dataDir;
 		private static Guid? _clientId;
+		private static IServiceProvider? _serviceProvider;
+		private static readonly ConcurrentDictionary<Type, object> _grpcServiceCache = new();
 		/// <summary>
 		/// サーバーのURL
 		/// </summary>
@@ -37,14 +38,16 @@ namespace Cvnet10Wpfclient {
 		/// </summary>
 		public static string? LoginJwt;
 
-		readonly static HttpClient grpcHttpClient = CreateGrpcHttpClient();
 		/// <summary>
 		/// Config読込処理：application startup で一度だけ実行すること
 		/// </summary>
-		public static void Init(IConfigurationRoot config) {
+		public static void Init(IConfigurationRoot config, IServiceProvider serviceProvider) {
+			ArgumentNullException.ThrowIfNull(config);
+			ArgumentNullException.ThrowIfNull(serviceProvider);
 			if (_config != null) return;
 			Debug.WriteLine("GlobalInitialize()実行");
 			_config = config;
+			_serviceProvider = serviceProvider;
 			_url = _config.GetConnectionString("Url");
 			_dataDir = ClientLib.GetDataDir();
 			// あれば取得する
@@ -67,25 +70,19 @@ namespace Cvnet10Wpfclient {
 							flags: CallContextFlags.CaptureMetadata);
 			return callContext;
 		}
-		static HttpClient CreateGrpcHttpClient() {
-			var client = new HttpClient {
-				Timeout = TimeSpan.FromSeconds(300)
-			};
-			client.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
-			return client;
-		}
+		/// <summary>
+		/// gRPCサービスを取得する
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		/// <exception cref="InvalidOperationException"></exception>
 		public static T GetgRPCService<T>() where T : class {
-			GrpcChannel grpcChannel = GrpcChannel.ForAddress(
-				AppCurrent.Url,
-				new GrpcChannelOptions { HttpClient = grpcHttpClient });
-
-			var coreService = grpcChannel.CreateGrpcService<T>();
-			if (coreService == null) {
-				Debug.WriteLine("サービス取得失敗");
-				// 未実装
-				throw new NotImplementedException();
-			}
-			return coreService;
+			var provider = _serviceProvider
+				?? throw new InvalidOperationException("AppCurrent has not been initialized. Call Init() at application startup.");
+			return (T)_grpcServiceCache.GetOrAdd(typeof(T), _ => {
+				var service = provider.GetRequiredService<T>();
+				return service ?? throw new InvalidOperationException($"Service '{typeof(T).Name}' could not be resolved.");
+			});
 		}
 
 

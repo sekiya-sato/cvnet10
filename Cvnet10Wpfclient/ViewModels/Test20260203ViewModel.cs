@@ -19,27 +19,15 @@ using System.Windows.Interop;
 namespace Cvnet10Wpfclient.ViewModels {
     public partial class Test20260203ViewModel : ObservableObject {
 
-        readonly HttpClient grpcHttpClient = CreateGrpcHttpClient();
-        GrpcChannel? grpcChannel;
-
+		[ObservableProperty]
 		string testConnectStatusText = "TestConnect";
-		public string TestConnectStatusText {
-			get => testConnectStatusText;
-			set => SetProperty(ref testConnectStatusText, value);
-		}
- 
+
+		[ObservableProperty]
 		ObservableCollection<Test202601Master> testMasters = new();
 
-		public ObservableCollection<Test202601Master> TestMasters {
-			get => testMasters;
-			set => SetProperty(ref testMasters, value);
-		}
 
+		[ObservableProperty]
 		Test202601Master? selectedTestMaster;
-		public Test202601Master? SelectedTestMaster {
-			get => selectedTestMaster;
-			set => SetProperty(ref selectedTestMaster, value);
-		}
 
 		[RelayCommand]
 		public void Exit() {
@@ -48,37 +36,13 @@ namespace Cvnet10Wpfclient.ViewModels {
 			}
 		}
 
-		T getService<T>() where T : class {
-            AppCurrent.LoginJwt = dummyToken;
-            grpcChannel ??= GrpcChannel.ForAddress(
-                AppCurrent.Url,
-                new GrpcChannelOptions { HttpClient = grpcHttpClient });
-
-            var coreService = grpcChannel.CreateGrpcService<T>();
-            if (coreService == null) {
-				TestConnectStatusText = "サービス取得失敗";
-                Debug.WriteLine("サービス取得失敗");
-                // 未実装
-                throw new NotImplementedException();
-            }
-            return coreService;
-        }
-
-        static HttpClient CreateGrpcHttpClient() {
-            var client = new HttpClient {
-                Timeout = TimeSpan.FromSeconds(300)
-            };
-            client.DefaultRequestHeaders.TryAddWithoutValidation("grpc-accept-encoding", "gzip");
-            return client;
-        }
-
 
 		[RelayCommand]
 		public async Task TestConnect() {
 			TestConnectStatusText = "接続中...リスト取得";
 			try {
 
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query,
 					DataType = typeof(QueryListParam),
 					DataMsg = Common.SerializeObject(new QueryListParam(
@@ -108,7 +72,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 		public async Task TestMsgCnv(){
 			TestConnectStatusText = "接続中...変換実行";
 			try {
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 202601, Flag = CvnetFlag.MSg041_ConvertDbInit };
 				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
 				TestConnectStatusText = $"Convert OK";
@@ -127,7 +91,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 		public async Task TestMsg000() {
 			TestConnectStatusText = "接続中...環境変数";
 			try {
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg003_GetEnv };
 				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
 				var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType);
@@ -153,7 +117,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 			}
 			if (MessageEx.ShowQuestionDialog("追加しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
 				// 追加処理を実行
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(InsertParam);
 				msg.DataMsg = Common.SerializeObject(new InsertParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
@@ -176,7 +140,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 			}
 			if (MessageEx.ShowQuestionDialog($"コード「{SelectedTestMaster.Code}」を修正しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
 				// 処理を実行
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(UpdateParam);
 				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
@@ -198,7 +162,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 			}
 			if (MessageEx.ShowQuestionDialog($"コード「{SelectedTestMaster.Code}」を削除しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
 				// 処理を実行
-				var coreService = getService<ICvnetCoreService>();
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(DeleteParam);
 				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
@@ -217,7 +181,7 @@ namespace Cvnet10Wpfclient.ViewModels {
 				return;
 			}
 			// 処理を実行
-			var coreService = getService<ICvnetCoreService>();
+			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query };
 			msg.DataType = typeof(QuerybyIdParam);
 			msg.DataMsg = Common.SerializeObject(new QuerybyIdParam(typeof(Test202601Master), 4));
