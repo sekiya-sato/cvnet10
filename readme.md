@@ -77,43 +77,46 @@ AIアシスタントはこのファイルではなく .github/copilot-instructio
 	- 全体のコード整理
 	- GPT-5 mini によるコードレビューと改善提案(全体設計方針とあわせ、実施を検討)
 		- 優れている点
-			- イヤ分離が明確で責務分離は良好。
+			- レイヤ分離が明確で責務分離は良好。
 			- gRPC（コードファースト）＋NPoco＋CommunityToolkit.Mvvm＋MaterialDesign で近代的な設計。設定やリソースの分離（App.xaml と ResourceDictionaries）も良い実践。
 			- 明確なレイヤ分離（契約層 / ベースモデル / ドメイン / サーバ / クライアント）が設計方針として定義されている。
 			- gRPC をコードファーストで使い、型安全な契約管理を目指している点。
 			- WPF 側でリソース辞書や MaterialDesign を活用し UI 一貫性を確保している点。
 			- .NET 10 / C# 14 を前提に最新機能を採用する方針で将来性がある点。
-		- 改善提案 :
-		- API / 契約の安全性とバージョニング(major/minor ルール、互換性試験 Contract Tests) : 現在は開発途中であり、リリース時においては確定している(gRPC I/Fはリリース後変更しない)
-		- セキュリティ(TLS、キー管理、トークンの更新戦略や脆弱性対策) : 現在は開発途中であり、リリース時においては確定している(TLS1.2, JWT)
-		- 観測性・運用(ロギング / トレース / メトリクスの標準化が見えない) :
-			- 推奨: 構成に構造化ログ（Serilog）、分散トレーシング（OpenTelemetry）、メトリクス（Prometheus）を追加。Correlation ID を gRPC メタデータで伝播。
-			- 実施例: Cvnet10Server に OpenTelemetry と Serilog の基本設定テンプレート追加。
-		- テスト戦略(単体/統合/契約テストの戦略)
-			- Cvnet10Server にインメモリ DB を使った統合テスト、WPF 部分は ViewModel 単体テストを整備。
-			- 実施例: GitHub Actions でテスト実行とカバレッジ報告。
-		- CI/CD とアーティファクト(署名付きビルド、バージョニング、リリースパイプライン)
-			- 指摘: 署名付きビルド、バージョニング、リリースパイプラインが未明示。
-			- 推奨: Cvnet10.slnx を起点に GitHub Actions（または Azure DevOps）でビルド→単体テスト→契約テスト→イメージ作成のフローを構築。サーバは Docker イメージで配布を想定。
-			- 実施例: マルチステージ Dockerfile、イメージタグは SemVer。
-		- DB マイグレーションとデプロイ
-			- 推奨: DB スキーマはマイグレーションツール（Flyway / DbUp など）で管理し、マイグレーションを CI に組み込む。ベース側にマイグレーションスクリプトを同梱。
-			- 実施例: Cvnet10Base にマイグレーション定義 + マイグレーション実行コードを追加。
-		- WPF クライアント改善
-			- 指摘: Views の命名やファイル名の一貫性、DI 利用や ViewModel の初期化戦略が改善余地あり。
-			- WPF で DI コンテナ（Microsoft.Extensions.Hosting + Generic Host）を導入し、ViewModel/サービスの注入とテスト容易性を向上。
-			- UI リソースは既に分割済み (UIColors.xaml 等) だが、テーマ切替やダークモード対応を早期に設計する。
-			- コマンド/非同期処理は CancellationToken を用いてキャンセル可能にする。
-				- 実施例: App.xaml.cs を IHost 起動に切替え、MainWindow の DataContext を DI で解決。
-			- 互換性・互換試験（低優先）
-				- 指摘: JSON と ProtoBuf の両シリアライザを使う設計では、両者で同一意味を保つ検証が必要。
-				- 推奨: DTO のシリアライズ互換テストを自動化（JSON <> ProtoBuf シリアライズ/デシリアライズのラウンドトリップ検証）。
-			- 高: gRPC と JWT/TLS 設定のベストプラクティスを Cvnet10Server にドキュメント化＆テンプレート追加。
-			- 中: CI にビルド + 単体テスト + 契約互換チェックを追加。
-			- 中: ロギング（Serilog）と OpenTelemetry の基本設定をサーバに追加。
-			- 低: DB マイグレーションツール導入とシードデータ整備。
+		- 改善提案 : 開発フェーズ / リリースフェーズ
+		- 開発フェーズでの検討提案
+			- WPF クライアント改善
+				- 指摘: Views の命名やファイル名の一貫性、DI 利用や ViewModel の初期化戦略が改善余地あり。
+				- WPF で DI コンテナ（Microsoft.Extensions.Hosting + Generic Host）を導入し、ViewModel/サービスの注入とテスト容易性を向上。
+				- UI リソースは既に分割済み (UIColors.xaml 等) だが、テーマ切替やダークモード対応を早期に設計する。
+				- コマンド/非同期処理は CancellationToken を用いてキャンセル可能にする。
+					- 実施例: App.xaml.cs を IHost 起動に切替え、MainWindow の DataContext を DI で解決。
+				- 互換性・互換試験（低優先）
+					- 指摘: JSON と ProtoBuf の両シリアライザを使う設計では、両者で同一意味を保つ検証が必要。
+					- 推奨: DTO のシリアライズ互換テストを自動化（JSON <> ProtoBuf シリアライズ/デシリアライズのラウンドトリップ検証）。
+				- 高: gRPC と JWT/TLS 設定のベストプラクティスを Cvnet10Server にドキュメント化＆テンプレート追加。
+				- 中: CI にビルド + 単体テスト + 契約互換チェックを追加。
+				- 中: ロギング（Serilog）と OpenTelemetry の基本設定をサーバに追加。
+				- 低: DB マイグレーションツール導入とシードデータ整備。
 			- 大量データ転送は gRPC ストリーミングで実装し、ページング/バッチング戦略を定義。
+		- リリースフェーズでの検討提案
+			- API / 契約の安全性とバージョニング(major/minor ルール、互換性試験 Contract Tests) : 現在は開発途中であり、リリース時においては確定している(gRPC I/Fはリリース後変更しない)
+			- セキュリティ(TLS、キー管理、トークンの更新戦略や脆弱性対策) : 現在は開発途中であり、リリース時においては確定している(TLS1.2, JWT)
 			- リリースと互換のために契約変更ログ（CHANGELOG）を CodeShare 側で必須化。
+			- 観測性・運用(ロギング / トレース / メトリクスの標準化が見えない) :
+				- 推奨: 構成に構造化ログ（Serilog）、分散トレーシング（OpenTelemetry）、メトリクス（Prometheus）を追加。Correlation ID を gRPC メタデータで伝播。
+				- 実施例: Cvnet10Server に OpenTelemetry と Serilog の基本設定テンプレート追加。
+			- テスト戦略(単体/統合/契約テストの戦略)
+				- Cvnet10Server にインメモリ DB を使った統合テスト、WPF 部分は ViewModel 単体テストを整備。
+				- 実施例: GitHub Actions でテスト実行とカバレッジ報告。
+			- CI/CD とアーティファクト(署名付きビルド、バージョニング、リリースパイプライン)
+				- 指摘: 署名付きビルド、バージョニング、リリースパイプラインが未明示。
+				- 推奨: Cvnet10.slnx を起点に GitHub Actions（または Azure DevOps）でビルド→単体テスト→契約テスト→イメージ作成のフローを構築。サーバは Docker イメージで配布を想定。
+				- 実施例: マルチステージ Dockerfile、イメージタグは SemVer。
+			- DB マイグレーションとデプロイ
+				- 推奨: DB スキーマはマイグレーションツール（Flyway / DbUp など）で管理し、マイグレーションを CI に組み込む。ベース側にマイグレーションスクリプトを同梱。
+				- 実施例: Cvnet10Base にマイグレーション定義 + マイグレーション実行コードを追加。
+	- Theme対応とView/ViewModelのDIコンテナ対応
 
 # ToDo 残作業
 

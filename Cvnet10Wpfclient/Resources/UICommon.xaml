@@ -6,11 +6,11 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="Foreground" Value="{StaticResource plainTextColor0}"/>
+        <Setter Property="Foreground" Value="{DynamicResource plainTextColor0}"/>
     </Style>
 
     <Style x:Key="MenuTreeItemStyle" TargetType="TreeViewItem">
-        <Setter Property="Foreground" Value="{StaticResource plainTextColor0}"/>
+        <Setter Property="Foreground" Value="{DynamicResource plainTextColor0}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Padding" Value="6"/>
         <Setter Property="Margin" Value="0,2,0,2"/>
@@ -42,12 +42,12 @@
     <Style x:Key="SectionTitleText" TargetType="TextBlock">
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource TitleColor}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TitleColor}"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
 
     <Style x:Key="MetricLabel" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource plainTextColor0}"/>
+        <Setter Property="Foreground" Value="{DynamicResource plainTextColor0}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Opacity" Value="0.85"/>

@@ -17,32 +17,13 @@
         Background="Transparent"
         Icon="pack://application:,,,/cvnet.ico"
         MouseDown="Window_MouseDown">
+
+    <Window.Resources>
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:MainMenuViewModel />
     </Window.DataContext>
-    <Window.Resources>
-        <Style x:Key="MaximizeWinBtn" TargetType="Button">
-            <Setter Property="Width" Value="32"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse Fill="#FFCCCCCC" Stroke="#FF888888" StrokeThickness="1"/>
-                            <Path Data="M8,8 L24,8 L24,24 L8,24 Z" Stroke="#FF444444" StrokeThickness="2" Fill="Transparent"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.7"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -50,13 +31,20 @@
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
 
-    <Border CornerRadius="40" Background="{StaticResource OuterWindowBackground}" Padding="9">
-        <Border CornerRadius="24" Background="{StaticResource InnerWindowBackground}" BorderThickness="2">
+    <Border CornerRadius="40" Padding="9">
+        <Border.Background>
+            <SolidColorBrush Color="{DynamicResource primaryBackColor1}" />
+        </Border.Background>
+
+        <Border CornerRadius="24" BorderThickness="2">
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource primaryBackColor2}" />
+            </Border.Background>
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0" />
-                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.6" />
-                    <GradientStop Color="{StaticResource winBorderColor3}" Offset="1" />
+                    <GradientStop Color="{DynamicResource winBorderColor1}" Offset="0" />
+                    <GradientStop Color="{DynamicResource winBorderColor2}" Offset="0.6" />
+                    <GradientStop Color="{DynamicResource winBorderColor3}" Offset="1" />
                 </LinearGradientBrush>
             </Border.BorderBrush>
 
@@ -66,7 +54,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
                 <Grid Grid.Row="0" Margin="24,16,24,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -76,11 +63,11 @@
 
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding HeaderTitle}"
-                                   Foreground="{StaticResource TitleColor}"
+                                   Foreground="{DynamicResource TitleColor}"
                                    FontSize="28"
                                    FontWeight="Bold" />
                         <TextBlock Text="{Binding SubTitle}"
-                                   Foreground="{StaticResource SubTitleColor}"
+                                   Foreground="{DynamicResource SubTitleColor}"
                                    FontSize="14" Padding="8,0,0,0"
                                    Opacity="0.6" />
                     </StackPanel>
@@ -88,27 +75,55 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
                         <Border Style="{StaticResource StatusChip}" Margin="0,0,8,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="JWT Expire" Style="{StaticResource MetricLabel}" />
-                                <TextBlock Text="{Binding ExpireDate}" Foreground="{StaticResource plainTextColor0}" />
+                                <TextBlock Text="JWT Expire" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}" />
+                                <TextBlock Text="{Binding ExpireDate}" Foreground="{DynamicResource plainTextColor0}" />
                             </StackPanel>
                         </Border>
                         <Border Style="{StaticResource StatusChip}">
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Status" Style="{StaticResource MetricLabel}" />
-                                <TextBlock Text="{Binding StatusMessage}" Foreground="{StaticResource plainTextColor0}" TextWrapping="Wrap" Width="220" />
+                                <TextBlock Text="Status" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}" />
+                                <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource plainTextColor0}" TextWrapping="Wrap" Width="220" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource WindowButton}" 
+        Command="{Binding ToggleThemeCommand}" 
+        ToolTip="テーマ切り替え (Light/Dark)" 
+        Margin="0,0,8,0">
+                            <!--
+                            <Button.Content>
+                                <Path Data="M12,2L14,5H10L12,2M12,22L10,19H14L12,22M22,12L19,10V14L22,12M2,12L5,14V10L2,12M19.07,4.93L17,7.07L16.31,6.38L18.38,4.31L19.07,4.93M4.93,19.07L7.07,17L7.76,17.69L5.69,19.76L4.93,19.07M19.07,19.07L17,16.93L16.31,17.62L18.38,19.69L19.07,19.07M4.93,4.93L7.07,7.07L7.76,6.38L5.69,4.31L4.93,4.93M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z" 
+              Fill="{DynamicResource SubTitleColor}" 
+              Stretch="Uniform" 
+              Width="16" 
+              Height="16"
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center" />
+                            </Button.Content>
+                            -->
+                            <Button.Content>
+                                <Grid>
+                                    <Ellipse Fill="Black"
+                     Width="28" Height="28" />
+
+                                    <Path Data="M12,2L14,5H10L12,2M12,22L10,19H14L12,22M22,12L19,10V14L22,12M2,12L5,14V10L2,12M19.07,4.93L17,7.07L16.31,6.38L18.38,4.31L19.07,4.93M4.93,19.07L7.07,17L7.76,17.69L5.69,19.76L4.93,19.07M19.07,19.07L17,16.93L16.31,17.62L18.38,19.69L19.07,19.07M4.93,4.93L7.07,7.07L7.76,6.38L5.69,4.31L4.93,4.93M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z" 
+                  Fill="{DynamicResource TitleColor}" 
+                  Stretch="Uniform" 
+                  Width="14" Height="14"
+                  HorizontalAlignment="Center" 
+                  VerticalAlignment="Center" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+
                         <Button Style="{StaticResource MinimizeWinBtn}" Command="{Binding MinimizeCommand}" />
-                        <Button Style="{StaticResource MaximizeWinBtn}"
-                                Command="{Binding MaximizeCommand}" />
+                        <Button Style="{StaticResource MaximizeWinBtn}" Command="{Binding MaximizeCommand}" />
                         <Button Style="{StaticResource CloseWinBtn}" Command="{Binding ExitCommand}" />
                     </StackPanel>
                 </Grid>
 
-                <!-- Body -->
                 <Grid Grid.Row="1" Margin="24">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
@@ -116,22 +131,22 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- Navigation -->
                     <Border Grid.Column="0"
                             CornerRadius="18"
-                            Background="{StaticResource panelColor}"
+                            Background="{DynamicResource panelColor}"
                             Padding="10,4,4,4">
                         <StackPanel>
                             <TreeView x:Name="MenuTree"
                                       ItemsSource="{Binding MenuItems}"
                                       ItemContainerStyle="{StaticResource MenuTreeItemStyle}"
-                                      Style="{StaticResource MenuTreeView}">
+                                      Style="{StaticResource MenuTreeView}"
+                                      Background="Transparent" BorderThickness="0">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate DataType="{x:Type models:MenuData}"
                                                               ItemsSource="{Binding SubItems}">
                                         <StackPanel>
-                                            <TextBlock Text="{Binding Header}" FontSize="15" />
-                                            <TextBlock Text="{Binding AddInfo}" FontSize="12" Opacity="0.65" />
+                                            <TextBlock Text="{Binding Header}" FontSize="15" Foreground="{DynamicResource plainTextColor0}"/>
+                                            <TextBlock Text="{Binding AddInfo}" FontSize="12" Opacity="0.65" Foreground="{DynamicResource plainTextColor0}"/>
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
@@ -149,7 +164,6 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Main content area -->
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -158,43 +172,43 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch">
-                            <Border Style="{StaticResource DashboardCard}" Width="220">
+                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}">
                                 <StackPanel>
-                                    <TextBlock Text="Online Users" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="128" Foreground="{StaticResource TitleColor}" FontSize="32" FontWeight="Bold" />
+                                    <TextBlock Text="Online Users" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
+                                    <TextBlock Text="128" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
                                 </StackPanel>
                             </Border>
-                            <Border Style="{StaticResource DashboardCard}" Width="220">
+                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}" Margin="16,0,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="Sync Jobs" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="42" Foreground="{StaticResource TitleColor}" FontSize="32" FontWeight="Bold" />
+                                    <TextBlock Text="Sync Jobs" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
+                                    <TextBlock Text="42" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
                                 </StackPanel>
                             </Border>
-                            <Border Style="{StaticResource DashboardCard}" Width="220">
+                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}" Margin="16,0,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="Alerts" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="3" Foreground="{StaticResource TitleColor}" FontSize="32" FontWeight="Bold" />
+                                    <TextBlock Text="Alerts" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
+                                    <TextBlock Text="3" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
-                        <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
+                        <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20" Background="{DynamicResource panelColor}" Margin="0,16,0,0">
                             <StackPanel>
-                                <TextBlock Text="選択中メニュー" Style="{StaticResource SectionTitleText}" />
-                                <TextBlock Text="{Binding SelectedMenu.Header}" Foreground="{StaticResource plainTextColor0}" FontSize="22" FontWeight="Bold" />
-                                <TextBlock Text="{Binding SelectedMenu.AddInfo}" Foreground="{StaticResource plainTextColor0}" Opacity="0.8" Margin="0,8,0,0" />
+                                <TextBlock Text="選択中メニュー" Style="{StaticResource SectionTitleText}" Foreground="{DynamicResource color9}" />
+                                <TextBlock Text="{Binding SelectedMenu.Header}" Foreground="{DynamicResource plainTextColor0}" FontSize="22" FontWeight="Bold" />
+                                <TextBlock Text="{Binding SelectedMenu.AddInfo}" Foreground="{DynamicResource plainTextColor0}" Opacity="0.8" Margin="0,8,0,0" />
                                 <TextBlock Text="メニューを選択すると対応する画面が起動します。"
-                                           Foreground="{StaticResource plainTextColor0}"
+                                           Foreground="{DynamicResource plainTextColor0}"
                                            Opacity="0.7"
                                            Margin="0,16,0,0"
                                            TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
 
-                        <Border Grid.Row="2" Style="{StaticResource DashboardCard}" Padding="20" Margin="0,16,0,0">
+                        <Border Grid.Row="2" Style="{StaticResource DashboardCard}" Padding="20" Margin="0,16,0,0" Background="{DynamicResource panelColor}">
                             <StackPanel>
-                                <TextBlock Text="ステータスログ" Style="{StaticResource SectionTitleText}" />
-                                <TextBlock Text="{Binding StatusMessage}" Foreground="{StaticResource plainTextColor0}" FontSize="16" TextWrapping="Wrap" />
+                                <TextBlock Text="ステータスログ" Style="{StaticResource SectionTitleText}" Foreground="{DynamicResource color6}" />
+                                <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource plainTextColor0}" FontSize="16" TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -207,5 +221,4 @@
             </Grid>
         </Border>
     </Border>
-
 </Window>

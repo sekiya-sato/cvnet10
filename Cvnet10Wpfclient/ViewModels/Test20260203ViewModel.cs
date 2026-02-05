@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -37,11 +38,11 @@ namespace Cvnet10Wpfclient.ViewModels {
 		}
 
 
-		[RelayCommand]
-		public async Task TestConnect() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task TestConnect(CancellationToken cancellationToken) {
 			TestConnectStatusText = "接続中...リスト取得";
 			try {
-
+				cancellationToken.ThrowIfCancellationRequested();
 				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query,
 					DataType = typeof(QueryListParam),
@@ -49,8 +50,8 @@ namespace Cvnet10Wpfclient.ViewModels {
 						itemType: typeof(Test202601Master),
 						where: "Id between @0 and @1", order: "Code asc",
 						parameters: ["1" ,"9999" ]
-				))};
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+			))};
+				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
 				var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType);
 				var list0 = list as IList<Test202601Master>;
 				if (list0 != null) {
@@ -68,13 +69,14 @@ namespace Cvnet10Wpfclient.ViewModels {
 				TestConnectStatusText = $"ERR: {ex.Message}";
 			}
 		}
-		[RelayCommand]
-		public async Task TestMsgCnv(){
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task TestMsgCnv(CancellationToken cancellationToken){
 			TestConnectStatusText = "接続中...変換実行";
 			try {
+				cancellationToken.ThrowIfCancellationRequested();
 				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 202601, Flag = CvnetFlag.MSg041_ConvertDbInit };
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
 				TestConnectStatusText = $"Convert OK";
 			}
 			catch (RpcException rpcEx) {
@@ -87,13 +89,14 @@ namespace Cvnet10Wpfclient.ViewModels {
 				TestConnectStatusText = $"ERR: {ex.Message}";
 			}
 		}
-		[RelayCommand]
-		public async Task TestMsg000() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task TestMsg000(CancellationToken cancellationToken) {
 			TestConnectStatusText = "接続中...環境変数";
 			try {
+				cancellationToken.ThrowIfCancellationRequested();
 				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg003_GetEnv };
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
 				var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType);
 				TestConnectStatusText = $"GetEnv OK";
 			}
@@ -108,86 +111,110 @@ namespace Cvnet10Wpfclient.ViewModels {
 			}
 		}
 
-		[RelayCommand]
-		public async Task AddRecord() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task AddRecord(CancellationToken cancellationToken) {
 			// TODO: 追加処理を実装
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
 			if (MessageEx.ShowQuestionDialog("追加しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-				// 追加処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
-				msg.DataType = typeof(InsertParam);
-				msg.DataMsg = Common.SerializeObject(new InsertParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
-				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
-				if(item != null) {
-					var item0 = item as Test202601Master;
-					TestMasters.Add(item0!);
-					SelectedTestMaster = item0;
+				try {
+					cancellationToken.ThrowIfCancellationRequested();
+					// 追加処理を実行
+					var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+					var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
+					msg.DataType = typeof(InsertParam);
+					msg.DataMsg = Common.SerializeObject(new InsertParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+					var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+					var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
+					if(item != null) {
+						var item0 = item as Test202601Master;
+						TestMasters.Add(item0!);
+						SelectedTestMaster = item0;
+					}
+				}
+				catch (OperationCanceledException) {
+					return;
 				}
 			}
 		}
 
-		[RelayCommand]
-		public async Task UpdateRecord() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task UpdateRecord(CancellationToken cancellationToken) {
 			// TODO: 修正処理を実装
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
 			if (MessageEx.ShowQuestionDialog($"コード「{SelectedTestMaster.Code}」を修正しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-				// 処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
-				msg.DataType = typeof(UpdateParam);
-				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
-				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
-				// 修正の場合、特に不要
-				if (item != null) {
-					MessageEx.ShowInformationDialog($"修正しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+				try {
+					cancellationToken.ThrowIfCancellationRequested();
+					// 処理を実行
+					var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+					var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
+					msg.DataType = typeof(UpdateParam);
+					msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+					var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+					var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
+					// 修正の場合、特に不要
+					if (item != null) {
+						MessageEx.ShowInformationDialog($"修正しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+					}
+				}
+				catch (OperationCanceledException) {
+					return;
 				}
 			}
 		}
 
-		[RelayCommand]
-		public async Task DeleteRecord() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task DeleteRecord(CancellationToken cancellationToken) {
 			// TODO: 削除処理を実装
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
 			if (MessageEx.ShowQuestionDialog($"コード「{SelectedTestMaster.Code}」を削除しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-				// 処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
-				msg.DataType = typeof(DeleteParam);
-				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
-				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
-				if (item != null) {
-					TestMasters.Remove(SelectedTestMaster);
-					MessageEx.ShowInformationDialog($"削除しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+				try {
+					cancellationToken.ThrowIfCancellationRequested();
+					// 処理を実行
+					var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+					var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
+					msg.DataType = typeof(DeleteParam);
+					msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+					var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+					var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
+					if (item != null) {
+						TestMasters.Remove(SelectedTestMaster);
+						MessageEx.ShowInformationDialog($"削除しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+					}
+				}
+				catch (OperationCanceledException) {
+					return;
 				}
 			}
 		}
-		[RelayCommand]
-		public async Task XxxRecord() {
+		[RelayCommand(IncludeCancelCommand = true)]
+		public async Task XxxRecord(CancellationToken cancellationToken) {
 			if (SelectedTestMaster == null) {
 				MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
 				return;
 			}
-			// 処理を実行
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query };
-			msg.DataType = typeof(QuerybyIdParam);
-			msg.DataMsg = Common.SerializeObject(new QuerybyIdParam(typeof(Test202601Master), 4));
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
-			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
-			if (item != null) {
+			try {
+				cancellationToken.ThrowIfCancellationRequested();
+				// 処理を実行
+				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query };
+				msg.DataType = typeof(QuerybyIdParam);
+				msg.DataMsg = Common.SerializeObject(new QuerybyIdParam(typeof(Test202601Master), 4));
+				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
+				if (item != null) {
+				}
+			}
+			catch (OperationCanceledException) {
+				return;
 			}
 		}
 	}

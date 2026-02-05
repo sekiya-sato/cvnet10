@@ -1,5 +1,6 @@
 ﻿using CodeShare;
 using Cvnet10Wpfclient.Infrastructure;
+using Cvnet10Wpfclient.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ namespace Cvnet10Wpfclient {
     /// </summary>
     public partial class App : Application {
 		public static IHost? AppHost { get; private set; }
+		public static ThemeService ThemeService { get; } = new();
 
 		public App() {
 			InitializeLanguage();
@@ -30,6 +32,7 @@ namespace Cvnet10Wpfclient {
 				var configuration = AppHost.Services.GetRequiredService<IConfiguration>() as IConfigurationRoot
 					?? throw new InvalidOperationException("IConfigurationRoot is not available.");
 				AppCurrent.Init(configuration, AppHost.Services);
+				ThemeService.ApplyTheme(AppTheme.Light);
 			}
 			base.OnStartup(e);
 		}
@@ -66,7 +69,7 @@ namespace Cvnet10Wpfclient {
 					builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 				})
 				.ConfigureServices((context, services) => {
-                    services.AddTransient<JwtAuthorizationHandler>(); // ← Singleton から変更
+					services.AddTransient<JwtAuthorizationHandler>(); // ← Singleton から変更
 
                     services.AddSingleton<SocketsHttpHandler>(_ => new SocketsHttpHandler {
 						PooledConnectionIdleTimeout = TimeSpan.FromHours(6),

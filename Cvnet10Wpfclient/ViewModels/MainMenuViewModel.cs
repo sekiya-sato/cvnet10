@@ -102,4 +102,10 @@ public partial class MainMenuViewModel : ObservableObject {
 			}
 		}
 	}
+
+	[RelayCommand]
+	private void ToggleTheme() {
+		App.ThemeService.ToggleTheme();
+	}
+
 }

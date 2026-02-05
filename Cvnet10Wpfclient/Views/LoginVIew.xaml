@@ -16,6 +16,7 @@
     <Window.DataContext>
         <vm:LoginViewModel />
     </Window.DataContext>
+
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
             <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
@@ -26,29 +27,34 @@
         <StackPanel VerticalAlignment="Center">
 
             <TextBlock Text="SYSTEM LOGIN" 
-                       Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,30"
-                       Foreground="{DynamicResource PrimaryBrush}"/>
-
+               Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+               HorizontalAlignment="Center"
+               Margin="0,0,0,30"
+               FontWeight="Bold"
+               Foreground="{DynamicResource MaterialDesignBody}"/>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="ログインIDを入力してください"
-                     Text="{Binding LoginId, UpdateSourceTrigger=PropertyChanged}"
-                     materialDesign:TextFieldAssist.HasClearButton="True"
-                     FontSize="16"
-                     Margin="0,0,0,20">
+             materialDesign:HintAssist.Hint="ログインIDを入力してください"
+             Text="{Binding LoginId, UpdateSourceTrigger=PropertyChanged}"
+             materialDesign:TextFieldAssist.HasClearButton="True"
+             FontSize="16"
+             Margin="0,0,0,20"
+             Foreground="{DynamicResource MaterialDesignBody}" 
+             materialDesign:HintAssist.Foreground="{DynamicResource color8}"
+             CaretBrush="{DynamicResource MaterialDesignBody}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
 
-            <!-- 修正: PasswordBox用のMaterialDesignスタイルを適用 -->
             <PasswordBox Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                     materialDesign:HintAssist.Hint="パスワードを入力してください"
-                     FontSize="16"
-                     Margin="0,0,0,30"
-                     helpers:PasswordBoxAssistant.BindPassword="True"
-                     helpers:PasswordBoxAssistant.BoundPassword="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                 materialDesign:HintAssist.Hint="パスワードを入力してください"
+                 FontSize="16"
+                 Margin="0,0,0,30"
+                 Foreground="{DynamicResource MaterialDesignBody2}"
+                 materialDesign:HintAssist.Foreground="{DynamicResource MaterialDesignBody}"
+                 CaretBrush="{DynamicResource color2}"
+                 helpers:PasswordBoxAssistant.BindPassword="True"
+                 helpers:PasswordBoxAssistant.BoundPassword="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <PasswordBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
                 </PasswordBox.InputBindings>
@@ -61,18 +67,18 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
-                        Content="OK (Enter)"
-                        Command="{Binding LoginCommand}"
-                        IsDefault="True"
-                        Margin="0,0,10,0"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                Content="OK (Enter)"
+                Command="{Binding LoginCommand}"
+                IsDefault="True"
+                Margin="0,0,10,0"
+                Style="{StaticResource MaterialDesignRaisedButton}" />
 
                 <Button Grid.Column="1"
-                        Content="キャンセル (ESC)"
-                        Command="{Binding ExitCommand}"
-                        IsCancel="True"
-                        Margin="10,0,0,0"
-                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                Content="キャンセル (ESC)"
+                Command="{Binding ExitCommand}"
+                IsCancel="True"
+                Margin="10,0,0,0"
+                Style="{StaticResource MaterialDesignOutlinedButton}" />
             </Grid>
 
         </StackPanel>

@@ -37,6 +37,9 @@
     <SolidColorBrush x:Key="panelOverColor" Color="#7E82FC"/>
     <SolidColorBrush x:Key="panelActiveColor" Color="#6D2FFF"/>
 
+    <!-- Common Background -->
+    <SolidColorBrush x:Key="AppCommonBackgroundBrush" Color="#FAEBD7" />
+
     <!-- Button Colors -->
     <SolidColorBrush x:Key="buttonColor1" Color="#6D2FFF"/>
 

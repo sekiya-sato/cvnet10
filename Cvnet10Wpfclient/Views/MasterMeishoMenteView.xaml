@@ -17,6 +17,7 @@
         FontSize="16"
         WindowStartupLocation="CenterOwner"
         Icon="pack://application:,,,/cvnet.ico">
+
     <Window.DataContext>
         <vm:MasterMeishoMenteViewModel />
     </Window.DataContext>
@@ -59,10 +60,10 @@
                         Command="{Binding DoOutputJsonCommand}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Count: " VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Count}" VerticalAlignment="Center" FontWeight="Bold" />
-                <TextBlock Text="  " />
-                <TextBlock Text="{Binding Desc0}" VerticalAlignment="Center" />
+                <TextBlock Text="Count: " VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
+                <TextBlock Text="{Binding Count}" VerticalAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" />
+                <TextBlock Text="  " Foreground="{DynamicResource MaterialDesignBody}" />
+                <TextBlock Text="{Binding Desc0}" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
             </StackPanel>
         </DockPanel>
 
@@ -113,44 +114,44 @@
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
                                Text="Code"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
                     <TextBox Grid.Row="0"
                              Grid.Column="1"
                              Margin="0,4,0,8"
-                             Text="{Binding CurrentEdit.Code, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding CurrentEdit.Code, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource MaterialDesignBody}" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Name" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Name" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
                     <TextBox Grid.Row="1"
                              Grid.Column="1"
                              Margin="0,4,0,8"
-                             Text="{Binding CurrentEdit.Name, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding CurrentEdit.Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource MaterialDesignBody}" />
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Memo" VerticalAlignment="Top" Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Memo" VerticalAlignment="Top" Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBody}" />
                     <TextBox Grid.Row="2"
                              Grid.Column="1"
                              Margin="0,4,0,8"
                              Height="70"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
-                             Text="{Binding CurrentEdit.Desc0, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding CurrentEdit.Desc0, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource MaterialDesignBody}" />
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Sort" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Sort" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
                     <TextBox Grid.Row="3"
                              Grid.Column="1"
                              Margin="0,4,0,8"
                              Width="100"
                              HorizontalContentAlignment="Right"
-                             Text="{Binding CurrentEdit.SortNo, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding CurrentEdit.SortNo, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource MaterialDesignBody}" />
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Category" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Category" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
                     <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,4,0,8">
                         <TextBox Width="80"
                                  Margin="0,0,8,0"
-                                 Text="{Binding CurrentEdit.Id_Kubun, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding CurrentEdit.Id_Kubun, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource MaterialDesignBody}" />
                         <TextBox Width="160"
                                  Margin="0,0,8,0"
                                  IsReadOnly="True"
-                                 Text="{Binding CurrentEdit.Disp0}" />
+                                 Text="{Binding CurrentEdit.Disp0}" Foreground="{DynamicResource MaterialDesignBody}" />
                         <Button Width="80"
                                 Content="Select F6"
                                 Command="{Binding DoSelKubunCommand}" />
@@ -174,12 +175,12 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Vertical">
-                        <TextBlock Text="Created" />
-                        <TextBlock Text="{Binding CurrentEdit.VdateC, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" />
-                        <TextBlock Text="Updated" Margin="0,8,0,0" />
-                        <TextBlock Text="{Binding CurrentEdit.VdateU, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" />
-                        <TextBlock Text="ID" Margin="0,8,0,0" />
-                        <TextBlock Text="{Binding CurrentEdit.Id}" />
+                        <TextBlock Text="Created" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBlock Text="{Binding CurrentEdit.VdateC, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBlock Text="Updated" Margin="0,8,0,0" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBlock Text="{Binding CurrentEdit.VdateU, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBlock Text="ID" Margin="0,8,0,0" Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBlock Text="{Binding CurrentEdit.Id}" Foreground="{DynamicResource MaterialDesignBody}" />
                     </StackPanel>
                 </Grid>
             </Border>

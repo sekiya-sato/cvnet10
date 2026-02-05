@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Threading.Channels;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,14 +35,15 @@ public partial class LoginViewModel : ObservableObject {
 	private void Exit() {
 		WeakReferenceMessenger.Default.Send(new DialogCloseMessage(false));
 	}
-	[RelayCommand]
-	private async Task Login() {
+	[RelayCommand(IncludeCancelCommand = true)]
+	private async Task Login(CancellationToken cancellationToken) {
 		var loginService = AppCurrent.GetgRPCService<ILoginService>();
 		var now = DateTime.Now;
 		if(string.IsNullOrEmpty(LoginId) || string.IsNullOrEmpty(LoginPassword)) {
 			MessageEx.ShowErrorDialog("ログインID、パスワードを入力してください。", owner: ClientLib.GetActiveView(this));
 			return;
 		}
+		cancellationToken.ThrowIfCancellationRequested();
 		var loginRequest = new LoginRequest {
 			LoginId = LoginId,
 			Name = "CvnetWpfClientユーザ " + DateTime.Now.ToDtStrDateTime(),
@@ -49,20 +51,24 @@ public partial class LoginViewModel : ObservableObject {
 			LoginDate = now,
 			Info = Common.SerializeObject(subGetInfo()),
 		};
-
-		var reply = await loginService.LoginAsync(loginRequest);
-		if (reply.Result == 0) {
-			AppCurrent.LoginJwt = reply.JwtMessage;
-			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
-			if (reply.JwtMessage?.Length > 10) {
+		try {
+			var reply = await loginService.LoginAsync(loginRequest, AppCurrent.GetDefaultCallContext(cancellationToken));
+			if (reply.Result == 0) {
 				AppCurrent.LoginJwt = reply.JwtMessage;
-				LoginData = reply;
-				// Viewに向けて「DialogResultをtrueにして閉じてくれ」というメッセージを送る
-				WeakReferenceMessenger.Default.Send(new DialogCloseMessage(true));
+				Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+				if (reply.JwtMessage?.Length > 10) {
+					AppCurrent.LoginJwt = reply.JwtMessage;
+					LoginData = reply;
+					// Viewに向けて「DialogResultをtrueにして閉じてくれ」というメッセージを送る
+					WeakReferenceMessenger.Default.Send(new DialogCloseMessage(true));
+				}
+			}
+			else {
+				MessageEx.ShowErrorDialog("ログインIDかパスワードが間違っています", owner: ClientLib.GetActiveView(this));
 			}
 		}
-		else {
-			MessageEx.ShowErrorDialog("ログインIDかパスワードが間違っています", owner: ClientLib.GetActiveView(this));
+		catch (OperationCanceledException) {
+			return;
 		}
 	}
 
