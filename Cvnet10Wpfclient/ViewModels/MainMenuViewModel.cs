@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Threading;
 
 namespace Cvnet10Wpfclient.ViewModels;
 
@@ -36,7 +37,18 @@ public partial class MainMenuViewModel : ObservableObject {
 	[ObservableProperty]
 	private bool isMenuReady;
 
-    [RelayCommand]
+	[ObservableProperty]
+	private string? currentDate; // yy/MM/dd 用
+
+	[ObservableProperty]
+	private string? currentTime; // HH:mm:ss 用
+
+	private DispatcherTimer? _timer;
+
+	private System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("ja-JP");
+
+
+	[RelayCommand]
     private void Init() {
         if (IsMenuReady) {
             return;
@@ -45,7 +57,8 @@ public partial class MainMenuViewModel : ObservableObject {
         MenuItems = MenuData.CreateDefault();
         StatusMessage = "メニューを選択してください。";
         ExpireDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
-        IsMenuReady = true;
+		StartClock();
+		IsMenuReady = true;
     }
 
     [RelayCommand]
@@ -106,6 +119,22 @@ public partial class MainMenuViewModel : ObservableObject {
 	[RelayCommand]
 	private void ToggleTheme() {
 		App.ThemeService.ToggleTheme();
+	}
+
+	private void StartClock() {
+		_timer = new DispatcherTimer {
+			Interval = TimeSpan.FromSeconds(1)
+		};
+		_timer.Tick += (s, e) => UpdateDateTime();
+		_timer.Start();
+		culture.DateTimeFormat.Calendar = new System.Globalization.JapaneseCalendar();
+		UpdateDateTime(); // 初回実行
+	}
+
+	private void UpdateDateTime() {
+		var now = DateTime.Now;
+		CurrentDate = $"{now:yy/MM/dd} {now.ToString("gy", culture)}";
+		CurrentTime = now.ToString("ddd HH:mm:ss");
 	}
 
 }
