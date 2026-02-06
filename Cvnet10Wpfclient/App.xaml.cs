@@ -1,4 +1,5 @@
 ﻿using CodeShare;
+using Cvnet10Asset;
 using Cvnet10Wpfclient.Infrastructure;
 using Cvnet10Wpfclient.Services;
 using Microsoft.Extensions.Configuration;
@@ -69,38 +70,62 @@ namespace Cvnet10Wpfclient {
 					builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 				})
 				.ConfigureServices((context, services) => {
-					services.AddTransient<JwtAuthorizationHandler>(); // ← Singleton から変更
+					// 1. ハンドラーと通信設定の登録
+					services.AddTransient<JwtAuthorizationHandler>();
 
-                    services.AddSingleton<SocketsHttpHandler>(_ => new SocketsHttpHandler {
+					var url = context.Configuration.GetConnectionString("Url")
+						?? throw new InvalidOperationException("Connection string 'Url' is missing.");
+					var subPath = Common.ExtractSubPath(url);
+					if(!string.IsNullOrEmpty(subPath))
+						services.AddTransient<SubPathHandler>(_ => new SubPathHandler(subPath));
+
+					services.AddSingleton<SocketsHttpHandler>(_ => new SocketsHttpHandler {
 						PooledConnectionIdleTimeout = TimeSpan.FromHours(6),
 						KeepAlivePingDelay = TimeSpan.FromSeconds(120),
                         KeepAlivePingTimeout = TimeSpan.FromSeconds(15), // タイムアウト時間
 						KeepAlivePingPolicy = HttpKeepAlivePingPolicy.Always, // 通信がない時でもPingを送る
 						EnableMultipleHttp2Connections = true
                     });
-					services.AddCodeFirstGrpcClient<ILoginService>((sp, options) => {
-                        var serviceUrl = context.Configuration.GetConnectionString("Url")
-                            ?? throw new InvalidOperationException("Connection string 'Url' is missing.");
-                        options.Address = new Uri(serviceUrl);
-                    })
-                    .ConfigureChannel((sp, channelOptions) => {
-                        channelOptions.HttpHandler = sp.GetRequiredService<SocketsHttpHandler>();
-                    })
-                    .AddHttpMessageHandler<JwtAuthorizationHandler>()
-                    .ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
+					// 2. 統合されたクライアント構成ロジック
+					void ConfigureClient<TService>(IServiceCollection srvs, string targetUrl, string path) where TService : class {
+						var builder = srvs.AddCodeFirstGrpcClient<TService>((sp, options) => options.Address = new Uri(targetUrl))
+							.ConfigurePrimaryHttpMessageHandler(sp => sp.GetRequiredService<SocketsHttpHandler>())
+							.AddHttpMessageHandler<JwtAuthorizationHandler>();
+						// サブパスが定義されている時だけパイプラインに追加
+						if (!string.IsNullOrEmpty(path))
+							builder.AddHttpMessageHandler<SubPathHandler>();
+						builder.ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
+					}
+					// 3. サービスの登録
+					ConfigureClient<ILoginService>(services, url, subPath);
+					ConfigureClient<ICvnetCoreService>(services, url, subPath);
 
-                    services.AddCodeFirstGrpcClient<ICvnetCoreService>((sp, options) => {
-                        var serviceUrl = context.Configuration.GetConnectionString("Url")
-                            ?? throw new InvalidOperationException("Connection string 'Url' is missing.");
-                        options.Address = new Uri(serviceUrl);
-                    })
-                    .ConfigureChannel((sp, channelOptions) => {
-                        channelOptions.HttpHandler = sp.GetRequiredService<SocketsHttpHandler>();
-                    })
-                    .AddHttpMessageHandler<JwtAuthorizationHandler>()
-                    .ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
                 });
 		}
 	}
 }
 
+public class SubPathHandler : DelegatingHandler {
+	private readonly string _subPath;
+
+	public SubPathHandler(string subPath) {
+		_subPath = "/" + subPath.Trim('/');
+	}
+
+	protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
+		// デバッグ用: 実行されているか確認 (Visual Studioの出力ウィンドウに表示)
+		System.Diagnostics.Debug.WriteLine($"SubPathHandler: Original URI = {request.RequestUri}");
+
+		var uri = request.RequestUri!;
+		var builder = new UriBuilder(uri);
+		var originalPath = uri.AbsolutePath;
+
+		// パスの連結
+		builder.Path = _subPath + originalPath;
+		request.RequestUri = builder.Uri;
+
+		System.Diagnostics.Debug.WriteLine($"SubPathHandler: Rewritten URI = {request.RequestUri}");
+
+		return await base.SendAsync(request, cancellationToken);
+	}
+}

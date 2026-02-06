@@ -51,7 +51,7 @@ public partial class CvnetCoreService {
 			// ViewSqlが定義されている場合はそちらを使用する
 			var sqlmain = Resolver.GetViewSql(querybyId.ItemType);
 			if (sqlmain != null)
-				sql = $"{sqlmain} where Id = @0";
+				sql = $"{sqlmain} where T.Id = @0";
 			else
 				sql = "where Id = @0";
 			var data = _db.Fetch(querybyId.ItemType, sql, querybyId.Id).FirstOrDefault();
@@ -69,7 +69,7 @@ public partial class CvnetCoreService {
 			// ViewSqlが定義されている場合はそちらを使用する
 			var sqlmain = Resolver.GetViewSql(queryList.ItemType);
 			if (sqlmain != null)
-				sql = $"{MasterMeisho.ViewSql} {queryList.AddWhereOrder()}";
+				sql = $"{sqlmain} {queryList.AddWhereOrder()}";
 			else
 				sql = queryList.AddWhereOrder();
 			var list = _db.Fetch(queryList.ItemType, sql, queryList.Parameters);
@@ -79,8 +79,8 @@ public partial class CvnetCoreService {
 				ret.DataMsg = "[]";
 				return ret;
 			}
-			if (queryList.ItemType.Name == "Test202601Master") { // 特定のテーブル型かどうかで判定
-				var list0 = list.Cast<Test202601Master>();
+			if (queryList.ItemType == typeof(Test202601Master)) { // 特定のテーブル型かどうかで判定
+				var list0 = list.Cast<Test202601Master>().ToList();
 				list0.LoadAllJcolsizMeishoNames(_db, true); // 名称をセット
 				list0.LoadAllGeneralMeishoNames(_db, true);
 			}

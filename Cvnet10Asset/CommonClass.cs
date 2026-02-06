@@ -217,6 +217,14 @@ public sealed class Common {
 			.ThenBy(x => x.IPAddress.ToString())
 			.ToList();
 	}
+	public static string ExtractSubPath(string? url) {
+		if (string.IsNullOrWhiteSpace(url)) return string.Empty;
 
+		if (Uri.TryCreate(url, UriKind.Absolute, out var uri)) {
+			// パスが "/" だけ（ルート）の場合は空文字を、それ以外はトリムして返す
+			return uri.AbsolutePath == "/" ? string.Empty : uri.AbsolutePath.Trim('/');
+		}
+		return string.Empty;
+	}
 }
 

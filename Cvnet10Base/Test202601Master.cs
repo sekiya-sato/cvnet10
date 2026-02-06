@@ -10,7 +10,7 @@ namespace Cvnet10Base;
 /// テスト用商品マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName, IBaseViewDefine {
+public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName , IBaseViewDefine {
 	/// <summary>
 	/// コード
 	/// </summary>
@@ -83,14 +83,14 @@ public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName, IBaseVi
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
 	List<MasterGeneralMeisho>? listMeisho;
-
+	/*
+	*/
 	readonly public static string ViewSql = """
 select T.*, m1.Name as Mei_Brand, m2.Name as  Mei_Item, m3.Name as  Mei_Tenji
 from Test202601Master T
 left join MasterMeisho m1 on T.Id_MeiBrand = m1.Id
 left join MasterMeisho m2 on T.Id_MeiItem = m2.Id
 left join MasterMeisho m3 on T.Id_MeiTenji = m3.Id
-order by T.Id
 """;
 	/*
 	readonly static string listSqlForJcolsiz = """
@@ -321,8 +321,8 @@ public static class Test202601MasterExtensions {
 		if (masterList.Count == 0) return;
 
 		// 全レコードから ID を収集
-		var allColIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiCol).Where(x => x > 0).Distinct();
-		var allSizIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiSiz).Where(x => x > 0).Distinct();
+		var allColIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiCol).Where(x => x > 0).Distinct();
+		var allSizIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiSiz).Where(x => x > 0).Distinct();
 		var allIds = allColIds.Union(allSizIds).ToList();
 
 		var listMeishoSource = masterList.SelectMany(

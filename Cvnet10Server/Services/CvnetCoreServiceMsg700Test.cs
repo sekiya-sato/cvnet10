@@ -14,8 +14,8 @@ public partial class CvnetCoreService {
 		throw new NotImplementedException();
 	}
 	CvnetMsg subLogicMsg701(CvnetMsg request, CallContext context = default) {
-		var sql = Test202601Master.ViewSql;
-		var list = _db.Fetch<Test202601Master>(sql);
+		//var sql = Test202601Master.ViewSql;
+		var list = _db.Fetch<Test202601Master>();
 		/*
 			const string selectSql = """
 select T.*, m1.Name as Mei_Brand, m2.Name as  Mei_Item, m3.Name as  Mei_Tenji
