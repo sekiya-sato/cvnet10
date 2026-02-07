@@ -30,7 +30,7 @@
 
     <Border Padding="40">
         <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="SYSTEM SETTINGS(未完成)"
+            <TextBlock Text="環境設定"
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,30"

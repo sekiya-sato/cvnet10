@@ -56,11 +56,15 @@ public partial class MainMenuViewModel : ObservableObject {
         StatusMessage = "メニューを選択してください。";
         ExpireDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 		StartClock();
-        SubTitle = $"{_subTitle}  接続先: {AppCurrent.Config.GetSection("ConnectionStrings")?["Url"]} 開始:{_subStartTime.ToString("MM/dd HH:mm")}";
+		SetSubTitle();
 		IsMenuReady = true;
     }
 
-    [RelayCommand]
+	void SetSubTitle() {
+		SubTitle = $"{_subTitle}  接続先: {AppCurrent.Config.GetSection("ConnectionStrings")?["Url"]} 開始:{_subStartTime.ToString("MM/dd HH:mm")}";
+	}
+
+	[RelayCommand]
     private void Exit() {
         if (MessageEx.ShowQuestionDialog("終了しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
             ClientLib.Exit(this);
@@ -112,8 +116,10 @@ public partial class MainMenuViewModel : ObservableObject {
 			if (view.DataContext is LoginViewModel vm) {
 				ExpireDate = vm.LoginData?.Expire.ToDtStrDateTime2();
 				_subStartTime = DateTime.Now;
-				SubTitle = $"{_subTitle}  接続先: {AppCurrent.Config.GetSection("ConnectionStrings")?["Url"]} 開始:{_subStartTime.ToString("MM/dd HH:mm")}";
-
+				SetSubTitle();
+			}
+			else if (view.DataContext is SettingSystemViewModel) {
+				SetSubTitle();
 			}
 		}
 	}

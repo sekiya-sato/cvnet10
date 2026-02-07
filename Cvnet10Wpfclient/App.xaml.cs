@@ -64,13 +64,16 @@ public partial class App : Application {
 				builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 				var userSettingsPath = SystemSettingsStore.SettingsFilePath;
 				if (!string.IsNullOrWhiteSpace(userSettingsPath)) {
-					var directory = Path.GetDirectoryName(userSettingsPath) ?? Directory.GetCurrentDirectory();
-					builder.AddJsonFile(options => {
-						options.Path = userSettingsPath;
-						options.Optional = true;
-						options.ReloadOnChange = true;
-						options.FileProvider = new PhysicalFileProvider(directory);
-					});
+					var directory = Path.GetDirectoryName(userSettingsPath);
+					var fileName = Path.GetFileName(userSettingsPath);
+					if (!string.IsNullOrWhiteSpace(directory) && !string.IsNullOrWhiteSpace(fileName)) {
+						builder.AddJsonFile(options => {
+							options.Path = fileName;
+							options.Optional = true;
+							options.ReloadOnChange = true;
+							options.FileProvider = new PhysicalFileProvider(directory);
+						});
+					}
 				}
 			})
 			.ConfigureServices((context, services) => {
