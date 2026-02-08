@@ -22,6 +22,8 @@ public partial class ExDatabaseMaria : ExDatabase {
 		}
 	}
 	public static ExDatabaseMaria GetDbConn(string connectionString, bool isOpen=true) {
+		// "Server=localhost;Port=3306;Database=apparel_db;Uid=user;Pwd=password;"
+		// "Pooling=true;ConnectionIdleTimeout=30;MinimumPoolSize=10;MaximumPoolSize=100;"AllowUserVariables=true;"
 		var conn = new MySqlConnection(connectionString);
 		if (isOpen) {
 			conn.Open();
