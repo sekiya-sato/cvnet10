@@ -87,6 +87,8 @@
                         Margin="10,0,0,0"
                         Style="{StaticResource MaterialDesignOutlinedButton}" IsCancel="True" />
             </Grid>
+            <Button Content="Test01" Height="43" Width="100" Margin="20,60,20,0" Command="{Binding Test01Command}"/>
+            <Button Content="Test02" Height="43" Width="100" Margin="20,10,20,30" Command="{Binding Test02Command}"/>
         </StackPanel>
     </Border>
 </Window>

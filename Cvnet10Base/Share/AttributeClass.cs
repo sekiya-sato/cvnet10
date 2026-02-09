@@ -89,26 +89,39 @@ public sealed class ColumnSizeDmlAttribute : Attribute {
 		ColType = ctype;
 	}
 }
+/// <summary>
+/// 実テーブル不要
+/// </summary>
+public sealed class NoCreateTableAttribute : Attribute {
+}
+/// <summary>
+/// 実テーブル不要
+/// </summary>
+public sealed class NoCreateTableJsubAttribute : Attribute {
+}
 
 /// <summary>
-/// テーブルに付随する情報の定義(Create Table文など)
-/// [Definition of information related to the table (e.g., Create Table statements)]
+/// データベースキー定義
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public sealed class TableDmlAttribute : Attribute {
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)] // Multipleをtrueに
+public sealed class KeyDmlAttribute : Attribute {
 	/// <summary>
-	/// カスタムCreateSQL文
-	/// [Custom CreateSQL statement]
+	/// キー名
 	/// </summary>
-	public string? CreateSql = null;
+	public string KeyName { get; }
 	/// <summary>
-	/// 追加キー定義(キー名=列名1,列名2@キー名2=列名1,列名2)
-	/// [Additional key definitions (key name=column name1,column name2@key name2=column name1,column name2)]
+	/// カラムリスト
 	/// </summary>
-	public string? NonUnieqeKey = null;
+	public string[] ColNames { get; }
 	/// <summary>
-	/// 追加キー定義(キー名=列名1,列名2@キー名2=列名1,列名2)
-	/// [Additional key definitions (key name=column name1,column name2@key name2=column name1,column name2)]
+	/// ユニークキー?
 	/// </summary>
-	public string? UnieqeKey = null;
+	public bool IsUnique { get; }
+
+	public KeyDmlAttribute(string keyName, bool isUnique, params string[] colNames) {
+		KeyName = keyName;
+		IsUnique = isUnique;
+		ColNames = colNames;
+	}
 }
+

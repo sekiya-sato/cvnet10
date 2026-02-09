@@ -134,7 +134,7 @@ var ver = AppInit.Version;
 app.MapGet("/", () =>
 $"""
 Communication with gRPC endpoints must be made through a gRPC client. Now is {DateTime.Now}. <BR>
-Product:{ver.Product}, Build:{ver.BuildDate}, Start:{ver.StartTime}.
+Product:{ver.Product} Ver.{ver.Version}, Build:{ver.BuildDate}, Start:{ver.StartTime}, BaseDir={ver.BaseDir}.<BR>
 
 """
 );

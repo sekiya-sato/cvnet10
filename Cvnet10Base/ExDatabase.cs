@@ -30,8 +30,8 @@ public partial class ExDatabase : Database {
 	/// <typeparam name="T"></typeparam>
 	/// <returns></returns>
 	string GetSqlCreateTable(Type classT) {
-		var attr = (TableDmlAttribute?)Attribute.GetCustomAttribute(classT, typeof(TableDmlAttribute));
-		var primaryKey = ((PrimaryKeyAttribute?)Attribute.GetCustomAttribute(classT, typeof(PrimaryKeyAttribute)))?.Value;
+		var keys = classT.GetCustomAttributes<KeyDmlAttribute>();
+		var primaryKey = classT.GetCustomAttribute<PrimaryKeyAttribute>();
 
 		var columns = GetSqlColumns(classT);
 
@@ -44,8 +44,7 @@ public partial class ExDatabase : Database {
 		return sql;
 	}
 	public string GetTableName(Type classT) {
-		var tableNameAttr = (TableNameAttribute?)Attribute.GetCustomAttribute(classT, typeof(TableNameAttribute));
-		var tableName = (tableNameAttr != null) ? tableNameAttr.Value : classT.Name; // テーブル名 [Table name]
+		var tableName = (classT.GetCustomAttribute<TableNameAttribute>()?.Value) ?? classT.Name; // テーブル名 [Table name]
 		return tableName;
 	}
 
@@ -59,7 +58,7 @@ public partial class ExDatabase : Database {
 	/// <returns></returns>
 	public virtual List<string> GetSqlColumns(Type classT) {
 		var ret = new List<string>();
-		var infoArray2 = classT.GetProperties();
+		var infoArray2 = classT.GetProperties(BindingFlags.Public);
 		if (infoArray2 == null || infoArray2.Length == 0)
 			return ret;
 		var infoArray = new List<PropertyInfo>();
@@ -72,25 +71,22 @@ public partial class ExDatabase : Database {
 		var columnUpdated = infoArray2.FirstOrDefault(c => c.Name == "Vdu");
 		if (columnUpdated != null)
 			infoArray.Add(columnUpdated);
-		for (int i = 0; i < infoArray2.Length; i++) {
-			if (infoArray2[i].Name != "Id" && infoArray2[i].Name != "Vdc" && infoArray2[i].Name != "Vdu")
-				infoArray.Add(infoArray2[i]);
+		foreach(var item in infoArray2) {
+			if (item.Name != "Id" && item.Name != "Vdc" && item.Name != "Vdu")
+				infoArray.Add(item);
 		}
 		foreach (var item in infoArray) {
 			var name = item.Name;
 			var type = ""; // NUMBER,TEXT,REAL
-						   // カラムサイズの定義があるかどうか [Whether there is a column size definition]
-			var attrSize = (ColumnSizeDmlAttribute?)Attribute.GetCustomAttribute(item, typeof(ColumnSizeDmlAttribute));
 			// 無視するカラムかどうか [Whether it is an ignored column]
-			var attrIgnore = (IgnoreAttribute?)Attribute.GetCustomAttribute(item, typeof(IgnoreAttribute));
-			if (attrIgnore != null)
+			if (item.GetCustomAttribute<IgnoreAttribute>() != null)
 				continue; // 無視する項目だった場合 [If it is an ignored item]
-			var attrComputed = (ComputedColumnAttribute?)Attribute.GetCustomAttribute(item, typeof(ComputedColumnAttribute));
-			if (attrComputed != null)
+			if (item.GetCustomAttribute<ComputedColumnAttribute>() != null)
 				continue;
-			var attrResult = (ResultColumnAttribute?)Attribute.GetCustomAttribute(item, typeof(ResultColumnAttribute));
-			if (attrResult != null)
+			if (item.GetCustomAttribute<ResultColumnAttribute>() != null)
 				continue;
+			// カラムサイズの定義があるかどうか [Whether there is a column size definition]
+			var attrSize = item.GetCustomAttribute<ColumnSizeDmlAttribute>();
 			if (attrSize != null) { // サイズおよび型指定があれば
 				if (attrSize.ColType == ColumnType.String) {
 					type = $"varchar({attrSize.Size}) " + _default_varchar;
@@ -253,6 +249,11 @@ public partial class ExDatabase : Database {
 		bool ret = false;
 		if (Connection == null)
 			return ret;
+		if(classT.GetCustomAttribute<NoCreateTableAttribute>() != null)
+			return true;
+		if (classT.GetCustomAttribute<NoCreateTableJsubAttribute>() != null)
+			return true;
+
 		try {
 			var createSql = GetSqlCreateTable(classT);
 			using (DbCommand command = Connection.CreateCommand()) {
@@ -291,32 +292,11 @@ public partial class ExDatabase : Database {
 	}
 	void CreateIndex(Type classT, bool isForce = false) {
 		var tableName = GetTableName(classT);
-		var attr = (TableDmlAttribute?)Attribute.GetCustomAttribute(classT, typeof(TableDmlAttribute));
-		var uniqueKey = attr?.UnieqeKey;
-		if (uniqueKey != null) {
-			var uniqueKey2 = uniqueKey.Split('@');
-			if (uniqueKey2 != null && uniqueKey2.Length > 0) {
-				foreach (var item in uniqueKey2) {
-					var key = item.Split('=');
-					if (key.Length == 2) {
-						CreateIndex(tableName, key[0], key[1], true, isForce);
-					}
-				}
-
-			}
-		}
-		var nouniqueKey = attr?.NonUnieqeKey;
-		if (nouniqueKey != null) {
-			var nouniqueKey2 = nouniqueKey.Split('@');
-			if (nouniqueKey2 != null && nouniqueKey2.Length > 0) {
-				foreach (var item in nouniqueKey2) {
-					var key = item.Split('=');
-					if (key.Length == 2) {
-						CreateIndex(tableName, key[0], key[1], false, isForce);
-					}
-				}
-
-			}
+		var attrs = classT.GetCustomAttributes<KeyDmlAttribute>();
+		foreach(var attrKey in attrs) {
+			var indexName = attrKey.KeyName;
+			var colNames = string.Join(",", attrKey.ColNames);
+			CreateIndex(tableName, indexName, colNames, attrKey.IsUnique, isForce);
 		}
 	}
 	/// <summary>

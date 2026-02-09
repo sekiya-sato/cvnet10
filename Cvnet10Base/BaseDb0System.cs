@@ -72,6 +72,7 @@ public partial class MasterSysman : BaseDbHasAddress {
 /// <summary>
 /// 消費税率テーブル
 /// </summary>
+[NoCreateTableJsub]
 public partial class MasterSysTax: ObservableObject {
 	[ObservableProperty]
 	long id;
@@ -96,7 +97,9 @@ public partial class MasterSysTax: ObservableObject {
 /// 名称テーブル
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class MasterMeisho : BaseDbClass, IBaseViewDefine {
+[KeyDml("MasterMeisho_uq1", false, ["Kubun","Code"])]
+[KeyDml("MasterMeisho_nk2", false, ["Kubun","Odr" , "Code"])]
+public partial class MasterMeisho : BaseDbClass {
 	/// <summary>
 	/// 区分
 	/// </summary>
@@ -133,11 +136,27 @@ public partial class MasterMeisho : BaseDbClass, IBaseViewDefine {
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
 	int odr;
+}
+
+/// <summary>
+/// 名称テーブルView
+/// </summary>
+[NoCreateTable]
+public partial class MasterMeishoView : MasterMeisho, IBaseViewDefine {
+	/// <summary>
+	/// 区分名
+	/// </summary>
+	[ObservableProperty]
+	string kubunName = "";
 	readonly public static string ViewSql = """
-select * from(
-select T.*, m1.Name as Disp0
-from MasterMeisho T
-left outer join MasterMeisho m1 on m1.Kubun = 'IDX' and T.Kubun = m1.Code 
-) as MasterMeisho
+SELECT * FROM (
+    SELECT 
+        T.*, 
+        m1.Name AS KubunName
+    FROM MasterMeisho T
+    LEFT OUTER JOIN MasterMeisho m1 
+        ON m1.Kubun = 'IDX' 
+        AND T.Kubun = m1.Code
+) MasterMeishoView
 """;
 }

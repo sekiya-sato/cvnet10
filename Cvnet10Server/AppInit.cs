@@ -10,7 +10,7 @@ public class AppInit {
 	private readonly IConfiguration _configuration;
 	// ToDo: バージョン番号は手動で更新すること
 	readonly string verStr = "0.0.099";
-	readonly DateTime buildDate = new DateTime(2026,2,1);
+	readonly DateTime buildDate = new DateTime(2026,2,9);
 	static VersionInfo? _ver;
 
 	/// <summary>
@@ -28,7 +28,8 @@ public class AppInit {
 			Product = "Cvnet10Server",
 			Version = verStr,
 			BuildDate = buildDate,
-			StartTime = DateTime.Now
+			StartTime = DateTime.Now,
+			BaseDir = AppContext.BaseDirectory
 		};
 	}
 
@@ -43,7 +44,9 @@ public class AppInit {
 		// マスタテーブル1
 		db.CreateTable<MasterSysman>();
 		db.CreateTable<MasterMeisho>();
-
+		db.CreateTable<MasterShain>();
+		db.CreateTable<MasterEndCustomer>();
+		db.CreateTable<MasterShohin>();
 
 
 	}
