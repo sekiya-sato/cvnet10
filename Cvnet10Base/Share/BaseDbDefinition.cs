@@ -125,6 +125,8 @@ public sealed class VersionInfo {
 	/// サーバー起動時間
 	/// </summary>
 	public DateTime StartTime { get; set; }
+
+	public string BaseDir { get; set; } = string.Empty;
 }
 
 

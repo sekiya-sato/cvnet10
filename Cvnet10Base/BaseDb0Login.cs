@@ -11,7 +11,9 @@ namespace Cvnet10Base;
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：ログインID管理テーブル")]
-[TableDml(NonUnieqeKey = "SysLogin_nk1=Id_Shain,SysLogin_nk2=Id_Role")]
+[KeyDml("SysLogin_uq1",true, "LoginId")]
+[KeyDml("SysLogin_nk2", false, "Id_Shain")]
+[KeyDml("SysLogin_nk3", false, "Id_Role")]
 public partial class SysLogin : BaseDbClass {
 	/// <summary>
 	/// 社員ユニークキー
@@ -54,7 +56,8 @@ public partial class SysLogin : BaseDbClass {
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：ログイン履歴テーブル")]
-[TableDml(NonUnieqeKey = "SysHistJwt_nk1=Id_Login@SysHistJwt_nk2=JwtUnixTime")]
+[KeyDml("SysHistJwt_nk1", false, "Id_Login")]
+[KeyDml("SysHistJwt_nk2", false, "JwtUnixTime")]
 public partial class SysHistJwt : BaseDbClass {
 	/// <summary>
 	/// ログインユニークキー
@@ -95,6 +98,7 @@ public partial class SysHistJwt : BaseDbClass {
 /// <summary>
 /// ログイン履歴サブテーブル Jsubプロパティ用
 /// </summary>
+[NoCreateTable]
 public partial class SysHistJwtSub : ObservableObject {
 	[ObservableProperty]
 	string? machine;

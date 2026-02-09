@@ -10,6 +10,7 @@ namespace Cvnet10Base;
 /// <summary>
 /// 汎用カテゴリ名称マスター
 /// </summary>
+[NoCreateTableJsub]
 public partial class MasterGeneralMeisho : ObservableObject, IBaseSerializeMeisho {
 	[ObservableProperty]
 	string kubun = "";
@@ -27,19 +28,15 @@ public partial class MasterGeneralMeisho : ObservableObject, IBaseSerializeMeish
 	[JsonIgnore]
 	public bool Ser { get; set; } = false;
 	public bool ShouldSerializeKubunName() => Ser;
-	public bool ShouldSerializeName() => Ser;
 	public bool ShouldSerializeCode() => Ser;
-	/*
-	[ObservableProperty]
-	[property: JsonProperty("MacA")]
-	 
-	 */
+	public bool ShouldSerializeName() => Ser;
 }
 
 /// <summary>
 /// 社員マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("MasterShain_uq1", false, "Code")]
 public partial class MasterShain : BaseDbClass, IBaseCodeName {
 	/// <summary>
 	/// コード
@@ -85,6 +82,7 @@ public partial class MasterShain : BaseDbClass, IBaseCodeName {
 /// 顧客マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("MasterEndCustomer_uq1", false, "Code")]
 public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 	/// <summary>
 	/// コード
@@ -179,12 +177,13 @@ public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 /// 商品マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("MasterShohin_uq1", false, "Code")]
 public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// <summary>
 	/// コード
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(12)]
+	[property: ColumnSizeDml(16)]
 	string code = "";
 	/// <summary>
 	/// 名前
@@ -355,7 +354,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 /// <summary>
 /// 商品色サイズJANマスター
 /// </summary>
-[PrimaryKey("Id", AutoIncrement = true)]
+[NoCreateTableJsub]
 public partial class MasterShohinColSiz : BaseDbClass, IBaseViewDefine, IBaseSerializeMeisho {
 	/// <summary>
 	/// 商品
@@ -417,14 +416,10 @@ public partial class MasterShohinColSiz : BaseDbClass, IBaseViewDefine, IBaseSer
 	/// </summary>
 	[JsonIgnore]
 	public bool Ser { get; set; } = false;
-
-	// ✅ JSON Serialize時に mei_Col を含めるか制御
-	public bool ShouldSerializeMei_Col() => Ser;
-
-	// ✅ JSON Serialize時に mei_Siz を含めるか制御
-	public bool ShouldSerializeMei_Siz() => Ser;
 	public bool ShouldSerializeCode_Col() => Ser;
+	public bool ShouldSerializeMei_Col() => Ser;
 	public bool ShouldSerializeCode_Siz() => Ser;
+	public bool ShouldSerializeMei_Siz() => Ser;
 
 	readonly static public string ViewSql = """
 select * from (
@@ -438,6 +433,7 @@ left join MasterMeisho m2 on T.id_MeiSiz = m2.Id
 /// <summary>
 /// 品質マスター
 /// </summary>
+[NoCreateTableJsub]
 public partial class MasterShohinGrade : ObservableObject {
 	/// <summary>
 	/// 行No
@@ -458,6 +454,7 @@ public partial class MasterShohinGrade : ObservableObject {
 /// <summary>
 /// 原価マスター
 /// </summary>
+[NoCreateTableJsub]
 public partial class MasterShohinGenka: ObservableObject {
 	/// <summary>
 	/// 行No
