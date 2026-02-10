@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Windows;
 
 namespace Cvnet10Wpfclient.ViewModels;
-public partial class Test20260203ViewModel : ObservableObject {
+public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 
 	[ObservableProperty]
 	string testConnectStatusText = "TestConnect";
@@ -22,10 +22,9 @@ public partial class Test20260203ViewModel : ObservableObject {
 	[ObservableProperty]
 	Test202601Master? selectedTestMaster;
 
-	[RelayCommand]
-	public void Exit() {
+	protected override void OnExit() {
 		if (MessageEx.ShowQuestionDialog("èIóπÇµÇ‹Ç∑Ç©ÅH", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-			ClientLib.Exit(this);
+			ExitWithResultFalse();
 		}
 	}
 

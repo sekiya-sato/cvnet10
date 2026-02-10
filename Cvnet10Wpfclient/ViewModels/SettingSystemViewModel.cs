@@ -6,10 +6,11 @@ using Cvnet10Wpfclient.Models;
 using Cvnet10Wpfclient.Services;
 using Cvnet10Wpfclient.ViewServices;
 using Microsoft.Extensions.Configuration;
+using System.Windows;
 
 namespace Cvnet10Wpfclient.ViewModels;
 
-public partial class SettingSystemViewModel : ObservableObject {
+public partial class SettingSystemViewModel : Helpers.BaseViewModel {
     private SystemSettingsStore _store=new();
     private SystemSettingsDocument _currentSettings = new();
     private string? _originalUrl;
@@ -28,6 +29,12 @@ public partial class SettingSystemViewModel : ObservableObject {
     private void Init() {
         LoadSettings();
 	}
+	protected override void OnExit() {
+		if (MessageEx.ShowQuestionDialog("èIóπÇµÇ‹Ç∑Ç©ÅH", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
+			ExitWithResultFalse();
+		}
+	}
+
 
 	[RelayCommand(IncludeCancelCommand = true)]
     private async Task SaveAsync(CancellationToken cancellationToken) {
@@ -61,12 +68,7 @@ public partial class SettingSystemViewModel : ObservableObject {
         }
 
         _originalUrl = Url;
-        WeakReferenceMessenger.Default.Send(new DialogCloseMessage(true));
-    }
-
-    [RelayCommand]
-    private void Cancel() {
-        WeakReferenceMessenger.Default.Send(new DialogCloseMessage(false));
+        ExitWithResultTrue();
     }
 
     private void LoadSettings() {

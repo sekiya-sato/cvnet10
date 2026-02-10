@@ -1,4 +1,4 @@
-﻿<Window x:Class="Cvnet10Wpfclient.Views.LoginView"
+﻿<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,15 +14,9 @@
         Background="{DynamicResource AppCommonBackgroundBrush}"
         TextElement.Foreground="{StaticResource MaterialDesignBody}"
         FocusManager.FocusedElement="{Binding ElementName=LoginIdTextBox}">
-    <Window.DataContext>
+    <helpers:BaseWindow.DataContext>
         <vm:LoginViewModel />
-    </Window.DataContext>
-
-    <behaviors:Interaction.Triggers>
-        <behaviors:EventTrigger EventName="ContentRendered">
-            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-        </behaviors:EventTrigger>
-    </behaviors:Interaction.Triggers>
+    </helpers:BaseWindow.DataContext>
 
     <Border Padding="40">
         <StackPanel VerticalAlignment="Center">
@@ -79,4 +73,4 @@
 
         </StackPanel>
     </Border>
-</Window>
+</helpers:BaseWindow>

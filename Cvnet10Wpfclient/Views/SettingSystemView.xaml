@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Window x:Class="Cvnet10Wpfclient.Views.SettingSystemView"
+<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views.SettingSystemView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
         xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
         mc:Ignorable="d"
         Title="システム設定"
-        Height="520"
+        Height="640"
         Width="520"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
@@ -18,9 +18,9 @@
         FocusManager.FocusedElement="{Binding ElementName=UrlTextBox}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
-    <Window.DataContext>
+    <helpers:BaseWindow.DataContext>
         <vm:SettingSystemViewModel />
-    </Window.DataContext>
+    </helpers:BaseWindow.DataContext>
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -83,7 +83,7 @@
 
                 <Button Grid.Column="1"
                         Content="キャンセル"
-                        Command="{Binding CancelCommand}"
+                        Command="{Binding ExitCommand}"
                         Margin="10,0,0,0"
                         Style="{StaticResource MaterialDesignOutlinedButton}" IsCancel="True" />
             </Grid>
@@ -91,4 +91,4 @@
             <Button Content="Test02" Height="43" Width="100" Margin="20,10,20,30" Command="{Binding Test02Command}"/>
         </StackPanel>
     </Border>
-</Window>
+</helpers:BaseWindow>

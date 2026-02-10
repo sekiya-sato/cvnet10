@@ -3,9 +3,10 @@
 /// <summary>
 /// ViewOrg.xaml の相互作用ロジック
 /// </summary>
-public partial class LoginView : Helpers.BaseWindow {
-    public LoginView() {
+public partial class ZorgView : Helpers.BaseWindow
+{
+    public ZorgView()
+    {
         InitializeComponent();
     }
 }
-
