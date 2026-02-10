@@ -9,7 +9,7 @@ using Cvnet10Wpfclient.ViewServices;
 using System.Diagnostics;
 
 namespace Cvnet10Wpfclient.ViewModels;
-public partial class LoginViewModel : ObservableObject {
+public partial class LoginViewModel : Helpers.BaseViewModel {
 	[ObservableProperty]
 	private string? loginId;
 
@@ -26,10 +26,6 @@ public partial class LoginViewModel : ObservableObject {
 		LoginPassword = parameters?.GetSection("LoginPass")?.Value;
 	}
 
-	[RelayCommand]
-	private void Exit() {
-		WeakReferenceMessenger.Default.Send(new DialogCloseMessage(false));
-	}
 	[RelayCommand(IncludeCancelCommand = true)]
 	private async Task Login(CancellationToken cancellationToken) {
 		var loginService = AppCurrent.GetgRPCService<ILoginService>();
@@ -54,8 +50,7 @@ public partial class LoginViewModel : ObservableObject {
 				if (reply.JwtMessage?.Length > 10) {
 					AppCurrent.LoginJwt = reply.JwtMessage;
 					LoginData = reply;
-					// Viewに向けて「DialogResultをtrueにして閉じてくれ」というメッセージを送る
-					WeakReferenceMessenger.Default.Send(new DialogCloseMessage(true));
+					ExitWithResultTrue();
 				}
 			}
 			else {

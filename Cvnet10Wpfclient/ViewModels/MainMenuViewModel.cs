@@ -107,7 +107,7 @@ public partial class MainMenuViewModel : ObservableObject {
 		var view = Activator.CreateInstance(SelectedMenu.ViewType) as Window;
 		if (view == null) return;
 		view.Title = SelectedMenu.Header;
-		if (view.DataContext is IBaseViewModel vm0) {
+		if (view.DataContext is Helpers.BaseViewModel vm0) {
 			vm0.InitParam = SelectedMenu.InitParam;
 			vm0.AddInfo = SelectedMenu.AddInfo;
 		}

@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Cvnet10Wpfclient.ViewModels;
 
-public partial class MasterMeishoMenteViewModel : ObservableObject {
+public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 	[ObservableProperty]
 	string title = "名称マスター保守";
 
@@ -28,22 +28,28 @@ public partial class MasterMeishoMenteViewModel : ObservableObject {
 	[ObservableProperty]
 	string? desc0;
 
+
+	[ObservableProperty]
+	DateTime startTime = DateTime.Now;
+	[ObservableProperty]
+	TimeSpan getListTime = TimeSpan.Zero;
+
 	// 初期化
 	[RelayCommand]
 	async Task Init(CancellationToken ct) {
 		await DoList(ct);
 	}
 
-	[RelayCommand]
-	void Exit() {
+	protected override void OnExit() {
 		if (MessageEx.ShowQuestionDialog("終了しますか？", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
-			ClientLib.Exit(this);
+			ExitWithResultFalse();
 		}
 	}
 
 	// 検索/一覧取得 (F5)
 	[RelayCommand(IncludeCancelCommand = true)]
 	async Task DoList(CancellationToken ct) {
+		StartTime = DateTime.Now;
 		try {
 			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
@@ -64,6 +70,7 @@ public partial class MasterMeishoMenteViewModel : ObservableObject {
 				Count = ListData.Count;
 				Current = ListData.FirstOrDefault();
 			}
+			GetListTime = DateTime.Now - StartTime;
 		}
 		catch (Exception ex) {
 			MessageEx.ShowErrorDialog($"データ取得失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));

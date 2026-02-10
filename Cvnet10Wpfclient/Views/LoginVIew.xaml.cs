@@ -1,28 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Cvnet10Wpfclient.Models;
-using System.Windows;
+﻿namespace Cvnet10Wpfclient.Views;
 
-namespace Cvnet10Wpfclient.Views
-{
-    /// <summary>
-    /// ViewOrg.xaml の相互作用ロジック
-    /// </summary>
-    public partial class LoginView : Window
-    {
-        public LoginView()
-        {
-            InitializeComponent();
-			// メッセージの受信登録
-			WeakReferenceMessenger.Default.Register<DialogCloseMessage>(this, (r, m) => {
-				// Viewの文脈でDialogResultをセット
-				this.DialogResult = m.DialogResult;
-				this.Close();
-			});
-		}
-		// メモリリーク防止のため、Unloadedなどで登録解除するのがベストプラクティス
-		protected override void OnClosed(EventArgs e) {
-			base.OnClosed(e);
-			WeakReferenceMessenger.Default.UnregisterAll(this);
-		}
-	}
+/// <summary>
+/// ViewOrg.xaml の相互作用ロジック
+/// </summary>
+public partial class LoginView : Helpers.BaseWindow {
+    public LoginView() {
+        InitializeComponent();
+    }
 }
+
