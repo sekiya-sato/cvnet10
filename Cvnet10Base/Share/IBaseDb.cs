@@ -15,6 +15,9 @@ public interface IBaseViewDefine {
 
 	readonly static public string ViewSql="";
 }
+/// <summary>
+/// シリアライズ制御用のインターフェース
+/// </summary>
 public interface IBaseSerializeMeisho {
 	public bool Ser { get; set; }
 

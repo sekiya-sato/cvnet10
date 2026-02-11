@@ -31,7 +31,7 @@ public sealed class CvnetMsg {
 	public string DataMsg { get; set; } = string.Empty;
 
 	[DataMember(Order = 5)]
-	public string? Option { get; set; }
+	public string Option { get; set; } = string.Empty;
 }
 
 
@@ -154,13 +154,13 @@ public sealed class FileOperation {
 	/// [File name]
 	/// </summary>
 	[DataMember(Order = 1)]
-	public string? FileName { get; set; }
+	public required string FileName { get; set; }
 	/// <summary>
 	/// ファイルデータ(100MBまで)
 	/// [File data (up to 100MB)]
 	/// </summary>
 	[DataMember(Order = 2)]
-	public byte[]? FileData { get; set; }
+	public byte[] FileData { get; set; } = Array.Empty<byte>();
 	/// <summary>
 	/// ファイルサイズ
 	/// [File size]

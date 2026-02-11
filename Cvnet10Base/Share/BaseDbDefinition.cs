@@ -1,7 +1,7 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Cvnet10Base;
 
@@ -48,7 +48,8 @@ public partial class BaseDbClass : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ResultColumn]
-	string? disp0;
+	[property: DefaultValue("")]
+	string disp0 = string.Empty;
 }
 /// <summary>
 /// 住所を持つ共通基底クラス
@@ -59,37 +60,43 @@ public partial class BaseDbHasAddress : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? postalCode;
+	[property: DefaultValue("")]
+	string postalCode = string.Empty;
 	/// <summary>
 	/// 住所1
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	string? address1;
+	[property: DefaultValue("")]
+	string address1 = string.Empty;
 	/// <summary>
 	/// 住所2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	string? address2;
+	[property: DefaultValue("")]
+	string address2 = string.Empty;
 	/// <summary>
 	/// 住所3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	string? address3;
+	[property: DefaultValue("")]
+	string address3 = string.Empty;
 	/// <summary>
 	/// 電話番号
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	string? tel;
+	[property: DefaultValue("")]
+	string tel = string.Empty;
 	/// <summary>
 	/// メールアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	string? mail;
+	[property: DefaultValue("")]
+	string mail = string.Empty;
 }
 
 /// <summary>
@@ -100,13 +107,48 @@ public partial class DetailDbClass : ObservableObject {
 	/// 予備項目1
 	/// </summary>
 	[ObservableProperty]
-	string? yobi1;
+	[property: DefaultValue("")]
+	string yobi1 = string.Empty;
 	/// <summary>
 	/// 予備項目1
 	/// </summary>
 	[ObservableProperty]
-	string? yobi2;
+	[property: DefaultValue("")]
+	string yobi2 = string.Empty;
 }
+/// <summary>
+/// 汎用カテゴリ名称マスター
+/// </summary>
+[NoCreate]
+public partial class MasterGeneralMeisho : ObservableObject {
+	/// <summary>
+	/// 名称区分
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string kubun = string.Empty;
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string kubunName = string.Empty;
+	/// <summary>
+	/// 名称マスタId, Code, Name
+	/// </summary>
+	[ObservableProperty]
+	long id_Code;
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string code = string.Empty;
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string name = string.Empty;
+	/* ToDo: JSON シリアライズにプロパティを含める含めないの制御は必要かどうか検討する IBaseSerializeMeisho の必要性
+	[JsonIgnore]
+	public bool Ser { get; set; } = false;
+	public bool ShouldSerializeKubunName() => Ser;
+	public bool ShouldSerializeName() => Ser;
+	 */
+}
+
 
 /// <summary>
 /// バージョン情報

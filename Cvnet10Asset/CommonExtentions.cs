@@ -1,21 +1,6 @@
 ﻿namespace Cvnet10Asset;
 
 /*
-private static int _field = 1;
-// インスタンス拡張メソッドの例
-extension(Common c) {
-	public void Method(string s) {
-		Console.WriteLine(s);
-	}
-	public int Property { get => _field; }
-}
-// 静的拡張メソッドの例
-extension(Common) {
-	public static void Method2(string s) {
-		Console.WriteLine(s);
-	}
-	public static int Property2 { get => _field; }
-}
 // ジェネリック拡張メソッドの例
 extension<T>(List<T> t) {
 	public T GenericMethod(T value) => value;
@@ -106,7 +91,7 @@ public static class CommonExtentions {
 		/// </summary>
 		/// <returns></returns>
 		public bool IsDefault() {
-			return date0 <= new DateTime(1901, 1, 2); // 念のため時間を考慮して判定 [Consider time for accuracy]
+			return date0 < new DateTime(1901, 1, 2); // 念のため時間を考慮して判定 [Consider time for accuracy]
 		}
 		/// <summary>
 		/// 日付部分が同じかどうかを判定
@@ -175,14 +160,14 @@ public static class CommonExtentions {
 			if (string.IsNullOrWhiteSpace(str)) return "";
 			if (str.Length < 6) return "";
 			if (str.Length < 8)
-				return str.Substring(0, 4) + "/" + str.Substring(4, 2);
+				return $"{str[..4]}/{str[4..6]}"; // yyyy/MM
 			if (str.Length < 10)
-				return str.Substring(0, 4) + "/" + str.Substring(4, 2) + "/" + str.Substring(6, 2);
-			if (str.Length < 12)
-				return str.Substring(0, 4) + "/" + str.Substring(4, 2) + "/" + str.Substring(6, 2) + " " + str.Substring(8, 2) + "00:00";
-			if (str.Length < 14)
-				return str.Substring(0, 4) + "/" + str.Substring(4, 2) + "/" + str.Substring(6, 2) + " " + str.Substring(8, 2) + ":" + str.Substring(10, 2) + ":00";
-			return str.Substring(0, 4) + "/" + str.Substring(4, 2) + "/" + str.Substring(6, 2) + " " + str.Substring(8, 2) + ":" + str.Substring(10, 2) + ":" + str.Substring(12, 2);
+				return $"{str[..4]}/{str[4..6]}/{str[6..8]}"; // yyyy/MM/dd
+			if (str.Length < 12) // yyyy/MM/dd HH:00:00
+				return $"{str[..4]}/{str[4..6]}/{str[6..8]} {str[8..10]}:00:00";
+			if (str.Length < 14) // yyyy/MM/dd HH:mm:00
+				return $"{str[..4]}/{str[4..6]}/{str[6..8]} {str[8..10]}:{str[10..12]}:00";
+			return $"{str[..4]}/{str[4..6]}/{str[6..8]} {str[8..10]}:{str[10..12]}:{str[12..14]}"; // yyyy/MM/dd HH:mm:ss
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 
 namespace Cvnet10Base;
@@ -30,25 +31,29 @@ public partial class SysLogin : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	string? loginId;
+	[property: DefaultValue("")]
+	string loginId = string.Empty;
 	/// <summary>
 	/// パスワード 暗号化by Vdc
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	string? cryptPassword;
+	[property: DefaultValue("")]
+	string cryptPassword = string.Empty;
 	/// <summary>
 	/// 有効期限 yyyyMMddHHmmss
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	string? expDate;
+	[property: DefaultValue("")]
+	string expDate = string.Empty;
 	/// <summary>
 	/// 最終ログイン yyyyMMddHHmmss
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	string? lastDate;
+	[property: DefaultValue("")]
+	string lastDate = string.Empty;
 }
 /// <summary>
 /// ログイン履歴テーブル
@@ -81,42 +86,50 @@ public partial class SysHistJwt : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	string? expDate;
+	[property: DefaultValue("")]
+	string expDate = string.Empty;
 	/// <summary>
 	/// IPアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	string? ip;
+	[property: DefaultValue("")]
+	string ip = string.Empty;
 	/// <summary>
 	/// サービスオペレーション
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	string? op;
+	[property: DefaultValue("")]
+	string op = string.Empty;
 }
 /// <summary>
 /// ログイン履歴サブテーブル Jsubプロパティ用
 /// </summary>
-[NoCreateTable]
+[NoCreate]
 public partial class SysHistJwtSub : ObservableObject {
 	[ObservableProperty]
-	string? machine;
+	[property: DefaultValue("")]
+	string machine = string.Empty;
 	[ObservableProperty]
-	string? user;
+	[property: DefaultValue("")]
+	string user = string.Empty;
 	[ObservableProperty]
-	string? osVer;
+	[property: DefaultValue("")]
+	string osVer = string.Empty;
 	/// <summary>
 	/// IPアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: JsonProperty("IP")]
-	string? ipAddress;
+	[property: DefaultValue("")]
+	string ipAddress = string.Empty;
 	/// <summary>
 	/// MACアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: JsonProperty("MacA")]
-	string? macAddress;
+	[property: DefaultValue("")]
+	string macAddress = string.Empty;
 }
 

@@ -1,36 +1,10 @@
-﻿
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
 using Cvnet10Base.Share;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Cvnet10Base;
-
-/// <summary>
-/// 汎用カテゴリ名称マスター
-/// </summary>
-[NoCreateTableJsub]
-public partial class MasterGeneralMeisho : ObservableObject, IBaseSerializeMeisho {
-	[ObservableProperty]
-	string kubun = "";
-	[ObservableProperty]
-	string? kubunName;
-	[ObservableProperty]
-	long id_MeiCode;
-	[ObservableProperty]
-	string? code;
-	[ObservableProperty]
-	string? name;
-	/// <summary>
-	/// JSON シリアライズ時に Mei_Col / Mei_Siz を含めるか (デフォルト: false)
-	/// </summary>
-	[JsonIgnore]
-	public bool Ser { get; set; } = false;
-	public bool ShouldSerializeKubunName() => Ser;
-	public bool ShouldSerializeCode() => Ser;
-	public bool ShouldSerializeName() => Ser;
-}
 
 /// <summary>
 /// 社員マスター
@@ -43,32 +17,79 @@ public partial class MasterShain : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	string code = "";
+	[property: DefaultValue("")]
+	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	string? name;
+	[property: DefaultValue("")]
+	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? ryaku;
+	[property: DefaultValue("")]
+	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? kana;
+	[property: DefaultValue("")]
+	string kana = string.Empty;
+	/// <summary>
+	/// メールアドレス
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(120)]
+	[property: DefaultValue("")]
+	string mail = string.Empty;
+	/// <summary>
+	/// 店舗Id
+	/// </summary>
+	[ObservableProperty]
+	long id_Tenpo;
+	/// <summary>
+	/// 店舗CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Tenpo = string.Empty;
+	/// <summary>
+	/// 店舗名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Tenpo = string.Empty;
+	/// <summary>
+	/// 部門Id
+	/// </summary>
+	[ObservableProperty]
+	long id_Bumon;
+	/// <summary>
+	/// 部門CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Bumon = string.Empty;
+	/// <summary>
+	/// 部門名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Bumon = string.Empty;
 	/// <summary>
 	/// 名称リスト
 	/// </summary>
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	List<MasterMeisho>? jsub;
+	List<MasterGeneralMeisho>? jsub;
 	/// <summary>
 	/// 詳細内容
 	/// </summary>
@@ -76,6 +97,12 @@ public partial class MasterShain : BaseDbClass, IBaseCodeName {
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
 	DetailDbClass? jdetail;
+	/* ToDo: JSON シリアライズにプロパティを含める含めないの制御は必要かどうか検討する IBaseSerializeMeisho の必要性
+	[JsonIgnore]
+	public bool Ser { get; set; } = false;
+	public bool ShouldSerializeMei_Tenpo() => Ser;
+	public bool ShouldSerializeMei_Bumon() => Ser;
+	*/
 }
 
 /// <summary>
@@ -89,54 +116,75 @@ public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	string code = "";
+	[property: DefaultValue("")]
+	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	string? name;
+	[property: DefaultValue("")]
+	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? ryaku;
+	[property: DefaultValue("")]
+	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? kana;
+	[property: DefaultValue("")]
+	string kana = string.Empty;
 	/// <summary>
 	/// ランク
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	string? rank;
+	[property: DefaultValue("")]
+	string rank = string.Empty;
 	/// <summary>
-	/// 店舗キー
+	/// 店舗Id
 	/// </summary>
 	[ObservableProperty]
 	long id_Tenpo;
+	/// <summary>
+	/// 店舗CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Tenpo = string.Empty;
+	/// <summary>
+	/// 店舗名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Tenpo = string.Empty;
 	/// <summary>
 	/// 誕生日 yyyyMMdd
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	string? birthday;
+	[property: DefaultValue("")]
+	string birthday = string.Empty;
 	/// <summary>
 	/// 誕生日 MMdd
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(4)]
-	string? birthNoyear;
+	[property: DefaultValue("")]
+	string birthNoyear = string.Empty;
 	/// <summary>
 	/// メモ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	string? memo;
+	[property: DefaultValue("")]
+	string memo = string.Empty;
 	/// <summary>
 	/// 性別 0=不明 1=男性 2=女性
 	/// </summary>
@@ -163,7 +211,7 @@ public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	List<MasterMeisho>? jsub;
+	List<MasterGeneralMeisho>? jsub;
 	/// <summary>
 	/// 詳細内容
 	/// </summary>
@@ -190,54 +238,148 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	string? name;
+	[property: DefaultValue("")]
+	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? ryaku;
+	[property: DefaultValue("")]
+	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? kana;
+	[property: DefaultValue("")]
+	string kana = string.Empty;
 	/// <summary>
 	/// ブランド
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiBrand;
 	/// <summary>
+	/// ブランドCD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Brand = string.Empty;
+	/// <summary>
+	/// ブランド名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Brand = string.Empty;
+	/// <summary>
 	/// アイテム
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiItem;
+	/// <summary>
+	/// アイテムCD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Item = string.Empty;
+	/// <summary>
+	/// アイテム名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Item = string.Empty;
 	/// <summary>
 	/// 展示会
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiTenji;
 	/// <summary>
+	/// 展示会CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Tenji = string.Empty;
+	/// <summary>
+	/// 展示会名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Tenji = string.Empty;
+	/// <summary>
 	/// メーカー
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiMaker;
+	/// <summary>
+	/// メーカーCD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Maker = string.Empty;
+	/// <summary>
+	/// メーカー名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Maker = string.Empty;
 	/// <summary>
 	/// シーズン
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiSeason;
 	/// <summary>
+	/// シーズンCD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Season = string.Empty;
+	/// <summary>
+	/// シーズン名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Season = string.Empty;
+	/// <summary>
 	/// 素材
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiMaterial;
 	/// <summary>
+	/// 素材CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Material = string.Empty;
+	/// <summary>
+	/// 素材名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Material = string.Empty;
+	/// <summary>
 	/// 原産国
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiGensan;
+	/// <summary>
+	/// 原産国CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Gensan = string.Empty;
+	/// <summary>
+	/// 原産国名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Gensan = string.Empty;
 	/// <summary>
 	/// 元上代
 	/// </summary>
@@ -296,7 +438,8 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	string? makerHin;
+	[property: DefaultValue("")]
+	string makerHin = string.Empty;
 	/// <summary>
 	/// 商品サイズ区分
 	/// </summary>
@@ -308,11 +451,25 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	[ObservableProperty]
 	long id_Soko;
 	/// <summary>
+	/// 倉庫CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Soko = string.Empty;
+	/// <summary>
+	/// 倉庫名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Soko = string.Empty;
+	/// <summary>
 	/// メモ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	string? memo;
+	[property: DefaultValue("")]
+	string memo = string.Empty;
 	/// <summary>
 	/// 原価リスト
 	/// </summary>
@@ -340,7 +497,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	List<MasterMeisho>? jsub;
+	List<MasterGeneralMeisho>? jsub;
 	/// <summary>
 	/// 詳細内容
 	/// </summary>
@@ -354,63 +511,61 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 /// <summary>
 /// 商品色サイズJANマスター
 /// </summary>
-[NoCreateTableJsub]
-public partial class MasterShohinColSiz : BaseDbClass, IBaseViewDefine, IBaseSerializeMeisho {
-	/// <summary>
-	/// 商品
-	/// </summary>
-	[ObservableProperty]
-	long id_Shohin;
+[NoCreate]
+public partial class MasterShohinColSiz : BaseDbClass {
 	/// <summary>
 	/// 色
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiCol;
 	/// <summary>
+	/// カラーCD
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string code_Col = string.Empty;
+	/// <summary>
+	/// カラー名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Col = string.Empty;
+	/// <summary>
 	/// サイズ
 	/// </summary>
 	[ObservableProperty]
 	long id_MeiSiz;
 	/// <summary>
-	/// JANコード1
-	/// </summary>
-	[ObservableProperty]
-	string? jan1;
-	/// <summary>
-	/// JANコード2
-	/// </summary>
-	[ObservableProperty]
-	string? jan2;
-	/// <summary>
-	/// JANコード3
-	/// </summary>
-	[ObservableProperty]
-	string? jan3;
-	/// <summary>
-	/// カラーCD
-	/// </summary>
-	[ObservableProperty]
-	[property: ResultColumn]
-	string? code_Col;
-	/// <summary>
-	/// カラー名
-	/// </summary>
-	[ObservableProperty]
-	[property: ResultColumn]
-	string? mei_Col;
-	/// <summary>
 	/// サイズCD
 	/// </summary>
 	[ObservableProperty]
-	[property: ResultColumn]
-	string? code_Siz;
+	[property: DefaultValue("")]
+	string code_Siz = string.Empty;
 	/// <summary>
 	/// サイズ名
 	/// </summary>
 	[ObservableProperty]
-	[property: ResultColumn]
-	string? mei_Siz;
-
+	[property: DefaultValue("")]
+	string mei_Siz = string.Empty;
+	/// <summary>
+	/// JANコード1
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string jan1 = string.Empty;
+	/// <summary>
+	/// JANコード2
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string jan2 = string.Empty;
+	/// <summary>
+	/// JANコード3
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string jan3 = string.Empty;
+	/*
 	/// <summary>
 	/// JSON シリアライズ時に Mei_Col / Mei_Siz を含めるか (デフォルト: false)
 	/// </summary>
@@ -429,11 +584,12 @@ left join MasterMeisho m1 on T.id_MeiCol = m1.Id
 left join MasterMeisho m2 on T.id_MeiSiz = m2.Id
 ) as Vw_MasterShohinColSiz
 """;
+	 */
 }
 /// <summary>
 /// 品質マスター
 /// </summary>
-[NoCreateTableJsub]
+[NoCreate]
 public partial class MasterShohinGrade : ObservableObject {
 	/// <summary>
 	/// 行No
@@ -444,7 +600,8 @@ public partial class MasterShohinGrade : ObservableObject {
 	/// 品質
 	/// </summary>
 	[ObservableProperty]
-	string? hinshitu;
+	[property: DefaultValue("")]
+	string hinshitu = string.Empty;
 	/// <summary>
 	/// ％
 	/// </summary>
@@ -454,7 +611,7 @@ public partial class MasterShohinGrade : ObservableObject {
 /// <summary>
 /// 原価マスター
 /// </summary>
-[NoCreateTableJsub]
+[NoCreate]
 public partial class MasterShohinGenka: ObservableObject {
 	/// <summary>
 	/// 行No

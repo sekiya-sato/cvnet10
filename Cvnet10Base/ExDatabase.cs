@@ -249,9 +249,7 @@ public partial class ExDatabase : Database {
 		bool ret = false;
 		if (Connection == null)
 			return ret;
-		if(classT.GetCustomAttribute<NoCreateTableAttribute>() != null)
-			return true;
-		if (classT.GetCustomAttribute<NoCreateTableJsubAttribute>() != null)
+		if(classT.GetCustomAttribute<NoCreateAttribute>() != null)
 			return true;
 
 		try {

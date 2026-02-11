@@ -18,7 +18,7 @@ public sealed class LoginRequest {
 	[DataMember(Order = 4)]
 	public required DateTime LoginDate { get; set; }
 	[DataMember(Order = 5)]
-	public required string Info { get; set; }
+	public string Info { get; set; } = string.Empty;
 }
 /// <summary>
 /// ログインリプライ
@@ -55,7 +55,7 @@ public sealed class LoginRefresh {
 	[DataMember(Order = 1)]
 	public required string Token { get; set; }
 	[DataMember(Order = 2)]
-	public required string Info { get; set; }
+	public string Info { get; set; } = string.Empty;
 }
 
 /// <summary>

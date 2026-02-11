@@ -1,8 +1,8 @@
-﻿
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
 using Cvnet10Base.Share;
+using System.ComponentModel;
+
 
 namespace Cvnet10Base;
 
@@ -15,25 +15,29 @@ public partial class MasterTorihiki : BaseDbHasAddress, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	string code = "";
+	[property: DefaultValue("")]
+	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	string? name;
+	[property: DefaultValue("")]
+	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? ryaku;
+	[property: DefaultValue("")]
+	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? kana;
+	[property: DefaultValue("")]
+	string kana = string.Empty;
 	/// <summary>
 	/// 担当者CD
 	/// </summary>
@@ -111,7 +115,7 @@ public partial class MasterTokui : MasterTorihiki {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	List<MasterMeisho>? jsub;
+	List<MasterGeneralMeisho>? jsub;
 	/// <summary>
 	/// 得意先詳細
 	/// </summary>
@@ -150,19 +154,22 @@ public partial class MasterTokuiDetail : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount1;
+	[property: DefaultValue("")]
+	string bankAccount1 = string.Empty;
 	/// <summary>
 	/// 振込先2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount2;
+	[property: DefaultValue("")]
+	string bankAccount2 = string.Empty;
 	/// <summary>
 	/// 振込先3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount3;
+	[property: DefaultValue("")]
+	string bankAccount3 = string.Empty;
 }
 
 /// <summary>
@@ -175,7 +182,7 @@ public partial class MasterShiire : MasterTorihiki {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	List<MasterMeisho>? jsub;
+	List<MasterGeneralMeisho>? jsub;
 	/// <summary>
 	/// 仕入先詳細
 	/// </summary>
@@ -194,19 +201,22 @@ public partial class MasterShiireDetail : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount1;
+	[property: DefaultValue("")]
+	string bankAccount1 = string.Empty;
 	/// <summary>
 	/// 支払先2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount2;
+	[property: DefaultValue("")]
+	string bankAccount2 = string.Empty;
 	/// <summary>
 	/// 支払先3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount3;
+	[property: DefaultValue("")]
+	string bankAccount3 = string.Empty;
 }
 
 

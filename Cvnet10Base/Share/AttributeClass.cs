@@ -2,21 +2,15 @@
 namespace Cvnet10Base;
 /// <summary>
 /// テーブルコメント用 (カラムコメント は変更時に問題あるので使用しない)
-/// [For table comments]
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public sealed class CommentAttribute : Attribute {
 	/// <summary>
 	/// 日本語コメント
 	/// </summary>
-	public string Content { get; }
-	/// <summary>
-	/// 英語コメント
-	/// </summary>
-	public string? ContentEn { get; }
-	public CommentAttribute(string content, string? contentEn = null) {
+	public string Content { get; } =string.Empty;
+	public CommentAttribute(string content) {
 		Content = content;
-		ContentEn = contentEn;
 	}
 }
 
@@ -79,9 +73,10 @@ public enum ColumnType {
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public sealed class ColumnSizeDmlAttribute : Attribute {
+	const int DefaultSize = 40;
 	public int Size { get; }
 	public ColumnType ColType { get; }
-	public ColumnSizeDmlAttribute(int size = 40, ColumnType ctype = ColumnType.String) {
+	public ColumnSizeDmlAttribute(int size = DefaultSize, ColumnType ctype = ColumnType.String) {
 		Size = size;
 		ColType = ctype;
 	}
@@ -92,12 +87,8 @@ public sealed class ColumnSizeDmlAttribute : Attribute {
 /// <summary>
 /// 実テーブル不要
 /// </summary>
-public sealed class NoCreateTableAttribute : Attribute {
-}
-/// <summary>
-/// 実テーブル不要
-/// </summary>
-public sealed class NoCreateTableJsubAttribute : Attribute {
+[AttributeUsage(AttributeTargets.All, AllowMultiple = false)] 
+public sealed class NoCreateAttribute : Attribute {
 }
 
 /// <summary>

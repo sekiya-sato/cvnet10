@@ -140,7 +140,12 @@ server {
 				- 推奨: DB スキーマはマイグレーションツール（Flyway / DbUp など）で管理し、マイグレーションを CI に組み込む。ベース側にマイグレーションスクリプトを同梱。
 				- 実施例: Cvnet10Base にマイグレーション定義 + マイグレーション実行コードを追加。
 	- Theme対応とView/ViewModelのDIコンテナ対応
-- 2026/02/06
+- 2026/02/06-02/11
+	- プロンプトメモ:
+	-現在ファイルのみ、 string? [項目名]; のすべてに対し、 string [項目名] =string.Empty; さらに属性 [property: DefaultValue("")] をつける。また、string 型で初期値が="19010101"; の場合、属性 [property: DefaultValue("19010101")] をつける。
+
+
+
 
 
 
