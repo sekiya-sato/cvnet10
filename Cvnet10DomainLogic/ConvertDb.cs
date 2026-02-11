@@ -1,4 +1,6 @@
 ﻿using Cvnet10Base;
+using System.Linq;
+using Cvnet10Asset;
 
 namespace Cvnet10DomainLogic;
 /// <summary>
@@ -62,12 +64,31 @@ public class ConvertDb {
 
 		return rows.Count;
 	}
+	private List<MasterGeneralMeisho> ConverterGeneralMeisho(int maxCnt,string prefix, Dictionary<string, object> rec) {
+		var meiList = new List<MasterGeneralMeisho>();
+		foreach (var i in Enumerable.Range(1, maxCnt)) {
+			var meisho = _toDb.FirstOrDefault<MasterMeisho>("where Kubun=@0 and Code=@1", [$"{prefix}{i:D2}", getString(rec, $"名称CD{i:D2}", ".")]);
+			if (meisho != null) {
+				meiList.Add(new MasterGeneralMeisho() {
+					Kubun = meisho.Kubun,
+					KubunName = meisho.KubunName,
+					Code = meisho.Code,
+					Name = meisho.Name,
+				});
+			}
+		}
+		return meiList;
+	}
 
 	public void ConvertAll(bool isInit = true) {
 		/*
 		CnvMasterSys(isInit);
-		CnvMasterMeisho(isInit);
 		 */
+		CnvMasterMeisho(isInit);
+		CnvMasterShain(isInit);
+		CnvMasterEndCustomer(isInit);
+		//CnvMasterShohin(isInit);
+
 	}
 
 	/// <summary>
@@ -135,28 +156,16 @@ public class ConvertDb {
 				Name = getString(rec, "名前"),
 				Kana = getString(rec, "フリカナ"),
 				Mail = getString(rec, "メール"),
-				Code_Tenpo = getString(rec, "店舗CD"),
+				Code_Tenpo = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
 				Id_Bumon = bumonMeisho?.Id ?? 0,
 				Code_Bumon = getString(rec, "部門CD"),
 				Mei_Bumon = bumonMeisho?.Name??string.Empty,
 			};
-			var meiList = new List<MasterGeneralMeisho>();
-			foreach (var i in Enumerable.Range(1, 5)) {
-				var meisho = _toDb.FirstOrDefault<MasterMeisho>("where Kubun=@0 and Code=@1", [$"E0{i}", getString(rec, $"名称CD0{i}", ".")]);
-				if (meisho != null) {
-					meiList.Add(new MasterGeneralMeisho() {
-						Kubun = meisho.Kubun,
-						KubunName = meisho.KubunName,
-						Code = meisho.Code,
-						Name = meisho.Name,
-					});
-				}
-			}
+			var meiList = ConverterGeneralMeisho(5, "E", rec);
 			if (meiList.Count > 0)
 				item.Jsub = meiList;
 			return item;
-		}
-		);
+		});
 	}
 	/// <summary>
 	/// 顧客マスター変換
@@ -165,6 +174,50 @@ public class ConvertDb {
 	/// <returns></returns>
 	public int CnvMasterEndCustomer(bool isInit = true) {
 		const string sql = "select * from HC$master_kokyaku where 顧客CD>'.' order by 顧客CD"; // 顧客分類 'K01'-'K10'
-		return 0;
+		return ConvertMaster(sql, isInit, rec => {
+			var item = new MasterEndCustomer() {
+				Code = getString(rec, "顧客CD"),
+				Name = getString(rec, "顧客名"),
+				Kana = getString(rec, "カナ"),
+				PostalCode = getString(rec, "郵便番号"),
+				Address1 = getString(rec, "住所1"),
+				Address2 = getString(rec, "住所2"),
+				Address3 = getString(rec, "住所3"),
+				Mail = getString(rec, "メール"),
+				Tel = getString(rec, "TEL").DefaultIfEmpty(getString(rec, "TEL2")),
+				Code_Tenpo = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+			};
+			var meiList = ConverterGeneralMeisho(10, "K", rec);
+			if (meiList.Count > 0)
+				item.Jsub = meiList;
+			return item;
+		});
+	}
+	/// <summary>
+	/// 商品マスター変換
+	/// </summary>
+	/// <param name="isInit"></param>
+	/// <returns></returns>
+	public int CnvMasterShohin(bool isInit = true) {
+		const string sql = "select * from HC$master_shohin where 商品CD>'.' order by 商品CD"; // 商品分類 'B01'-'B10'
+		return ConvertMaster(sql, isInit, rec => {
+			var bumonMeisho = _toDb.FirstOrDefault<MasterMeisho>("where Kubun=@0 and Code=@1", ["BMN", getString(rec, "部門", ".")]);
+			var item = new MasterEndCustomer() {
+				Code = getString(rec, "商品CD"),
+				Name = getString(rec, "商品名"),
+				Ryaku = getString(rec, "略称"),
+				PostalCode = getString(rec, "郵便番号"),
+				Address1 = getString(rec, "住所1"),
+				Address2 = getString(rec, "住所2"),
+				Address3 = getString(rec, "住所3"),
+				Mail = getString(rec, "メール"),
+				Tel = getString(rec, "TEL").DefaultIfEmpty(getString(rec, "TEL2")),
+				Code_Tenpo = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+			};
+			var meiList = ConverterGeneralMeisho(10, "K", rec);
+			if (meiList.Count > 0)
+				item.Jsub = meiList;
+			return item;
+		});
 	}
 }

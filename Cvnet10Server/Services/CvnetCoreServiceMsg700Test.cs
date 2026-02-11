@@ -16,6 +16,24 @@ public partial class CvnetCoreService {
 	CvnetMsg subLogicMsg701(CvnetMsg request, CallContext context = default) {
 		//var sql = Test202601Master.ViewSql;
 		var list = _db.Fetch<Test202601Master>();
+		var list2 = _db.Fetch<MasterMeisho>();
+		/*
+SELECT
+    名称区分,
+    名称CD,
+    名称
+FROM
+    HC$master_meisho
+WHERE
+    (名称区分, 名称CD) IN (
+        ('BRD', '02'),
+        ('ITM', '31'),
+        ('MKR', '12345')
+    );		 
+		 */
+
+
+
 		/*
 			const string selectSql = """
 select T.*, m1.Name as Mei_Brand, m2.Name as  Mei_Item, m3.Name as  Mei_Tenji

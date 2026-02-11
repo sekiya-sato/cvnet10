@@ -169,5 +169,8 @@ public static class CommonExtentions {
 				return $"{str[..4]}/{str[4..6]}/{str[6..8]} {str[8..10]}:{str[10..12]}:00";
 			return $"{str[..4]}/{str[4..6]}/{str[6..8]} {str[8..10]}:{str[10..12]}:{str[12..14]}"; // yyyy/MM/dd HH:mm:ss
 		}
+		public string DefaultIfEmpty(string defaultValue)
+			=> string.IsNullOrEmpty(str) ? defaultValue : str;
+
 	}
 }
