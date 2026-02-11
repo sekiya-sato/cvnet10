@@ -199,15 +199,11 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 	}
 	[RelayCommand(IncludeCancelCommand = true)]
 	public async Task XxxRecord(CancellationToken cancellationToken) {
-		if (SelectedTestMaster == null) {
-			MessageEx.ShowWarningDialog("レコードが選択されていません", owner: ClientLib.GetActiveView(this));
-			return;
-		}
 		try {
 			cancellationToken.ThrowIfCancellationRequested();
 			// 処理を実行
 			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query };
+			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg701_TestCase001 };
 			msg.DataType = typeof(QuerybyIdParam);
 			msg.DataMsg = Common.SerializeObject(new QuerybyIdParam(typeof(Test202601Master), 4));
 			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
