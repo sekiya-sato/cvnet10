@@ -23,7 +23,7 @@ public partial class SettingSystemViewModel {
 				Flag = CvnetFlag.Msg101_Op_Query,
 				DataType = typeof(QueryListParam),
 				DataMsg = Common.SerializeObject(new QueryListParam(
-					itemType: typeof(MasterMeishoView),
+					itemType: typeof(MasterMeisho),
 					where: "Kubun=@0", order: "Kubun,Code", ["SIZ"]
 				))
 			};

@@ -72,10 +72,12 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="70" />
                         <DataGridTextColumn Header="区分" Binding="{Binding Kubun}" Width="100" />
+                        <DataGridTextColumn Header="区分名" Binding="{Binding KubunName}" Width="*" />
                         <DataGridTextColumn Header="コード" Binding="{Binding Code}" Width="110" />
                         <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="区分名" Binding="{Binding Disp0}" Width="*" />
-                        <DataGridTextColumn Header="順序" Binding="{Binding Odr}" Width="70" />
+                        <DataGridTextColumn Header="略称" Binding="{Binding Ryaku}" Width="*" />
+                        <DataGridTextColumn Header="カナ" Binding="{Binding Kana}" Width="*" />
+                        <DataGridTextColumn Header="順序" Binding="{Binding Odr}" Width="10" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

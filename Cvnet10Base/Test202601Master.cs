@@ -204,7 +204,7 @@ public static class Test202601MasterExtensions {
 			}
 
 			// ✅ シリアライズ設定を適用
-			item.Ser = serializeMeisho;
+			//item.Ser = serializeMeisho;
 		}
 	}
 
@@ -248,7 +248,7 @@ public static class Test202601MasterExtensions {
 				}
 
 				// ✅ シリアライズ設定を適用
-				item.Ser = serializeMeisho;
+				//item.Ser = serializeMeisho;
 			}
 		}
 	}
@@ -273,7 +273,7 @@ public static class Test202601MasterExtensions {
 
 		// ID のリストを取得
 		var kubuns = master.ListMeisho.Select(x => x.Kubun).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-		var names = master.ListMeisho.Select(x => x.Id_MeiCode).Where(x => x > 0).Distinct().ToList();
+		var names = master.ListMeisho.Select(x => x.Id_Code).Where(x => x > 0).Distinct().ToList();
 
 
 		// MasterMeisho を一度だけ取得 (Dictionary でキャッシュ)
@@ -290,11 +290,10 @@ public static class Test202601MasterExtensions {
 		foreach (var item in master.ListMeisho) {
 			if (!string.IsNullOrEmpty(item.Kubun) && meishoKubuns.TryGetValue(item.Kubun, out var codeKubun))
 				item.KubunName = codeKubun.Name;
-			if (item.Id_MeiCode > 0 && meishoNames.TryGetValue(item.Id_MeiCode, out var nameMei)) {
+			if (item.Id_Code > 0 && meishoNames.TryGetValue(item.Id_Code, out var nameMei)) {
 				item.Code = nameMei.Code;
 				item.Name = nameMei.Name;
 			}
-			item.Ser = serializeMeisho;
 		}
 	}
 
@@ -333,7 +332,7 @@ public static class Test202601MasterExtensions {
 		var kubuns = listMeishoSource.Select(x => x.Kubun)
 			.Where(x => !string.IsNullOrEmpty(x))
 			.Distinct();
-		var names = listMeishoSource.Select(x => x.Id_MeiCode)
+		var names = listMeishoSource.Select(x => x.Id_Code)
 			.Where(x => x > 0)
 			.Distinct();
 
@@ -354,11 +353,10 @@ public static class Test202601MasterExtensions {
 			foreach (var item in master.ListMeisho) {
 				if (!string.IsNullOrEmpty(item.Kubun) && meishoKubuns.TryGetValue(item.Kubun, out var codeKubun))
 					item.KubunName = codeKubun.Name;
-				if (item.Id_MeiCode > 0 && meishoNames.TryGetValue(item.Id_MeiCode, out var nameMei)) {
+				if (item.Id_Code > 0 && meishoNames.TryGetValue(item.Id_Code, out var nameMei)) {
 					item.Code = nameMei.Code;
 					item.Name = nameMei.Name;
 				}
-				item.Ser = serializeMeisho;
 			}
 		}
 	}

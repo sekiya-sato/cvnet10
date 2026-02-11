@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Cvnet10Base.Share;
 using NPoco;
+using System.ComponentModel;
 
 namespace Cvnet10Base;
 
@@ -15,13 +16,15 @@ public partial class MasterSysman : BaseDbHasAddress {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? name;
+	[property: DefaultValue("")]
+	string name =string.Empty;
 	/// <summary>
 	/// ホームページ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? hp;
+	[property: DefaultValue("")]
+	string hp =string.Empty;
 	/// <summary>
 	/// 自社締め日 1-31,99
 	/// </summary>
@@ -42,24 +45,28 @@ public partial class MasterSysman : BaseDbHasAddress {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount1;
+	[property: DefaultValue("")]
+	string bankAccount1 =string.Empty;
 	/// <summary>
 	/// 振込先2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount2;
+	[property: DefaultValue("")]
+	string bankAccount2 =string.Empty;
 	/// <summary>
 	/// 振込先3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	string? bankAccount3;
+	[property: DefaultValue("")]
+	string bankAccount3 =string.Empty;
 	/// <summary>
 	/// 期首年月日
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
+	[property: DefaultValue("19010101")]
 	string fiscalStartDate="19010101";
 	/// <summary>
 	/// 消費税率リスト
@@ -72,7 +79,7 @@ public partial class MasterSysman : BaseDbHasAddress {
 /// <summary>
 /// 消費税率テーブル
 /// </summary>
-[NoCreateTableJsub]
+[NoCreate]
 public partial class MasterSysTax: ObservableObject {
 	[ObservableProperty]
 	long id;
@@ -86,6 +93,7 @@ public partial class MasterSysTax: ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
+	[property: DefaultValue("19010101")]
 	string dateFrom = "19010101";
 	/// <summary>
 	/// 新消費税率 (%) 例:10
@@ -105,7 +113,14 @@ public partial class MasterMeisho : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	string kubun = "";
+	[property: DefaultValue("")]
+	string kubun = string.Empty;
+	/// <summary>
+	/// 区分名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string kubunName = string.Empty;
 	/// <summary>
 	/// 名称コード
 	/// </summary>
@@ -117,19 +132,22 @@ public partial class MasterMeisho : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? name;
+	[property: DefaultValue("")]
+	string name =string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? ryaku;
+	[property: DefaultValue("")]
+	string ryaku =string.Empty;
 	/// <summary>
 	/// よみがな
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	string? kana;
+	[property: DefaultValue("")]
+	string kana =string.Empty;
 	/// <summary>
 	/// 並び順
 	/// </summary>
@@ -138,10 +156,11 @@ public partial class MasterMeisho : BaseDbClass {
 	int odr;
 }
 
+/*
 /// <summary>
 /// 名称テーブルView
 /// </summary>
-[NoCreateTable]
+[NoCreate]
 public partial class MasterMeishoView : MasterMeisho, IBaseViewDefine {
 	/// <summary>
 	/// 区分名
@@ -160,3 +179,4 @@ SELECT * FROM (
 ) MasterMeishoView
 """;
 }
+*/
