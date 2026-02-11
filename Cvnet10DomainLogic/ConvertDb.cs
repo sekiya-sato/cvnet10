@@ -133,9 +133,18 @@ public class ConvertDb {
 	/// 名称マスタ変換 HC$master_meisho
 	/// </summary>
 	public int CnvMasterMeisho(bool isInit = true) {
-		const string sql = "select * from HC$master_meisho where 名称区分>'.' order by 名称区分,名称CD";// 名称区分 'IDX'
+		const string sql = """
+    SELECT 
+        T.*, 
+        m1.名称 AS KubunName
+    FROM HC$master_meisho T
+    LEFT OUTER JOIN HC$master_meisho m1 
+        ON m1.名称区分 = 'IDX' 
+        AND T.名称区分 = m1.名称CD
+""";
 		return ConvertMaster(sql, isInit, rec => new MasterMeisho() {
 			Kubun = getString(rec, "名称区分"),
+			KubunName = getString(rec, "KubunName"),
 			Code = getString(rec, "名称CD"),
 			Name = getString(rec, "名称"),
 			Ryaku = getString(rec, "略称"),
