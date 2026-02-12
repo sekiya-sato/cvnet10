@@ -86,9 +86,11 @@ public sealed class InsertParam : IJsonPayload {
 public sealed class UpdateParam : IJsonPayload {
 	public string Item { get; }
 	public Type ItemType { get; }
-	public UpdateParam(Type itemType, string item) {
+	public long OriginalVdu { get; }
+	public UpdateParam(Type itemType, string item, long originalVdu) {
 		Item = item;
 		ItemType = itemType;
+		OriginalVdu = originalVdu;
 	}
 	public object GetItemObject() {
 		var item = JsonConvert.DeserializeObject(Item, ItemType);
@@ -103,9 +105,11 @@ public sealed class UpdateParam : IJsonPayload {
 public sealed class DeleteParam : IJsonPayload {
 	public string Item { get; }
 	public Type ItemType { get; }
-	public DeleteParam(Type itemType, string item) {
+	public long OriginalVdu { get; }
+	public DeleteParam(Type itemType, string item, long originalVdu) {
 		Item = item;
 		ItemType = itemType;
+		OriginalVdu = originalVdu;
 	}
 	public object GetItemObject() {
 		var item = JsonConvert.DeserializeObject(Item, ItemType);
@@ -120,8 +124,10 @@ public sealed class DeleteParam : IJsonPayload {
 public sealed class DeleteByIdParam {
 	public long Id { get; }
 	public Type ItemType { get; }
-	public DeleteByIdParam(Type itemType, long id) {
+	public long OriginalVdu { get; }
+	public DeleteByIdParam(Type itemType, long id, long originalVdu) {
 		Id = id;
 		ItemType = itemType;
+		OriginalVdu = originalVdu;
 	}
 }

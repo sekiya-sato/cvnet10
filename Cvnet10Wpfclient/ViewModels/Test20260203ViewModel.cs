@@ -156,12 +156,12 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(UpdateParam);
-				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!), SelectedTestMaster?.Vdu??0));
 				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
 				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 				// 修正の場合、特に不要
 				if (item != null) {
-					MessageEx.ShowInformationDialog($"修正しました\nコード: {SelectedTestMaster.Code}", owner: ClientLib.GetActiveView(this));
+					MessageEx.ShowInformationDialog($"修正しました\nコード: {SelectedTestMaster?.Code}", owner: ClientLib.GetActiveView(this));
 				}
 			}
 			catch (OperationCanceledException) {
@@ -184,7 +184,7 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(DeleteParam);
-				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!), SelectedTestMaster.Vdu));
 				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
 				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 				if (item != null) {

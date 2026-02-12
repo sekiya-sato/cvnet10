@@ -14,7 +14,7 @@
         Width="1024"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
-        Background="{DynamicResource AppCommonBackgroundBrush}">
+        >
     <helpers:BaseWindow.DataContext>
         <vm:Test20260203ViewModel />
     </helpers:BaseWindow.DataContext>

@@ -16,7 +16,16 @@ public partial class CvnetCoreService {
 	CvnetMsg subLogicMsg701(CvnetMsg request, CallContext context = default) {
 		//var sql = Test202601Master.ViewSql;
 		var list = _db.Fetch<Test202601Master>();
-		var list2 = _db.Fetch<MasterMeisho>();
+		var list2 = _db.Fetch<MasterShain>();
+		var item = new MasterShain();
+		item.Code = "1234";
+		item.Name = "aaaa";
+		_db.Insert(item);
+		item.Code = "1235";
+		item.Jsub = new List<MasterGeneralMeisho>();
+		item.Jsub.Add(new MasterGeneralMeisho(){ Kubun="COL", Code="001",Name="ブラック" });
+		_db.Insert(item);
+
 		/*
 SELECT
     名称区分,

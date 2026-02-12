@@ -43,29 +43,25 @@ public partial class MenuData : ObservableObject {
             IsMainMenu = true,
             IsExpand = true,
             SubItems = new ObservableCollection<MenuData> {
-                new MenuData {
-                    Header = "開始処理：接続テスト",
-                    AddInfo = "gRPC",
-                    ViewType = typeof(Test20260203View),
-                    IsDialog = false
-                },
-                new MenuData {
-                    Header = "開始処理：ログイン",
-                    AddInfo = "gRPC",
+				new MenuData {
+					Header = "開始処理：接続テスト ---------------",
+					AddInfo = "gRPC",
+					ViewType = typeof(Test20260203View),
+					IsDialog = false
+				},
+				new MenuData {
+					Header = "開始処理：ログイン",
+					AddInfo = "gRPC",
 					ViewType = typeof(LoginView),
 					IsDialog = true
 				},
 			new MenuData {
-				Header = "システム設定",
+				Header = "開始処理：システム設定",
 				AddInfo = "構成",
 				ViewType = typeof(SettingSystemView),
 				IsDialog = true
-			},
-                new MenuData {
-                    Header = "終了処理：データアップロード",
-                    AddInfo = "準備中"
-                }
-            }
+				}
+			}
         },
 		new MenuData {
 			Header = "■ Master",
@@ -87,8 +83,19 @@ public partial class MenuData : ObservableObject {
             Color = "SteelBlue",
             IsMainMenu = true,
             SubItems = new ObservableCollection<MenuData> {
-                new MenuData { Header = "システム管理マスタ", AddInfo = "準備中" },
-                new MenuData { Header = "処理履歴情報", AddInfo = "準備中" },
+				new MenuData {
+					Header = "システム管理マスタ",
+					AddInfo = "準備中",
+					ViewType = typeof(MasterSysKanriMenteView),
+					IsDialog = false
+				},
+				new MenuData {
+					Header = "ログイン管理マスタ",
+					AddInfo = "View作成中",
+					ViewType = typeof(SysLoginView),
+					IsDialog = false
+				},
+				new MenuData { Header = "処理履歴情報", AddInfo = "準備中" },
                 new MenuData { Header = "LOGIN履歴情報", AddInfo = "準備中" }
             }
         },
@@ -266,7 +273,7 @@ public partial class MenuData : ObservableObject {
 					{
 						new MenuData{
 							Header="社員LOGINマスタ(管理者用)",
-							// ViewType = typeof(Views.SysLoginView),
+							ViewType = typeof(Views.SysLoginView),
 							IsDialog = false,
 						},
 						new MenuData{
@@ -274,7 +281,7 @@ public partial class MenuData : ObservableObject {
 						},
 						new MenuData{
 							Header="システム管理マスタ(管理者用)",
-							// ViewType = typeof(Views.MasterSysKanriMenteView),
+							 ViewType = typeof(Views.MasterSysKanriMenteView),
 							IsDialog = false,
 						},
 						new MenuData{
