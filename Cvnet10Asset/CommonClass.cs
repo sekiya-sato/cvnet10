@@ -36,6 +36,16 @@ public sealed class Common {
 		var ret = JsonConvert.DeserializeObject<T>(obj, jsonOptions);
 		return ret;
 	}
+	/// <summary>
+	/// 内容が同じ別オブジェクトを返す
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="obj"></param>
+	/// <returns></returns>
+	public static T CopyObject<T>(T obj) where T : new() {
+		var item = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj))?? new T();
+		return item;
+	}
 
 	static readonly Aes algorithm = Aes.Create();
 	/// <summary>

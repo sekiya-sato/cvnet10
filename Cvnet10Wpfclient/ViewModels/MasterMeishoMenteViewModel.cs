@@ -123,7 +123,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
 				DataType = typeof(UpdateParam),
-				DataMsg = Common.SerializeObject(new UpdateParam(typeof(MasterMeisho), Common.SerializeObject(CurrentEdit)))
+				DataMsg = Common.SerializeObject(new UpdateParam(typeof(MasterMeisho), Common.SerializeObject(CurrentEdit), Current.Vdu))
 			};
 
 			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
@@ -155,7 +155,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
 				DataType = typeof(DeleteParam),
-				DataMsg = Common.SerializeObject(new DeleteParam(typeof(MasterMeisho), Common.SerializeObject(Current)))
+				DataMsg = Common.SerializeObject(new DeleteParam(typeof(MasterMeisho), Common.SerializeObject(Current), Current.Vdu))
 			};
 
 			await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));

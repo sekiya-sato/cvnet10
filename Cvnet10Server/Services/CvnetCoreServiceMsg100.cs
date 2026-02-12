@@ -24,12 +24,14 @@ public partial class CvnetCoreService {
 	/// <exception cref="NotImplementedException"></exception>
 	CvnetMsg subLogicMsg_Op_Query(CvnetMsg request, CallContext context = default) {
 		var param = Common.DeserializeObject(request.DataMsg ?? "", request.DataType);
+
+
 		// パラメータの型で処理を分岐
 		var queryOne = param as QueryOneParam;
 		var ret = new CvnetMsg() { Flag = request.Flag };
 		var sql = "";
-
 		if (queryOne != null) {
+			_logger.LogInformation($"パラメータ QueryOneParam.ItemType={queryOne.ItemType}  内容{Common.SerializeObject(queryOne)}");
 			// ViewSqlが定義されている場合はそちらを使用する
 			var sqlmain = Resolver.GetViewSql(queryOne.ItemType);
 			if (sqlmain != null)
@@ -48,6 +50,7 @@ public partial class CvnetCoreService {
 		}
 		var querybyId = param as QuerybyIdParam;
 		if (querybyId != null) {
+			_logger.LogInformation($"パラメータ QuerybyIdParam.ItemType={querybyId.ItemType} 内容{Common.SerializeObject(querybyId)}");
 			// ViewSqlが定義されている場合はそちらを使用する
 			var sqlmain = Resolver.GetViewSql(querybyId.ItemType);
 			if (sqlmain != null)
@@ -66,6 +69,7 @@ public partial class CvnetCoreService {
 		}
 		var queryList = param as QueryListParam;
 		if (queryList != null) {
+			_logger.LogInformation($"パラメータ QueryListParam.ItemType={queryList.ItemType} 内容{Common.SerializeObject(queryList)}");
 			// ViewSqlが定義されている場合はそちらを使用する
 			var sqlmain = Resolver.GetViewSql(queryList.ItemType);
 			if (sqlmain != null)
@@ -78,11 +82,6 @@ public partial class CvnetCoreService {
 				ret.DataType = typeof(List<>).MakeGenericType(queryList.ItemType);
 				ret.DataMsg = "[]";
 				return ret;
-			}
-			if (queryList.ItemType == typeof(Test202601Master)) { // 特定のテーブル型かどうかで判定
-				var list0 = list.Cast<Test202601Master>().ToList();
-				list0.LoadAllJcolsizMeishoNames(_db, true); // 名称をセット
-				list0.LoadAllGeneralMeishoNames(_db, true);
 			}
 			ret.Code = 0;
 			// ret.DataType = list.GetType(); // これはList<object>になるので正しくない
@@ -106,6 +105,7 @@ public partial class CvnetCoreService {
 		// パラメータの型で処理を分岐
 		var insert = param as InsertParam;
 		if (insert != null) {
+			_logger.LogInformation($"パラメータ InsertParam.ItemType={insert.ItemType} 内容{Common.SerializeObject(insert)}");
 			var item = insert.GetItemObject();
 			var id = _db.Insert(item);
 			var ret = new CvnetMsg() { Flag = request.Flag };
@@ -116,6 +116,7 @@ public partial class CvnetCoreService {
 		}
 		var update = param as UpdateParam;
 		if (update != null) {
+			_logger.LogInformation($"パラメータ UpdateParam.ItemType={update.ItemType} 内容{Common.SerializeObject(update)}");
 			var item = update.GetItemObject();
 			_db.Update(item);
 			var ret = new CvnetMsg() { Flag = request.Flag };
@@ -126,6 +127,7 @@ public partial class CvnetCoreService {
 		}
 		var delete = param as DeleteParam;
 		if (delete != null) {
+			_logger.LogInformation($"パラメータ DeleteParam.ItemType={delete.ItemType} 内容{Common.SerializeObject(delete)}");
 			var item = delete.GetItemObject();
 			_db.Delete(item);
 			var ret = new CvnetMsg() { Flag = request.Flag };
@@ -136,6 +138,7 @@ public partial class CvnetCoreService {
 		}
 		var deleteById = param as DeleteByIdParam;
 		if (deleteById != null) {
+			_logger.LogInformation($"パラメータ DeleteByIdParam.ItemType={deleteById.ItemType} Id={deleteById.Id} 内容{Common.SerializeObject(deleteById)}");
 			var ret_del =  _db.Delete(deleteById.ItemType.Name, "Id", deleteById.Id);
 			var ret = new CvnetMsg() { Flag = request.Flag };
 			ret.Code = 0;

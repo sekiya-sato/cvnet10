@@ -1,5 +1,6 @@
 ﻿using Cvnet10Base;
 using Cvnet10DomainLogic;
+using NLog;
 
 namespace Cvnet10Server;
 public class AppInit {
@@ -8,7 +9,6 @@ public class AppInit {
 	readonly string verStr = "0.0.099";
 	readonly DateTime buildDate = BuildMetadata.BuildDate;
 	static VersionInfo? _ver;
-
 	/// <summary>
 	/// アプリケーションのバージョン情報を取得します。
 	/// </summary>
