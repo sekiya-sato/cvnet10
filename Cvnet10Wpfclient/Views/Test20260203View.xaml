@@ -19,7 +19,7 @@
         <vm:Test20260203ViewModel />
     </helpers:BaseWindow.DataContext>
 
-    <Grid Margin="16" Background="{DynamicResource AppCommonBackgroundBrush}" >
+    <Grid Margin="16" Background="Transparent" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

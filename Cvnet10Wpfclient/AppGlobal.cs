@@ -1,22 +1,31 @@
-﻿using Cvnet10Wpfclient.ViewServices;
+﻿
+/*
+# file name
+AppCurrent.cs
+
+# description
+グローバル変数を管理するクラス
+
+*/
+global using MsgBoxResult = System.Windows.MessageBoxResult;
+
+
+using Cvnet10Wpfclient.ViewServices;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
 using ProtoBuf.Grpc;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 
 namespace Cvnet10Wpfclient;
 /// <summary>
 /// グローバル変数
 /// </summary>
-public static class AppCurrent {
+public static class AppGlobal {
 	// Backing field: 内部でのみ null 許容
 	private static IConfigurationRoot? _config;
 	private static string? _url;
@@ -59,10 +68,8 @@ public static class AppCurrent {
 		logger.Debug($"---------------------------------\n AppCurrent.Init() 接続先Url={_url},実行フォルダ={Directory.GetCurrentDirectory()}");
 		// あれば取得する
 		if (string.IsNullOrWhiteSpace(LoginJwt)) {
-			LoginJwt = _config.GetSection("AppStrings")?["LoginJwt"];
+			LoginJwt = _config.GetSection("Parameters")?["LoginJwt"];
 		}
-		// ToDo: ダミーJSONをセット。 実際にはログイン処理で取得すること
-		// LoginJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQ3ZuZXRXcGZDbGllbnTjg6bjg7zjgrYgMjAyNi8wMi8wNCAxNjoxNzo0MSIsImV4cCI6MTc3ODgyOTQ2NCwiaXNzIjoiSXNzdWVyX0RldmVsb3BtZW50In0.bm3PHtk85gPMFfMfl92VnRwuKGZlPVzt2-qLl3Alcx4";
 	}
 	/// <summary>
 	/// メタデータを取得する

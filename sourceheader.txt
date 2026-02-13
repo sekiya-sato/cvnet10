@@ -1,0 +1,16 @@
+/*
+# file name
+[ファイル名]
+
+# description
+[内容説明]
+
+# example
+ViewModel側:
+[使用例の説明]
+ViewModel側:
+[使用例の説明]
+
+instraction: ソースコードを説明し、xamlからの具体的な使用例を見せて
+shortcut: ctl+E,D ドキュメントフォーマット  ctl+E,F 選択範囲フォーマット  ctl+R,G Usingの整理
+*/

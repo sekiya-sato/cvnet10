@@ -232,8 +232,8 @@
                     Margin="10,160,10,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
-                    d:Text="メモ：デザイン画面"
-                    Text="{Binding CurrentEdit.ExpDate}"
+                    d:Text="202612311000"
+                    Text="{Binding CurrentEdit.ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
                     TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignBody}" />
                 <TextBox
                     Grid.Column="1"
@@ -280,8 +280,15 @@
                     HorizontalContentAlignment="Left"
                     d:Text="区分名"
                     IsReadOnly="True"
-                    Text="{Binding CurrentEdit.Disp0}"
-                    TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignBody}" />
+                    TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignBody}" >
+                    <TextBox.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="CurrentEdit.Code_Shain" />
+                            <Binding Path="CurrentEdit.Mei_Shain" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                    
+                </TextBox>
                 <Button
                     Width="100"
                     Height="30"

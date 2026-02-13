@@ -2,8 +2,8 @@
 /// <summary>
 /// SettingSystemView.xaml の相互作用ロジック
 /// </summary>
-public partial class SettingSystemView : Helpers.BaseWindow {
-	public SettingSystemView() {
+public partial class SysSetConfigView : Helpers.BaseWindow {
+	public SysSetConfigView() {
 		InitializeComponent();
 	}
 }

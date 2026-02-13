@@ -13,17 +13,17 @@ namespace Cvnet10Wpfclient.ViewModels;
 public partial class SettingSystemViewModel : Helpers.BaseViewModel {
     private SystemSettingsStore _store=new();
     private SystemSettingsDocument _currentSettings = new();
-    private string? _originalUrl;
+    private string _originalUrl = string.Empty;
 
 
     [ObservableProperty]
-    private string? url;
+    private string url = string.Empty;
 
     [ObservableProperty]
-    private string? loginId;
+    private string loginId = string.Empty;
 
-    [ObservableProperty]
-    private string? loginPassword;
+	[ObservableProperty]
+    private string loginPassword = string.Empty;
 
     [RelayCommand]
     private void Init() {
@@ -73,9 +73,9 @@ public partial class SettingSystemViewModel : Helpers.BaseViewModel {
 
     private void LoadSettings() {
         _currentSettings = _store.Load();
-        Url = _currentSettings.ConnectionStrings.Url ?? AppCurrent.Config.GetConnectionString("Url");
-        LoginId = _currentSettings.Parameters.LoginId ?? AppCurrent.Config.GetSection("Parameters")?["LoginId"];
-        LoginPassword = _currentSettings.Parameters.LoginPass ?? AppCurrent.Config.GetSection("Parameters")?["LoginPass"];
+        Url = _currentSettings.ConnectionStrings.Url ?? AppGlobal.Config.GetConnectionString("Url") ?? string.Empty;
+        LoginId = _currentSettings.Parameters.LoginId ?? AppGlobal.Config.GetSection("Parameters")?["LoginId"] ?? string.Empty;
+        LoginPassword = _currentSettings.Parameters.LoginPass ?? AppGlobal.Config.GetSection("Parameters")?["LoginPass"] ?? string.Empty;
         _originalUrl = Url;
     }
 }

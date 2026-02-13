@@ -54,6 +54,19 @@ public partial class SysLogin : BaseDbClass {
 	[property: ColumnSizeDml(14)]
 	[property: DefaultValue("")]
 	string lastDate = string.Empty;
+	/// <summary>
+	/// 社員CD
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string code_Shain = string.Empty;
+	/// <summary>
+	/// 社員名
+	/// </summary>
+	[ObservableProperty]
+	[property: DefaultValue("")]
+	string mei_Shain = string.Empty;
 }
 /// <summary>
 /// ログイン履歴テーブル

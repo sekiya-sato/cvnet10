@@ -1,9 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CodeShare;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Wpfclient.Models;
 using Cvnet10Wpfclient.ViewServices;
+using NPoco.Linq;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -24,10 +27,10 @@ public partial class ZzMainMenuViewModel : ObservableObject {
 	private string? expireDate;
 
 	[ObservableProperty]
-	private string headerTitle = "Creative Vision.net 10";
+	private string headerTitle = "Creative Vision 10";
 
 
-	string _subTitle = "gRPC and HTTP/2.0 Model";
+	string _subTitle = ".net10, gRPC, HTTP/2.0 Model";
 	private DateTime _subStartTime = DateTime.Now;
 	[ObservableProperty]
 	private string subTitle=string.Empty;
@@ -61,7 +64,7 @@ public partial class ZzMainMenuViewModel : ObservableObject {
     }
 
 	void SetSubTitle() {
-		SubTitle = $"{_subTitle}  接続先: {AppCurrent.Config.GetSection("ConnectionStrings")?["Url"]} 開始:{_subStartTime.ToString("MM/dd HH:mm")}";
+		SubTitle = $"{_subTitle}  接続先: {AppGlobal.Config.GetSection("ConnectionStrings")?["Url"]} 開始:{_subStartTime.ToString("MM/dd HH:mm")}";
 	}
 
 	[RelayCommand]
@@ -87,6 +90,36 @@ public partial class ZzMainMenuViewModel : ObservableObject {
             else 
                 window.WindowState = WindowState.Maximized;
 		}
+	}
+	[RelayCommand]
+	private async Task Refresh(CancellationToken cancellationToken) {
+		if (string.IsNullOrEmpty(AppGlobal.LoginJwt))
+			return;
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
+		var loginRefresh = new LoginRefresh() { Token = AppGlobal.LoginJwt };
+		cancellationToken.ThrowIfCancellationRequested();
+		try {
+			LoginReply reply = new() { JwtMessage=string.Empty };
+			var refreshToken = string.Empty;
+			reply = await loginService.LoginRefleshAsync(loginRefresh, AppGlobal.GetDefaultCallContext(cancellationToken));
+			if (reply.Result == 0) {
+				AppGlobal.LoginJwt = reply.JwtMessage;
+				Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
+				if (reply.JwtMessage?.Length > 10) {
+					AppGlobal.LoginJwt = reply.JwtMessage;
+					ExpireDate = reply.Expire.ToDtStrDateTime2();
+				}
+			}
+			if(string.IsNullOrEmpty(reply.JwtMessage)) {
+				AppGlobal.LoginJwt = string.Empty;
+				MessageEx.ShowErrorDialog("ログインRefreshができませんでした", owner: ClientLib.GetActiveView(this));
+			}
+		}
+		catch (OperationCanceledException ex) {
+			MessageEx.ShowErrorDialog(ex.Message, owner: ClientLib.GetActiveView(this));
+			return;
+		}
+
 	}
 
 	[RelayCommand]
@@ -137,13 +170,13 @@ public partial class ZzMainMenuViewModel : ObservableObject {
 
 		// 3. 次の秒の切り替わりまで非同期で待機
 		await Task.Delay(delayUntilNextSecond);
+		UpdateDateTime();
 		_timer = new DispatcherTimer {
 			Interval = TimeSpan.FromSeconds(1)
 		};
 		_timer.Tick += (s, e) => UpdateDateTime();
 		_timer.Start();
 		culture.DateTimeFormat.Calendar = new System.Globalization.JapaneseCalendar();
-		UpdateDateTime();
 	}
 
 	private void UpdateDateTime() {
