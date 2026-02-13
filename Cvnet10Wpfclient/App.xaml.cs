@@ -12,8 +12,11 @@ using NLog.Extensions.Logging;
 using ProtoBuf.Grpc.ClientFactory;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Threading;
 
 namespace Cvnet10Wpfclient;
 /// <summary>
@@ -22,9 +25,11 @@ namespace Cvnet10Wpfclient;
 public partial class App : Application {
 	public static IHost? AppHost { get; private set; }
 	public static ThemeService ThemeService { get; } = new();
+	private static readonly Logger AppLogger = LogManager.GetCurrentClassLogger();
 
 	public App() {
 		InitializeLanguage();
+		RegisterGlobalExceptionHandlers();
 		AppHost = CreateHostBuilder().Build();
 	}
 
@@ -51,6 +56,53 @@ public partial class App : Application {
 		var culture = Thread.CurrentThread.CurrentCulture;
 		XmlLanguage language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
 		FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(language));
+	}
+
+	private void RegisterGlobalExceptionHandlers() {
+		DispatcherUnhandledException += OnDispatcherUnhandledException;
+		AppDomain.CurrentDomain.UnhandledException += OnAppDomainUnhandledException;
+		TaskScheduler.UnobservedTaskException += OnTaskSchedulerUnobservedTaskException;
+	}
+
+	private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) {
+		HandleUnhandledException(e.Exception, "DispatcherUnhandledException");
+		e.Handled = true;
+	}
+
+	private static void OnTaskSchedulerUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e) {
+		HandleUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+		e.SetObserved();
+	}
+
+	private static void OnAppDomainUnhandledException(object? sender, UnhandledExceptionEventArgs e) {
+		if (e.ExceptionObject is Exception exception) {
+			HandleUnhandledException(exception, "AppDomain.UnhandledException");
+			return;
+		}
+
+		AppLogger.Error("Unhandled exception (AppDomain.UnhandledException): {ExceptionObject}", e.ExceptionObject);
+		ShowUnhandledExceptionMessage(new Exception("予期しないエラーが発生しました。"));
+	}
+
+	private static void HandleUnhandledException(Exception exception, string source) {
+		AppLogger.Error(exception, "Unhandled exception: {Source}", source);
+		ShowUnhandledExceptionMessage(exception);
+	}
+
+	private static void ShowUnhandledExceptionMessage(Exception exception) {
+		var dispatcher = Current?.Dispatcher;
+		if (dispatcher == null || dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished) {
+			return;
+		}
+
+		var message = $"予期しないエラーが発生しました。\n\n{exception.Message}";
+		void Show() => MessageBox.Show(message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+
+		if (dispatcher.CheckAccess()) {
+			Show();
+		} else {
+			dispatcher.Invoke(Show);
+		}
 	}
 
 	/// <summary>
@@ -142,34 +194,7 @@ public partial class App : Application {
 		var configuration = host.Services.GetRequiredService<IConfiguration>() as IConfigurationRoot
 			?? throw new InvalidOperationException("IConfigurationRoot is not available.");
 
-
-
 		AppGlobal.Init(configuration, host.Services);
 	}
 }
 
-/// <summary>
-/// gRPCサーバ側でサブパスが必要な場合に、クライアント側のリクエストURIを適切に書き換えるためのハンドラー
-/// </summary>
-public class SubPathHandler : DelegatingHandler {
-	private readonly string _subPath;
-
-	public SubPathHandler(string subPath) {
-		_subPath = "/" + subPath.Trim('/');
-	}
-
-	protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
-
-		var uri = request.RequestUri!;
-		var builder = new UriBuilder(uri);
-		var originalPath = uri.AbsolutePath;
-
-		// パスの連結
-		builder.Path = _subPath + originalPath;
-		request.RequestUri = builder.Uri;
-
-		//System.Diagnostics.Debug.WriteLine($"SubPathHandler: Rewritten URI = {request.RequestUri}");
-
-		return await base.SendAsync(request, cancellationToken);
-	}
-}

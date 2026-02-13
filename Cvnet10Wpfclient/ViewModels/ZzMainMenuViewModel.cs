@@ -115,7 +115,7 @@ public partial class ZzMainMenuViewModel : ObservableObject {
 				MessageEx.ShowErrorDialog("ログインRefreshができませんでした", owner: ClientLib.GetActiveView(this));
 			}
 		}
-		catch (OperationCanceledException ex) {
+		catch (Exception ex) {
 			MessageEx.ShowErrorDialog(ex.Message, owner: ClientLib.GetActiveView(this));
 			return;
 		}
