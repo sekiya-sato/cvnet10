@@ -8,12 +8,10 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
-using NLog.Config;
 using NLog.Extensions.Logging;
 using ProtoBuf.Grpc.ClientFactory;
 using System.IO;
 using System.Net.Http;
-using System.Security.Policy;
 using System.Windows;
 using System.Windows.Markup;
 
@@ -49,6 +47,7 @@ public partial class App : Application {
 		if (Thread.CurrentThread.CurrentCulture == null) {
 			return;
 		}
+		// 現在のスレッドのカルチャを取得し、WPFの言語設定に適用
 		var culture = Thread.CurrentThread.CurrentCulture;
 		XmlLanguage language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
 		FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(language));
@@ -64,7 +63,11 @@ public partial class App : Application {
 		var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "_";
 		return Host.CreateDefaultBuilder()
 			.ConfigureAppConfiguration(builder => {
-				// ユーザー設定ファイルの追加
+				// 各設定ファイルの読み込み
+				builder.SetBasePath(Directory.GetCurrentDirectory());
+				builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+				builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
+				// ユーザー設定ファイルの追加 (最後に適用したほうが優先順位が高い)
 				var userSettingsPath = SystemSettingsStore.SettingsFilePath;
 				if (!string.IsNullOrWhiteSpace(userSettingsPath)) {
 					var directory = Path.GetDirectoryName(userSettingsPath);
@@ -78,9 +81,6 @@ public partial class App : Application {
 						});
 					}
 				}
-				builder.SetBasePath(Directory.GetCurrentDirectory());
-				builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-				builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 			})
 			.ConfigureLogging((context, logging) => {
 				logging.ClearProviders(); // 既定のログプロバイダーをクリア
@@ -144,11 +144,13 @@ public partial class App : Application {
 
 
 
-		AppCurrent.Init(configuration, host.Services);
+		AppGlobal.Init(configuration, host.Services);
 	}
 }
 
-
+/// <summary>
+/// gRPCサーバ側でサブパスが必要な場合に、クライアント側のリクエストURIを適切に書き換えるためのハンドラー
+/// </summary>
 public class SubPathHandler : DelegatingHandler {
 	private readonly string _subPath;
 

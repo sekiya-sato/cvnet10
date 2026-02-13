@@ -17,7 +17,7 @@ public partial class SettingSystemViewModel {
     [RelayCommand(IncludeCancelCommand = true)]
     private async Task Test01Async(CancellationToken cancellationToken) {
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg101_Op_Query,
@@ -28,7 +28,7 @@ public partial class SettingSystemViewModel {
 				))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) as System.Collections.IList;
 
 			if (list != null) {

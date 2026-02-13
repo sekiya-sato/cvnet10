@@ -58,7 +58,7 @@ public partial class MenuData : ObservableObject {
 			new MenuData {
 				Header = "開始処理：システム設定",
 				AddInfo = "構成",
-				ViewType = typeof(SettingSystemView),
+				ViewType = typeof(SysSetConfigView),
 				IsDialog = true
 				}
 			}

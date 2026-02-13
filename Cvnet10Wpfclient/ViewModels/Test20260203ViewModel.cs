@@ -34,7 +34,7 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 		TestConnectStatusText = "接続中...リスト取得";
 		try {
 			cancellationToken.ThrowIfCancellationRequested();
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg101_Op_Query,
 				DataType = typeof(QueryListParam),
 				DataMsg = Common.SerializeObject(new QueryListParam(
@@ -42,7 +42,7 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 					where: "Id between @0 and @1", order: "Code asc",
 					parameters: ["1" ,"9999" ]
 		))};
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType);
 			var list0 = list as IList<Test202601Master>;
 			if (list0 != null) {
@@ -76,9 +76,9 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 		TestConnectStatusText = "接続中...変換実行";
 		try {
 			cancellationToken.ThrowIfCancellationRequested();
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 202601, Flag = CvnetFlag.MSg041_ConvertDbInit };
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 			TestConnectStatusText = $"Convert OK";
 		}
 		catch (RpcException rpcEx) {
@@ -96,9 +96,9 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 		TestConnectStatusText = "接続中...環境変数";
 		try {
 			cancellationToken.ThrowIfCancellationRequested();
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg003_GetEnv };
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType);
 			TestConnectStatusText = $"GetEnv OK";
 		}
@@ -124,11 +124,11 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 			try {
 				cancellationToken.ThrowIfCancellationRequested();
 				// 追加処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+				var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(InsertParam);
 				msg.DataMsg = Common.SerializeObject(new InsertParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+				var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 				if(item != null) {
 					var item0 = item as Test202601Master;
@@ -153,11 +153,11 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 			try {
 				cancellationToken.ThrowIfCancellationRequested();
 				// 処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+				var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(UpdateParam);
-				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!), SelectedTestMaster?.Vdu??0));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+				msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+				var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 				// 修正の場合、特に不要
 				if (item != null) {
@@ -181,11 +181,11 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 			try {
 				cancellationToken.ThrowIfCancellationRequested();
 				// 処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+				var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(DeleteParam);
-				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!), SelectedTestMaster.Vdu));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+				msg.DataMsg = Common.SerializeObject(new DeleteParam(typeof(Test202601Master), Common.SerializeObject(SelectedTestMaster!)));
+				var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 				var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 				if (item != null) {
 					TestMasters.Remove(SelectedTestMaster);
@@ -202,11 +202,11 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 		try {
 			cancellationToken.ThrowIfCancellationRequested();
 			// 処理を実行
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg701_TestCase001 };
 			msg.DataType = typeof(QuerybyIdParam);
 			msg.DataMsg = Common.SerializeObject(new QuerybyIdParam(typeof(Test202601Master), 4));
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken));
 			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType);
 			if (item != null) {
 			}

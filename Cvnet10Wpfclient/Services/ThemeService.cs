@@ -1,6 +1,15 @@
+/*
+# file name
+ThemeService.cs
+
+# description
+Light/Dark テーマの切り替えを管理するサービスクラスを実装します。
+
+# example
+ToggleTheme() で切り替え
+*/
 using MaterialDesignThemes.Wpf;
 using System.Windows;
-using System.Windows.Media;
 
 namespace Cvnet10Wpfclient.Services;
 
@@ -34,8 +43,6 @@ public sealed class ThemeService {
 		var materialTheme = _paletteHelper.GetTheme();
 		materialTheme.SetBaseTheme(theme == AppTheme.Dark ? BaseTheme.Dark : BaseTheme.Light);
 		_paletteHelper.SetTheme(materialTheme);
-		resources["AppCommonBackgroundBrush"] = new SolidColorBrush(
-			theme == AppTheme.Dark ? Color.FromRgb(0x1F, 0x1F, 0x1F) : Color.FromRgb(0xFA, 0xEB, 0xD7));
 
 		CurrentTheme = theme;
 	}

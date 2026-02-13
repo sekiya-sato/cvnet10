@@ -49,7 +49,6 @@
                     <GradientStop Color="{DynamicResource winBorderColor3}" Offset="1" />
                 </LinearGradientBrush>
             </Border.BorderBrush>
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -202,6 +201,7 @@
                                 <StackPanel>
                                     <TextBlock Text="Alerts" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
                                     <TextBlock Text="3" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
+                                    <Button Content="Refresh Token" Command="{Binding RefreshCommand}"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>

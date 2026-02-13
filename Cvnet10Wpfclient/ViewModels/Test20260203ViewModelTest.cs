@@ -26,7 +26,7 @@ public partial class Test20260203ViewModel {
 	/// <param name="channel"></param>
 	/// <returns></returns>
 	async Task<string> TestCreateLogin() {
-		var loginService = AppCurrent.GetgRPCService<ILoginService>();
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
 		var now = DateTime.UtcNow;
 
 		var loginRequest = new LoginRequest {
@@ -39,8 +39,8 @@ public partial class Test20260203ViewModel {
 
 		var reply = await loginService.CreateLoginAsync(loginRequest);
 		if (reply.Result == 0) {
-			AppCurrent.LoginJwt = reply.JwtMessage;
-			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+			AppGlobal.LoginJwt = reply.JwtMessage;
+			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
 			return await Task.FromResult<string>($"ログイン成功: {reply.JwtMessage}");
 		}
 		else {
@@ -53,7 +53,7 @@ public partial class Test20260203ViewModel {
 	/// <param name="channel"></param>
 	/// <returns></returns>
 	async Task<string> TestLogin() {
-		var loginService = AppCurrent.GetgRPCService<ILoginService>();
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
 		var now = DateTime.UtcNow;
 
 		var loginRequest = new LoginRequest {
@@ -66,10 +66,10 @@ public partial class Test20260203ViewModel {
 
 		var reply = await loginService.LoginAsync(loginRequest);
 		if (reply.Result == 0) {
-			AppCurrent.LoginJwt = reply.JwtMessage;
-			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+			AppGlobal.LoginJwt = reply.JwtMessage;
+			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
 			if (reply.JwtMessage?.Length > 10) {
-				AppCurrent.LoginJwt = reply.JwtMessage;
+				AppGlobal.LoginJwt = reply.JwtMessage;
 			}
 			return await Task.FromResult<string>($"ログイン成功: {reply.JwtMessage}");
 		}
@@ -85,14 +85,14 @@ public partial class Test20260203ViewModel {
 	/// <param name="channel"></param>
 	/// <returns></returns>
 	async Task<string> TestLoginRefreshNoAuth() {
-		var loginService = AppCurrent.GetgRPCService<ILoginService>();
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
 		var now = DateTime.UtcNow;
 		var loginRequest = new LoginRefresh { Token = dummyToken, Info = Common.SerializeObject(subTestGetInfo()) };
 
 		var reply = await loginService.LoginRefleshAsync(loginRequest);
 		if (reply.Result == 0) {
-			AppCurrent.LoginJwt = reply.JwtMessage;
-			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+			AppGlobal.LoginJwt = reply.JwtMessage;
+			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
 			return await Task.FromResult<string>($"ログイン成功: {reply.JwtMessage}");
 		}
 		else {
@@ -105,14 +105,14 @@ public partial class Test20260203ViewModel {
 	/// <param name="channel"></param>
 	/// <returns></returns>
 	async Task<string> TestLoginRefresh() {
-		var loginService = AppCurrent.GetgRPCService<ILoginService>();
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
 		var now = DateTime.UtcNow;
 		var loginRequest = new LoginRefresh { Token = dummyToken,Info = Common.SerializeObject(subTestGetInfo()) };
-		AppCurrent.LoginJwt = dummyToken;
-		var reply = await loginService.LoginRefleshAsync(loginRequest, AppCurrent.GetDefaultCallContext());
+		AppGlobal.LoginJwt = dummyToken;
+		var reply = await loginService.LoginRefleshAsync(loginRequest, AppGlobal.GetDefaultCallContext());
 		if (reply.Result == 0) {
-			AppCurrent.LoginJwt = reply.JwtMessage;
-			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+			AppGlobal.LoginJwt = reply.JwtMessage;
+			Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
 			return await Task.FromResult<string>($"ログイン成功: {reply.JwtMessage}");
 		}
 		else {
@@ -120,10 +120,10 @@ public partial class Test20260203ViewModel {
 		}
 	}
 	async Task<string> TestQueryMsg() {
-		var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
-		AppCurrent.LoginJwt = dummyToken;
+		var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+		AppGlobal.LoginJwt = dummyToken;
 		var msg = new CvnetMsg { Flag = CvnetFlag.MSg050_Test };
-		var reply =  await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext());
+		var reply =  await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext());
 		var payload = string.IsNullOrWhiteSpace(reply.DataMsg) ? "[]" : reply.DataMsg;
 		var list = Common.DeserializeObject<List<Test202601Master>>(payload) ?? [];
 		TestMasters = new ObservableCollection<Test202601Master>(list);

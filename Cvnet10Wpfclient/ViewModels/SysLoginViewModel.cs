@@ -96,7 +96,7 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 		 
 		 */
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg101_Op_Query,
@@ -105,7 +105,7 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 					itemType: tabletype
 				))
 			};
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) as System.Collections.IList;
 
 			if (list != null) {
@@ -122,26 +122,27 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 
 	[RelayCommand]
 	public void DoSelShain() {
-		/*
 		var selWin = new Views.Sub.SelectWinView();
 		var vm = selWin.DataContext as Sub.SelectWinViewModel;
 		if (vm == null) return;
-		vm.InitList(typeof(MasterShain), "");
+		vm.SetParam(typeof(MasterShain), "");
+		vm.InitParam = (int)Current.Id_Shain;
 		var ret = ClientLib.ShowDialogView(selWin, this);
 		if (ret != true) return;
 		var meisho = vm.Current as MasterShain;
 		var cur = CurrentEdit as SysLogin;
 		if (meisho == null || cur == null) return;
 		cur.Id_Shain = meisho.Id;
-		cur.Disp0 = $"{meisho.Code} {meisho.Name}";
-		*/
+		cur.Code_Shain = meisho.Code;
+		cur.Mei_Shain = meisho.Name;
 	}
 	[RelayCommand]
 	public void DoSetPass() {
-		if (MessageEx.ShowQuestionDialog("表示されているパスワードの文字を暗号化しますか？", owner: ClientLib.GetActiveView(this)) != System.Windows.MessageBoxResult.Yes)
-			return;
 		var cur = CurrentEdit as SysLogin;
 		if (cur == null) return;
+		var warning = (cur.CryptPassword.Length >= 20) ? "すでに暗号化されているようですが、\n": "";
+		if (MessageEx.ShowQuestionDialog(warning+"表示されているパスワードの文字を暗号化しますか？", owner: ClientLib.GetActiveView(this)) != MsgBoxResult.Yes)
+			return;
 		var newPass = Common.EncryptLoginRequest(cur.CryptPassword, cur.VdateC);
 		if(!string.IsNullOrEmpty(newPass))
 			cur.CryptPassword = newPass;
@@ -159,7 +160,7 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 		dialog.DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		// Show save file dialog box
-		bool? ret = dialog.ShowDialog();
+		bool? ret = dialog.ShowDialog(ClientLib.GetActiveView(this));
 
 		// Process save file dialog box results
 		if (ret != true) return;
@@ -173,18 +174,18 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 	[RelayCommand(IncludeCancelCommand = true)]
 	public async Task DoUpdate(CancellationToken ct) {
 		if (ListData == null || CurrentEdit == null) return;
-		if (MessageEx.ShowQuestionDialog("更新しますか？", owner: ClientLib.GetActiveView(this)) != System.Windows.MessageBoxResult.Yes)
+		if (MessageEx.ShowQuestionDialog("更新しますか？", owner: ClientLib.GetActiveView(this)) != MsgBoxResult.Yes)
 			return;
 		try {
 			ct.ThrowIfCancellationRequested();
 			if (CurrentEdit.Id == 0) 
 				return;
 			// 処理を実行
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 			msg.DataType = typeof(UpdateParam);
-			msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(SysLogin), Common.SerializeObject(CurrentEdit), Current.Vdu));
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			msg.DataMsg = Common.SerializeObject(new UpdateParam(typeof(SysLogin), Common.SerializeObject(CurrentEdit)));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var item = Common.DeserializeObject<SysLogin>(reply.DataMsg ?? "");
 			// 修正の場合、特に不要
 			if (item != null)
@@ -198,14 +199,14 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 	[RelayCommand(IncludeCancelCommand = true)]
 	public async Task DoDelete(CancellationToken ct) {
 		if (ListData.Count>0 && Current.Id >0) {
-			if (MessageEx.ShowQuestionDialog("削除しますか？", owner: ClientLib.GetActiveView(this)) != System.Windows.MessageBoxResult.Yes)
+			if (MessageEx.ShowQuestionDialog("削除しますか？", owner: ClientLib.GetActiveView(this)) != MsgBoxResult.Yes)
 				return;
 			// 処理を実行
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 			msg.DataType = typeof(DeleteParam);
 			msg.DataMsg = Common.SerializeObject(new DeleteByIdParam(typeof(SysLogin), CurrentEdit.Id , Current.Vdu));
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			if (reply.Code != 0) {
 				MessageEx.ShowErrorDialog("削除できませんでした", owner: ClientLib.GetActiveView(this));
 				return;
@@ -222,16 +223,16 @@ internal partial class SysLoginViewModel : Helpers.BaseViewModel {
 	[RelayCommand]
 	public async Task DoInsert(CancellationToken ct) {
 		if (ListData != null && CurrentEdit != null) {
-			if (MessageEx.ShowQuestionDialog("挿入しますか？", owner: ClientLib.GetActiveView(this)) != System.Windows.MessageBoxResult.Yes)
+			if (MessageEx.ShowQuestionDialog("挿入しますか？", owner: ClientLib.GetActiveView(this)) != MsgBoxResult.Yes)
 				return;
 			try {
 				ct.ThrowIfCancellationRequested();
 				// 追加処理を実行
-				var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+				var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 				var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg201_Op_Execute };
 				msg.DataType = typeof(InsertParam);
 				msg.DataMsg = Common.SerializeObject(new InsertParam(typeof(SysLogin), Common.SerializeObject(CurrentEdit)));
-				var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+				var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 				var item = Common.DeserializeObject<SysLogin>(reply.DataMsg ?? "");
 				if (item != null) {
 					ListData.Add(item);

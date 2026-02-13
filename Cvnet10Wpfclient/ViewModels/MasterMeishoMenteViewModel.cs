@@ -51,7 +51,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 	async Task DoList(CancellationToken ct) {
 		StartTime = DateTime.Now;
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg101_Op_Query,
@@ -62,7 +62,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 				))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) as System.Collections.IList;
 
 			if (list != null) {
@@ -83,7 +83,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 		if (MessageEx.ShowQuestionDialog("新規登録しますか？", owner: ClientLib.GetActiveView(this)) != MessageBoxResult.Yes) return;
 
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
@@ -91,7 +91,7 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 				DataMsg = Common.SerializeObject(new InsertParam(typeof(MasterMeisho), Common.SerializeObject(CurrentEdit)))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType) as MasterMeisho;
 
 			if (item != null) {
@@ -117,16 +117,16 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 		if (MessageEx.ShowQuestionDialog("更新しますか？", owner: ClientLib.GetActiveView(this)) != MessageBoxResult.Yes) return;
 
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			// Currentの内容をCurrentEditで更新（ID等はCurrentのものを使用）
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
 				DataType = typeof(UpdateParam),
-				DataMsg = Common.SerializeObject(new UpdateParam(typeof(MasterMeisho), Common.SerializeObject(CurrentEdit), Current.Vdu))
+				DataMsg = Common.SerializeObject(new UpdateParam(typeof(MasterMeisho), Common.SerializeObject(CurrentEdit)))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType) as MasterMeisho;
 
 			if (item != null) {
@@ -150,15 +150,15 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseViewModel {
 		if (MessageEx.ShowQuestionDialog($"コード「{Current.Code}」を削除しますか？", owner: ClientLib.GetActiveView(this)) != MessageBoxResult.Yes) return;
 
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
 				DataType = typeof(DeleteParam),
-				DataMsg = Common.SerializeObject(new DeleteParam(typeof(MasterMeisho), Common.SerializeObject(Current), Current.Vdu))
+				DataMsg = Common.SerializeObject(new DeleteParam(typeof(MasterMeisho), Common.SerializeObject(Current)))
 			};
 
-			await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 
 			ListData.Remove(Current);
 			Count = ListData.Count;

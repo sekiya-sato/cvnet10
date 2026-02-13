@@ -42,7 +42,7 @@ public partial class MasterSysKanriMenteViewModel : Helpers.BaseViewModel {
 	async Task DoList(CancellationToken ct) {
 		var timeStart = DateTime.Now;
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg101_Op_Query,
@@ -52,7 +52,7 @@ public partial class MasterSysKanriMenteViewModel : Helpers.BaseViewModel {
 				))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var list = Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) as System.Collections.IList;
 
 			if (list != null) {
@@ -72,22 +72,21 @@ public partial class MasterSysKanriMenteViewModel : Helpers.BaseViewModel {
 
 	[RelayCommand(IncludeCancelCommand = true)]
 	public async Task DoUpdate(CancellationToken ct) {
-		if (MessageEx.ShowQuestionDialog("更新しますか？", owner: ClientLib.GetActiveView(this)) != System.Windows.MessageBoxResult.Yes)
+		if (MessageEx.ShowQuestionDialog("更新しますか？", owner: ClientLib.GetActiveView(this)) != MsgBoxResult.Yes)
 			return;
 		try {
-			var coreService = AppCurrent.GetgRPCService<ICvnetCoreService>();
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg201_Op_Execute,
 				DataType = typeof(UpdateParam),
 				DataMsg = Common.SerializeObject(new UpdateParam(
 					itemType: typeof(MasterSysman),
-					item: Common.SerializeObject(Current),
-					originalVdu: Current.Vdu
+					item: Common.SerializeObject(Current)
 				))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppCurrent.GetDefaultCallContext(ct));
+			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			var item = Common.DeserializeObject(reply.DataMsg ?? "", reply.DataType) as MasterSysman;
 			if (item != null) {
 				Current = item;

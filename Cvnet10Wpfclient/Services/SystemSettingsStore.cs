@@ -1,4 +1,11 @@
-using Cvnet10Wpfclient.ViewServices;
+/*
+# file name
+SystemSettingsStore.cs
+
+# description
+システム設定ファイル (systemsettings.json) の読み書きを行うクラスを提供します。
+
+*/
 using Newtonsoft.Json;
 using NLog;
 using System.IO;
@@ -69,10 +76,18 @@ public sealed class SystemSettingsDocument {
 }
 
 public sealed class ConnectionStringsSettings {
-    public string? Url { get; set; }
+    public string Url { get; set; } = "https://localhost:5012";
 }
 
 public sealed class ParametersSettings {
-    public string? LoginId { get; set; }
-    public string? LoginPass { get; set; }
+    public string LoginId { get; set; } = string.Empty;
+	/// <summary>
+	/// ToDo: リリース時には暗号化するか、保存しないようにする
+	/// </summary>
+	public string LoginPass { get; set; } = string.Empty;
+	/// <summary>
+	/// ToDo: リリース時には暗号化するか、保存しないようにする
+	/// </summary>
+	public string LoginJwt { get; set; } = string.Empty;
+
 }

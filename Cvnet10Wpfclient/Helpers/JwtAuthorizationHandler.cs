@@ -8,13 +8,13 @@ namespace Cvnet10Wpfclient.Helpers;
 /// </summary>
 internal sealed class JwtAuthorizationHandler : DelegatingHandler {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
-        var token = AppCurrent.LoginJwt;
+        var token = AppGlobal.LoginJwt;
         if (!string.IsNullOrWhiteSpace(token)) {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         if (!request.Headers.Contains("X-ClientId")) {
-            request.Headers.Add("X-ClientId", AppCurrent.ClientId.ToString());
+            request.Headers.Add("X-ClientId", AppGlobal.ClientId.ToString());
         }
 
         return base.SendAsync(request, cancellationToken);

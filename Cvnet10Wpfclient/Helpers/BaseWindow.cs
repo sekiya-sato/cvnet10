@@ -1,4 +1,24 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿/*
+# file name
+BaseWindow.cs
+
+# description
+新規作成のViewに、CloseMessage登録とInitCommand()の実行処理を提供する
+
+# example
+View側:
+<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views.NewTargetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Cvnet10Wpfclient.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
+    xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
+*/
+using CommunityToolkit.Mvvm.Messaging;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
@@ -8,6 +28,8 @@ namespace Cvnet10Wpfclient.Helpers;
 public class BaseWindow : Window {
 	public BaseWindow() {
 		// ViewModel 側から Dialog を閉じるための共通メッセージ登録
+		// 複数のウィンドウで使う場合には登録してある全てのWindowが反応する
+		/*
 		WeakReferenceMessenger.Default.Register<DialogCloseMessage>(this, (recipient, message) => {
 			if (recipient is Window win) {
 				// Show/ShowDialog の違いで DialogResult 設定が例外になる場合があるため安全に扱う
@@ -21,6 +43,21 @@ public class BaseWindow : Window {
 				win.Owner?.Activate();
 			}
 		});
+		*/
+	}
+	/// <summary>
+	/// 派生クラスでは必ずbase.OnPreviewKeyDown(e);を呼ぶ(ESCを有効にしたい場合)
+	/// </summary>
+	/// <param name="e"></param>
+	protected override void OnPreviewKeyDown(KeyEventArgs e) {
+		base.OnPreviewKeyDown(e);
+
+		if (e.Key == Key.Escape) {
+			e.Handled = true;
+			Close();
+			if(Owner is Window owner)
+				owner.Activate();
+		}
 	}
 
 	protected override void OnContentRendered(EventArgs e) {
@@ -30,7 +67,7 @@ public class BaseWindow : Window {
 		var dc = DataContext;
 		if (dc == null) return;
 
-		var prop = dc.GetType().GetProperty("InitCommand", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+		var prop = dc.GetType().GetProperty("InitCommand", BindingFlags.Instance | BindingFlags.Public);
 		if (prop?.GetValue(dc) is ICommand cmd && cmd.CanExecute(null)) {
 			cmd.Execute(null);
 		}

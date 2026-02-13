@@ -21,14 +21,14 @@ public partial class LoginViewModel : Helpers.BaseViewModel {
 
 	[RelayCommand]
 	private void Init() {
-		var parameters = AppCurrent.Config.GetSection("Parameters");
+		var parameters = AppGlobal.Config.GetSection("Parameters");
 		LoginId = parameters?.GetSection("LoginId")?.Value;
 		LoginPassword = parameters?.GetSection("LoginPass")?.Value;
 	}
 
 	[RelayCommand(IncludeCancelCommand = true)]
 	private async Task Login(CancellationToken cancellationToken) {
-		var loginService = AppCurrent.GetgRPCService<ILoginService>();
+		var loginService = AppGlobal.GetgRPCService<ILoginService>();
 		var now = DateTime.Now;
 		if(string.IsNullOrEmpty(LoginId) || string.IsNullOrEmpty(LoginPassword)) {
 			MessageEx.ShowErrorDialog("ログインID、パスワードを入力してください。", owner: ClientLib.GetActiveView(this));
@@ -43,12 +43,12 @@ public partial class LoginViewModel : Helpers.BaseViewModel {
 			Info = Common.SerializeObject(subGetInfo()),
 		};
 		try {
-			var reply = await loginService.LoginAsync(loginRequest, AppCurrent.GetDefaultCallContext(cancellationToken));
+			var reply = await loginService.LoginAsync(loginRequest, AppGlobal.GetDefaultCallContext(cancellationToken));
 			if (reply.Result == 0) {
-				AppCurrent.LoginJwt = reply.JwtMessage;
-				Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppCurrent.LoginJwt}");
+				AppGlobal.LoginJwt = reply.JwtMessage;
+				Debug.WriteLine($"{DateTime.Now} AppCurrent.LoginJwt={AppGlobal.LoginJwt}");
 				if (reply.JwtMessage?.Length > 10) {
-					AppCurrent.LoginJwt = reply.JwtMessage;
+					AppGlobal.LoginJwt = reply.JwtMessage;
 					LoginData = reply;
 					ExitWithResultTrue();
 				}
