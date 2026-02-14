@@ -4,13 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Cvnet10Wpfclient.ViewServices"
+    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MessageBoxEx"
     Width="600"
     MinHeight="200"
     MaxHeight="320"
-    AllowsTransparency="True"
-    Background="Transparent"
+    Background="Black"
     FontSize="15"
     Foreground="#201f1e"
     Loaded="Window_Loaded"
@@ -18,8 +18,16 @@
     ResizeMode="NoResize"
     SizeToContent="Height"
     WindowStartupLocation="CenterOwner"
-    WindowStyle="None"
+    WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="120"
+                            CornerRadius="30"
+                            GlassFrameThickness="0"
+                            ResizeBorderThickness="2"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
     <Window.Resources>
         <Style x:Key="MessageBoxButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White" />
@@ -28,11 +36,11 @@
         </Style>
     </Window.Resources>
     <Border
-        Margin="12"
-        Background="{Binding BackgroundColor}"
+        Margin="4"
         BorderBrush="#a19f9d"
+        Background="FloralWhite"
         BorderThickness="1"
-        CornerRadius="8">
+        CornerRadius="10">
         <Border.Style>
             <Style TargetType="Border">
                 <Style.Triggers>
