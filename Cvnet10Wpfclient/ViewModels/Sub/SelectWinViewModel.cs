@@ -49,12 +49,12 @@ public partial class SelectWinViewModel : Helpers.BaseViewModel {
 				ListData = new ObservableCollection<dynamic>(list.Cast<dynamic>());
 				Count = ListData.Count;
 				Current = ListData.First() ?? new MasterMeisho();
+				Helpers.LongMsg longMsg = WeakReferenceMessenger.Default.Send(new Helpers.LongMsg(InitParam));
 			}
 		}
 		catch (Exception ex) {
 			MessageEx.ShowErrorDialog($"データ取得失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));
 		}
-		WeakReferenceMessenger.Default.Send(new Helpers.ShortMsg(InitParam.ToString())); // 最初のカーソル位置を設定する [Set the initial cursor position]
 	}
 
 

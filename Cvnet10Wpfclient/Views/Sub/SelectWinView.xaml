@@ -89,6 +89,7 @@
             <Grid Grid.Row="2" Grid.Column="0">
                 <DataGrid
                     x:Name="SelectGrid"
+                    helpers:DataGridLongMsgFocus.IsEnabled="True"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     AutoGenerateColumns="False"
                     FrozenColumnCount="2"
@@ -100,6 +101,8 @@
                     RowBackground="LightGoldenrodYellow"
                     RowHeight="35"
                     SelectedItem="{Binding Current}"
+                    helpers:DataGridDoubleClick.Command="{Binding DoSelectCommand}"
+                    helpers:DataGridScrollAssistant.AutoScrollToSelectedItem="True"
                     SelectionMode="Single"
                     VerticalScrollBarVisibility="Visible">
                     <DataGrid.Resources>
