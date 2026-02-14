@@ -96,12 +96,13 @@ public partial class LoginService : ILoginService {
 			if (orgPlanePass != restorePass)
 				return Task.FromResult(new LoginReply { JwtMessage = "", Result = -1 });
 			if (DateTime.Now.ToDtStrDateTimeShort().CompareTo(loginData.ExpDate) > 0) // Nowのほうが大きければエラー [If "Now" is greater, an error occurs]
-				return Task.FromResult(new LoginReply { JwtMessage = "", Result = -1 });
+				return Task.FromResult(new LoginReply { JwtMessage = "", Result = -2 });
 			loginData.Vdu = Common.GetVdate();
 			loginData.LastDate = loginData.VdateU.ToDtStrDateTimeShort();
 			_db.Update(loginData, ["Vdu", "LastDate"]);
 			claims.Add(new Claim(ClaimTypes.Role,
 				(loginData.Id_Role != 0) ? loginData.Id_Role.ToString() : loginData.Id_Shain.ToString()));
+			claims.Add(new Claim(ClaimTypes.SerialNumber, loginData.Id.ToString()));
 		}
 		// this._configuration.GetSection("WebAuthJwt").GetSection("Lifetime").Value
 		if (_configuration.GetSection("WebAuthJwt") != null) {
