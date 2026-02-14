@@ -3,29 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:controls="clr-namespace:Cvnet10Wpfclient.Views.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
         xmlns:models="clr-namespace:Cvnet10Wpfclient.Models"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="{Binding HeaderTitle}"
         Height="780"
         Width="1200"
-        WindowStyle="None"
-        AllowsTransparency="True"
+        WindowStyle="SingleBorderWindow"
+        AllowsTransparency="False"
         ResizeMode="CanResizeWithGrip"
         Background="Transparent"
         Icon="pack://application:,,,/cvnet.ico"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
-        MouseDown="Window_MouseDown">
-
-    <Window.Resources>
-    </Window.Resources>
+        >
 
     <Window.DataContext>
         <vm:ZzMainMenuViewModel />
     </Window.DataContext>
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="48"
+                            CornerRadius="60"
+                            GlassFrameThickness="0"
+                            ResizeBorderThickness="8"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -105,7 +112,7 @@
                         </Border>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button Style="{StaticResource WindowButton}" 
         Command="{Binding ToggleThemeCommand}" 
         ToolTip="テーマ切り替え (Light/Dark)" 
@@ -170,9 +177,9 @@
                                     <behaviors:InvokeCommandAction Command="{Binding DoMenuCommand}" />
                                 </behaviors:EventTrigger>
                                 <behaviors:EventTrigger EventName="SelectedItemChanged">
-                                    <behaviors:InvokeCommandAction Command="{Binding SelectMenuCommand}"
-                                                PassEventArgsToCommand="True"
-                                                EventArgsParameterPath="NewValue" />
+                                    <behaviors:InvokeCommandAction
+                                        Command="{Binding SelectMenuCommand}"
+                                        CommandParameter="{Binding SelectedItem, ElementName=MenuTree}" />
                                 </behaviors:EventTrigger>
                             </behaviors:Interaction.Triggers>
                         </TreeView>
@@ -185,25 +192,24 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch">
-                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}">
-                                <StackPanel>
-                                    <TextBlock Text="Online Users" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
-                                    <TextBlock Text="128" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}" Margin="16,0,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="Sync Jobs" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
-                                    <TextBlock Text="42" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource DashboardCard}" Width="220" Background="{DynamicResource panelColor}" Margin="16,0,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="Alerts" Style="{StaticResource MetricLabel}" Foreground="{DynamicResource SubTitleColor}"/>
-                                    <TextBlock Text="3" Foreground="{DynamicResource TitleColor}" FontSize="32" FontWeight="Bold" />
-                                    <Button Content="Refresh Token" Command="{Binding RefreshCommand}"/>
-                                </StackPanel>
-                            </Border>
+                            <controls:DashboardCardView Width="220"
+                                                         Background="{DynamicResource panelColor}"
+                                                         Title="Online Users"
+                                                         Value="128" />
+                            <controls:DashboardCardView Width="220"
+                                                         Background="{DynamicResource panelColor}"
+                                                         Margin="16,0,0,0"
+                                                         Title="Sync Jobs"
+                                                         Value="42" />
+                            <controls:DashboardCardView Width="220"
+                                                         Background="{DynamicResource panelColor}"
+                                                         Margin="16,0,0,0"
+                                                         Title="Alerts"
+                                                         Value="3">
+                                <controls:DashboardCardView.CardContent>
+                                    <Button Content="Refresh Token" Command="{Binding RefreshCommand}" />
+                                </controls:DashboardCardView.CardContent>
+                            </controls:DashboardCardView>
                         </StackPanel>
 
                         <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20" Background="{DynamicResource panelColor}" Margin="0,16,0,0">
@@ -227,11 +233,6 @@
                         </Border>
                     </Grid>
                 </Grid>
-                <ResizeGrip HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,8,8"
-                            IsTabStop="False"
-                            Opacity="0.6" />
             </Grid>
         </Border>
     </Border>
