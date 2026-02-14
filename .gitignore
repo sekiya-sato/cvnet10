@@ -175,7 +175,7 @@ s*.db
 *.slnLaunch.user
 .mcp.json
 nlog.config
-*.g.cs
 systemsettings.json
-
+printstream.jar
+printstream.dll
 
