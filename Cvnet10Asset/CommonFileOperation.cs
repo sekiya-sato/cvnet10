@@ -16,7 +16,7 @@ public sealed partial class Common {
 	public static async Task<int> Backup4GeneAsync(string targetFile, CancellationToken cancellationToken = default) {
 		if (!File.Exists(targetFile))
 			return 0;
-		var dir = Path.GetDirectoryName(targetFile);
+		var dir = Path.GetDirectoryName(targetFile)??string.Empty;
 		var fname = Path.GetFileName(targetFile);
 		var nowstr = DateTime.Now.ToString("yyyyMMdd");
 		try {

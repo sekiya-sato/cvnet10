@@ -22,13 +22,13 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 	[ObservableProperty]
 	Test202601Master? selectedTestMaster;
 
-	partial void OnSelectedTestMasterChanged(Test202601Master? oldValue, Test202601Master newValue) {
+	partial void OnSelectedTestMasterChanged(Test202601Master? oldValue, Test202601Master? newValue) {
 		if (newValue == null) {
 			CurrentEdit = new();
 			return;
 		}
 		if (oldValue?.Id != newValue.Id) {
-			CurrentEdit = Common.CloneObject<Test202601Master>(SelectedTestMaster);
+			CurrentEdit = Common.CloneObject<Test202601Master>(newValue);
 		}
 	}
 

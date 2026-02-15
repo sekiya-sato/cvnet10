@@ -66,6 +66,7 @@ public partial class SysLogin : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: DefaultValue("")]
+	[property: ColumnSizeDml(100)]
 	string mei_Shain = string.Empty;
 }
 /// <summary>
@@ -146,3 +147,52 @@ public partial class SysHistJwtSub : ObservableObject {
 	string macAddress = string.Empty;
 }
 
+/// <summary>
+/// 削除履歴テーブル
+/// [Login history table]
+/// </summary>
+[PrimaryKey("Id", AutoIncrement = true)]
+[Comment("システム：マスター系操作履歴テーブル")]
+[KeyDml("SysHistryMaster_nk1", false, "Vdc")]
+[KeyDml("SysHistryMaster_nk2", false, "TableName")]
+public partial class SysHistryMaster : BaseDbClass {
+	/// <summary>
+	/// TableName (テーブル名)
+	/// [TableName (Table Name)]
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
+	[property: DefaultValue("")]
+	string tableName = string.Empty;
+	/// <summary>
+	/// テーブルIdユニークキー
+	/// </summary>
+	[ObservableProperty]
+	long id_Table;
+	/// <summary>
+	/// テーブル操作Type
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
+	Type operationType = typeof(string);
+	/// <summary>
+	/// テーブルType
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
+	Type tableType = typeof(string);
+	/// <summary>
+	/// 変更前JSONデータ
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(1000)]
+	[property: DefaultValue("")]
+	string itemBefore = string.Empty;
+	/// <summary>
+	/// 変更後JSONデータ
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(1000)]
+	[property: DefaultValue("")]
+	string itemAfter = string.Empty;
+}
