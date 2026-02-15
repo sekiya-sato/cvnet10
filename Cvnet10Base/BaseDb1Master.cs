@@ -63,6 +63,7 @@ public partial class MasterShain : BaseDbClass, IBaseCodeName {
 	/// 店舗名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Tenpo = string.Empty;
 	/// <summary>
@@ -81,6 +82,7 @@ public partial class MasterShain : BaseDbClass, IBaseCodeName {
 	/// 部門名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Bumon = string.Empty;
 	/// <summary>
@@ -162,6 +164,7 @@ public partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName {
 	/// 店舗名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Tenpo = string.Empty;
 	/// <summary>
@@ -288,6 +291,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// アイテム名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Item = string.Empty;
 	/// <summary>
@@ -306,6 +310,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// 展示会名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Tenji = string.Empty;
 	/// <summary>
@@ -324,6 +329,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// メーカー名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Maker = string.Empty;
 	/// <summary>
@@ -342,6 +348,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// シーズン名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Season = string.Empty;
 	/// <summary>
@@ -360,6 +367,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// 素材名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Material = string.Empty;
 	/// <summary>
@@ -378,6 +386,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// 原産国名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Gensan = string.Empty;
 	/// <summary>
@@ -461,6 +470,7 @@ public partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// 倉庫名
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
 	[property: DefaultValue("")]
 	string mei_Soko = string.Empty;
 	/// <summary>

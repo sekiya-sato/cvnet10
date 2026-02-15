@@ -145,6 +145,10 @@ server {
 	- プロンプトメモ:
 	- 現在ファイルのみ、 string? [項目名]; のすべてに対し、 string [項目名] =string.Empty; さらに属性 [property: DefaultValue("")] をつける。また、string 型で初期値が="19010101"; の場合、属性 [property: DefaultValue("19010101")] をつける。
 	- 1) ソースコードを説明し、具体的な使用例を見せて 2) upgrade assesment for .NET 10 / C# 14 for only this sourcecode. 3) 全て説明は日本語で。4) 出力はマークダウン形式。
+- 2026/02/12-02/15
+	- クライアント・サーバ間のCRUDオペレーションの整理、Tran系テーブル作成、Cvnet8とCvnetClientのクライアント画面を除くモジュールの統合
+	- サーバ側：PrintロジックはIKVMパッケージ、FtpはFluentFTP、スケジューラはNCrontab.Scheduler.AspNetCoreを使う。
+	- Geminiのgemプロンプトの整理、Copilotのmdファイルの整理
 
 
 
