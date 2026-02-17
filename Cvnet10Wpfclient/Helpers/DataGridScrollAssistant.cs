@@ -1,4 +1,19 @@
-﻿using System.Windows;
+﻿/*
+# file name
+DataGridScrollAssistant.cs
+
+# description
+DataGrid の選択行が変わったときに 自動でその行へスクロールするための 添付プロパティ AutoScrollToSelectedItem を提供します。
+true にすると SelectionChanged にイベントを登録し、選択項目を ScrollIntoView して可視化します。
+
+# example
+View側:
+<DataGrid
+    ItemsSource="{Binding ListData}"
+    SelectedItem="{Binding Current}"
+    helpers:DataGridScrollAssistant.AutoScrollToSelectedItem="True" />
+*/
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 

@@ -102,73 +102,79 @@ public partial class BaseDbHasAddress : BaseDbClass {
 /// <summary>
 /// 汎用詳細クラス
 /// </summary>
-public partial class DetailDbClass : ObservableObject {
+[NoCreate]
+public partial class BaseDetailClass : ObservableObject {
 	/// <summary>
 	/// 予備項目1
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(120)]
 	[property: DefaultValue("")]
 	string yobi1 = string.Empty;
 	/// <summary>
 	/// 予備項目1
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(120)]
 	[property: DefaultValue("")]
 	string yobi2 = string.Empty;
+}
+/// <summary>
+/// Id、コード、名称のみの短い名称データ
+/// </summary>
+[NoCreate]
+public partial class CodeNameView : ObservableObject {
+	/// <summary>
+	/// 対象テーブルのId
+	/// </summary>
+	[ObservableProperty]
+	long sid;
+	/// <summary>
+	/// 対象テーブルのCode
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: DefaultValue("")]
+	string cd = string.Empty;
+	/// <summary>
+	/// 対象テーブルのName
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(100)]
+	[property: DefaultValue("")]
+	string mei = string.Empty;
+
+	public CodeNameView() :base() {
+	}
+	public CodeNameView(MasterMeisho meisho) {
+		Sid = meisho.Id;
+		Cd = meisho.Code;
+		Mei = meisho.Name;
+	}
+	public CodeNameView(long id, string code, string name) {
+		Sid = id;
+		Cd = code;
+		Mei = name;
+	}
 }
 /// <summary>
 /// 汎用カテゴリ名称マスター
 /// </summary>
 [NoCreate]
-public sealed partial class MasterGeneralMeisho : ObservableObject {
+public sealed partial class MasterGeneralMeisho : CodeNameView {
 	/// <summary>
 	/// 名称区分
 	/// </summary>
 	[ObservableProperty]
+	[property: ColumnSizeDml(10)]
 	[property: DefaultValue("")]
-	string kubun = string.Empty;
-	[ObservableProperty]
-	[property: DefaultValue("")]
-	string kubunName = string.Empty;
+	string kb = string.Empty;
 	/// <summary>
-	/// 名称マスタId, Code, Name
+	/// 区分名
 	/// </summary>
 	[ObservableProperty]
-	long id_Code;
-	[ObservableProperty]
+	[property: ColumnSizeDml(40)]
 	[property: DefaultValue("")]
-	string code = string.Empty;
-	[ObservableProperty]
-	[property: DefaultValue("")]
-	string name = string.Empty;
-	/* ToDo: JSON シリアライズにプロパティを含める含めないの制御は必要かどうか検討する IBaseSerializeMeisho の必要性
-	[JsonIgnore]
-	public bool Ser { get; set; } = false;
-	public bool ShouldSerializeKubunName() => Ser;
-	public bool ShouldSerializeName() => Ser;
-	 */
+	string kbname = string.Empty;
 }
-
-
-/// <summary>
-/// バージョン情報
-/// </summary>
-public sealed class VersionInfo {
-	public string Product { get; set; }= string.Empty;
-	/// <summary>
-	/// バージョン文字列
-	/// </summary>
-	public string Version { get; set; } = string.Empty;
-	/// <summary>
-	/// ビルド日
-	/// </summary>
-	public DateTime BuildDate { get; set; }
-	/// <summary>
-	/// サーバー起動時間
-	/// </summary>
-	public DateTime StartTime { get; set; }
-
-	public string BaseDir { get; set; } = string.Empty;
-}
-
 

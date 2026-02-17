@@ -180,8 +180,8 @@ public static class Test202601MasterExtensions {
 		if (master.Jcolsiz == null || master.Jcolsiz.Count == 0) return;
 
 		// ID のリストを取得
-		var colIds = master.Jcolsiz.Select(x => x.Id_MeiCol).Where(x => x > 0).Distinct().ToList();
-		var sizIds = master.Jcolsiz.Select(x => x.Id_MeiSiz).Where(x => x > 0).Distinct().ToList();
+		var colIds = master.Jcolsiz.Select(x => x.Id_Col).Where(x => x > 0).Distinct().ToList();
+		var sizIds = master.Jcolsiz.Select(x => x.Id_Siz).Where(x => x > 0).Distinct().ToList();
 		var allIds = colIds.Union(sizIds).ToList();
 
 		if (allIds.Count == 0) return;
@@ -194,11 +194,11 @@ public static class Test202601MasterExtensions {
 
 		// 各 MasterShohinColSiz に名称をセット
 		foreach (var item in master.Jcolsiz) {
-			if (item.Id_MeiCol > 0 && meishoDict.TryGetValue(item.Id_MeiCol, out var colMei)) {
+			if (item.Id_Col > 0 && meishoDict.TryGetValue(item.Id, out var colMei)) {
 				item.Code_Col = colMei.Code;
 				item.Mei_Col = colMei.Name;
 			}
-			if (item.Id_MeiSiz > 0 && meishoDict.TryGetValue(item.Id_MeiSiz, out var sizMei)) {
+			if (item.Id_Siz > 0 && meishoDict.TryGetValue(item.Id, out var sizMei)) {
 				item.Code_Siz = sizMei.Code;
 				item.Mei_Siz = sizMei.Name;
 			}
@@ -223,8 +223,8 @@ public static class Test202601MasterExtensions {
 		if (masterList.Count == 0) return;
 
 		// 全レコードから ID を収集
-		var allColIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiCol).Where(x => x > 0).Distinct();
-		var allSizIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiSiz).Where(x => x > 0).Distinct();
+		var allColIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_Col).Where(x => x > 0).Distinct();
+		var allSizIds = masterList.SelectMany(m => m.Jcolsiz!).Select(x => x.Id_Siz).Where(x => x > 0).Distinct();
 		var allIds = allColIds.Union(allSizIds).ToList();
 
 		if (allIds.Count == 0) return;
@@ -238,11 +238,11 @@ public static class Test202601MasterExtensions {
 		// 各マスタの jcolsiz に名称をセット
 		foreach (var master in masterList) {
 			foreach (var item in master.Jcolsiz!) {
-				if (item.Id_MeiCol > 0 && meishoDict.TryGetValue(item.Id_MeiCol, out var colMei)) {
+				if (item.Id_Col > 0 && meishoDict.TryGetValue(item.Id ,out var colMei)) {
 					item.Code_Col = colMei.Code;
 					item.Mei_Col = colMei.Name;
 				}
-				if (item.Id_MeiSiz > 0 && meishoDict.TryGetValue(item.Id_MeiSiz, out var sizMei)) {
+				if (item.Id_Siz > 0 && meishoDict.TryGetValue(item.Id, out var sizMei)) {
 					item.Code_Siz = sizMei.Code;
 					item.Mei_Siz = sizMei.Name;
 				}
@@ -267,13 +267,13 @@ public static class Test202601MasterExtensions {
 			master.ListMeisho =
 				[
 					..Enumerable.Range(1, 10)
-						.Select((Func<int, MasterGeneralMeisho>)(i => new MasterGeneralMeisho { Kubun = $"B{i:D2}" }))
+						.Select((Func<int, MasterGeneralMeisho>)(i => new MasterGeneralMeisho { Kb = $"B{i:D2}" }))
 				];
 		}
 
 		// ID のリストを取得
-		var kubuns = master.ListMeisho.Select(x => x.Kubun).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-		var names = master.ListMeisho.Select(x => x.Id_Code).Where(x => x > 0).Distinct().ToList();
+		var kubuns = master.ListMeisho.Select(x => x.Kb).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+		var names = master.ListMeisho.Select(x => x.Sid).Where(x => x > 0).Distinct().ToList();
 
 
 		// MasterMeisho を一度だけ取得 (Dictionary でキャッシュ)
@@ -288,11 +288,11 @@ public static class Test202601MasterExtensions {
 
 		// 各 MasterShohinColSiz に名称をセット
 		foreach (var item in master.ListMeisho) {
-			if (!string.IsNullOrEmpty(item.Kubun) && meishoKubuns.TryGetValue(item.Kubun, out var codeKubun))
-				item.KubunName = codeKubun.Name;
-			if (item.Id_Code > 0 && meishoNames.TryGetValue(item.Id_Code, out var nameMei)) {
-				item.Code = nameMei.Code;
-				item.Name = nameMei.Name;
+			if (!string.IsNullOrEmpty(item.Kb) && meishoKubuns.TryGetValue(item.Kb, out var codeKubun))
+				item.Kbname = codeKubun.Name;
+			if (item.Sid > 0 && meishoNames.TryGetValue(item.Sid, out var nameMei)) {
+				item.Cd = nameMei.Code;
+				item.Mei = nameMei.Name;
 			}
 		}
 	}
@@ -313,7 +313,7 @@ public static class Test202601MasterExtensions {
 				list.ListMeisho =
 					[
 						..Enumerable.Range(1, 10)
-							.Select((Func<int, MasterGeneralMeisho>)(i => new MasterGeneralMeisho { Kubun = $"B{i:D2}" }))
+							.Select((Func<int, MasterGeneralMeisho>)(i => new MasterGeneralMeisho { Kb = $"B{i:D2}" }))
 					];
 			}
 		}
@@ -322,17 +322,17 @@ public static class Test202601MasterExtensions {
 		if (masterList.Count == 0) return;
 
 		// 全レコードから ID を収集
-		var allColIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiCol).Where(x => x > 0).Distinct();
-		var allSizIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_MeiSiz).Where(x => x > 0).Distinct();
+		var allColIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_Col).Where(x => x > 0).Distinct();
+		var allSizIds = masterList.Where(m => m.Jcolsiz != null).SelectMany(m => m.Jcolsiz!).Select(x => x.Id_Siz).Where(x => x > 0).Distinct();
 		var allIds = allColIds.Union(allSizIds).ToList();
 
 		var listMeishoSource = masterList.SelectMany(
 			m => m.ListMeisho ?? Enumerable.Empty<MasterGeneralMeisho>());
 
-		var kubuns = listMeishoSource.Select(x => x.Kubun)
+		var kubuns = listMeishoSource.Select(x => x.Kb)
 			.Where(x => !string.IsNullOrEmpty(x))
 			.Distinct();
-		var names = listMeishoSource.Select(x => x.Id_Code)
+		var names = listMeishoSource.Select(x => x.Sid)
 			.Where(x => x > 0)
 			.Distinct();
 
@@ -351,11 +351,11 @@ public static class Test202601MasterExtensions {
 		foreach (var master in masterList) {
 			if(master.ListMeisho == null) continue;
 			foreach (var item in master.ListMeisho) {
-				if (!string.IsNullOrEmpty(item.Kubun) && meishoKubuns.TryGetValue(item.Kubun, out var codeKubun))
-					item.KubunName = codeKubun.Name;
-				if (item.Id_Code > 0 && meishoNames.TryGetValue(item.Id_Code, out var nameMei)) {
-					item.Code = nameMei.Code;
-					item.Name = nameMei.Name;
+				if (!string.IsNullOrEmpty(item.Kb) && meishoKubuns.TryGetValue(item.Kb, out var codeKubun))
+					item.Kbname = codeKubun.Name;
+				if (item.Sid > 0 && meishoNames.TryGetValue(item.Sid, out var nameMei)) {
+					item.Cd = nameMei.Code;
+					item.Mei = nameMei.Name;
 				}
 			}
 		}

@@ -40,10 +40,17 @@ public partial class MasterTorihiki : BaseDbHasAddress, IBaseCodeName {
 	[property: DefaultValue("")]
 	string kana = string.Empty;
 	/// <summary>
-	/// 担当者CD
+	/// 担当者
 	/// </summary>
 	[ObservableProperty]
 	long id_Shain;
+	/// <summary>
+	/// 社員データ
+	/// </summary>
+	[ObservableProperty]
+	[property: SerializedColumn]
+	[property: ColumnSizeDml(100)]
+	CodeNameView vShain = new();
 	/// <summary>
 	/// 掛率
 	/// </summary>
@@ -58,17 +65,20 @@ public partial class MasterTorihiki : BaseDbHasAddress, IBaseCodeName {
 	/// 締日1
 	/// </summary>
 	[ObservableProperty]
-	int shimeBi1;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumShime shime1;
 	/// <summary>
 	/// 締日2
 	/// </summary>
 	[ObservableProperty]
-	int shimeBi2;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumShime shime2;
 	/// <summary>
 	/// 締日3
 	/// </summary>
 	[ObservableProperty]
-	int shimeBi3;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumShime shime3;
 	/// <summary>
 	/// 入金/支払月
 	/// </summary>
@@ -78,22 +88,38 @@ public partial class MasterTorihiki : BaseDbHasAddress, IBaseCodeName {
 	/// 入金/支払日
 	/// </summary>
 	[ObservableProperty]
-	int payDay;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumShime payDay;
 	/// <summary>
 	/// 入金/支払方法
 	/// </summary>
 	[ObservableProperty]
-	long id_MeishoPay;
+	long id_PayMethod;
+	/// <summary>
+	/// 入金方法データ
+	/// </summary>
+	[ObservableProperty]
+	[property: SerializedColumn]
+	[property: ColumnSizeDml(100)]
+	CodeNameView vPayMethod = new();
 	/// <summary>
 	/// 請求/支払フラグ
 	/// </summary>
 	[ObservableProperty]
-	int isPay = 0;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumYesNo isPay;
 	/// <summary>
 	/// 請求/支払先
 	/// </summary>
 	[ObservableProperty]
 	long id_Paysaki;
+	/// <summary>
+	/// 請求先データ
+	/// </summary>
+	[ObservableProperty]
+	[property: SerializedColumn]
+	[property: ColumnSizeDml(100)]
+	CodeNameView vPaysaki = new();
 	/// <summary>
 	/// 取引先詳細
 	/// </summary>
@@ -134,6 +160,8 @@ public sealed partial class MasterToriDetail : ObservableObject {
 /// <summary>
 /// 得意先マスター
 /// </summary>
+[PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("uq1", true, "Code")]
 public sealed partial class MasterTokui : MasterTorihiki {
 	/// <summary>
 	/// 得意先種別
@@ -145,7 +173,8 @@ public sealed partial class MasterTokui : MasterTorihiki {
 	/// 在庫管理フラグ
 	/// </summary>
 	[ObservableProperty]
-	int isZaiko = 1;
+	[property: ColumnSizeDml(ctype: ColumnType.Enum)]
+	EnumYesNo isZaiko = EnumYesNo.Yes;
 	/// <summary>
 	/// 名称リスト
 	/// </summary>
@@ -154,31 +183,12 @@ public sealed partial class MasterTokui : MasterTorihiki {
 	[property: ColumnSizeDml(1000)]
 	List<MasterGeneralMeisho>? jsub;
 }
-/// <summary>
-/// 得意先種別
-/// </summary>
-public enum EnumTokui {
-	/// <summary>
-	/// 倉庫
-	/// </summary>
-	Soko = 0,
-	/// <summary>
-	/// 卸先
-	/// </summary>
-	Oroshi = 1,
-	/// <summary>
-	/// 売仕店
-	/// </summary>
-	UriShi = 3,
-	/// <summary>
-	/// 直営店
-	/// </summary>
-	Tenpo = 6,
-}
 
 /// <summary>
 /// 仕入先マスター
 /// </summary>
+[PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("uq1", true, "Code")]
 public partial class MasterShiire : MasterTorihiki {
 	/// <summary>
 	/// 名称リスト

@@ -46,7 +46,7 @@ public partial class ExDatabaseSqlite : ExDatabase {
 			}
 		}
 	}
-	static string _default_varchar = " NOT NULL DEFAULT ''"; // not null ではない varchar型のデフォルト定義
+	static readonly string _default_varchar = " NOT NULL DEFAULT ''"; // not null ではない varchar型のデフォルト定義
 
 	/// <summary>
 	/// クラスの中に含まれるプロパティの配列を"Name database型"で返す
@@ -169,11 +169,6 @@ public partial class ExDatabaseSqlite : ExDatabase {
 		}
 		return ret;
 	}
-	/*
-		 
-		*/
-
-
 }
 
 

@@ -71,7 +71,7 @@ public partial class LoginService : ILoginService {
 					JwtUnixTime = jwt.ValidTo.ToUnixTime(),
 					ExpDate = jwt.ValidTo.ToLocalTime().ToDtStrDateTimeShort(),
 					Ip = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? ".",
-					Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info), 
+					Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info)??new(), 
 					Op = "LoginAsync First"
 				};
 				if(userRequest.Info!=null)
@@ -125,7 +125,7 @@ public partial class LoginService : ILoginService {
 				JwtUnixTime = jwt.ValidTo.ToUnixTime(),
 				ExpDate = jwt.ValidTo.ToLocalTime().ToDtStrDateTimeShort(),
 				Ip = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? ".",
-				Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info),
+				Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info)??new(),
 				Op = "LoginAsync"
 			};
 			_db.Insert<SysHistJwt>(loginHist);
@@ -192,7 +192,7 @@ public partial class LoginService : ILoginService {
 			JwtUnixTime = jwt.ValidTo.ToUnixTime(),
 			ExpDate = jwt.ValidTo.ToLocalTime().ToDtStrDateTimeShort(),
 			Ip = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? ".",
-			Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info),
+			Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info) ?? new(),
 			Op = "LoginRefleshAsync"
 		};
 		_db.Insert<SysHistJwt>(loginHist);
@@ -247,7 +247,7 @@ public partial class LoginService : ILoginService {
 				JwtUnixTime = jwt.ValidTo.ToUnixTime(),
 				ExpDate = jwt.ValidTo.ToLocalTime().ToDtStrDateTimeShort(),
 				Ip = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? ".",
-				Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info),
+				Jsub = Common.DeserializeObject<SysHistJwtSub>(userRequest.Info) ?? new(),
 				Op = "CreateLoginAsync"
 			};
 			_db.Insert<SysHistJwt>(loginHist);

@@ -1,4 +1,5 @@
 ﻿using Cvnet10Base;
+using Cvnet10Base.Share;
 using System.Linq;
 using Cvnet10Asset;
 using NLog;
@@ -25,10 +26,11 @@ public class ConvertDb {
 		CnvMasterMeisho(isInit);
 		CnvMasterShain(isInit);
 		CnvMasterEndCustomer(isInit);
-		.. CnvOptionMasterEndCustomer();
+		 */
 		CnvMasterShohin(isInit);
 		CnvMasterTokui(isInit);
 		CnvMasterShiire(isInit);
+		/*
 		 */
 		logger.Info("変換処理終了");
 		return;
@@ -110,11 +112,11 @@ public class ConvertDb {
 		var retList = new List<MasterGeneralMeisho>(pairs.Count);
 		foreach (var meisho in meishoList) {
 			retList.Add(new MasterGeneralMeisho() {
-				Kubun = meisho.Kubun,
-				KubunName = meisho.KubunName,
-				Id_Code = meisho.Id,
-				Code = meisho.Code,
-				Name = meisho.Name,
+				Kb = meisho.Kubun,
+				Kbname= meisho.KubunName,
+				Sid = meisho.Id,
+				Cd = meisho.Code,
+				Mei = meisho.Name,
 			});
 		}
 		return retList;
@@ -193,10 +195,11 @@ public class ConvertDb {
 				Name = getString(rec, "名前"),
 				Kana = getString(rec, "フリカナ"),
 				Mail = getString(rec, "メール"),
-				Code_Tenpo = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+				VTenpo = new() {
+					Cd = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+				},
 				Id_Bumon = bumonMeisho?.Id ?? 0,
-				Code_Bumon = getString(rec, "部門CD"),
-				Mei_Bumon = bumonMeisho?.Name ?? string.Empty,
+				VBumon = new(bumonMeisho??new()),
 			};
 			var meiList = ConverterGeneralMeisho(5, "E", rec);
 			if (meiList.Count > 0)
@@ -223,7 +226,9 @@ public class ConvertDb {
 				Mail = getString(rec, "メール"),
 				Tel = getString(rec, "TEL").DefaultIfEmpty(getString(rec, "TEL2")),
 				Memo = getString(rec, "拡張メモ"),
-				Code_Tenpo = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+				VTenpo = new() {
+					Cd = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+				},
 			};
 			var meiList = ConverterGeneralMeisho(10, "K", rec);
 			if (meiList.Count > 0)
@@ -236,7 +241,7 @@ public class ConvertDb {
 	/// </summary>
 	/// <param name="isInit"></param>
 	/// <returns></returns>
-	public int CnvOptionMasterEndCustomer() {
+	public int CnvOptionMasterEndCustomer__NoUse() {
 		const string sql = "select 顧客CD,拡張メモ from HC$master_kokyaku where 顧客CD>'.' and 拡張メモ>'.'  order by 顧客CD"; // 顧客分類 'K01'-'K10'
 		var rows = _fromDb.Fetch<Dictionary<string, object>>(sql);
 		if (rows.Count == 0)
@@ -315,10 +320,10 @@ public class ConvertDb {
 					var siz = _toDb.FirstOrDefault<MasterMeisho>("where Kubun=@0 and Code=@1", ["SIZ", getString(r, "サイズCD")]);
 					return new MasterShohinColSiz() {
 						Code_Col = getString(r, "色CD"),
-						Id_MeiCol = col?.Id ?? 0,
+						Id_Col = col?.Id ?? 0,
 						Mei_Col = col?.Name ?? string.Empty,
 						Code_Siz = getString(r, "サイズCD"),
-						Id_MeiSiz = siz?.Id ?? 0,
+						Id_Siz = siz?.Id ?? 0,
 						Mei_Siz = siz?.Name ?? string.Empty,
 						Jan1 = getString(r, "JANコード1"),
 						Jan2 = getString(r, "JANコード2"),
@@ -343,7 +348,6 @@ public class ConvertDb {
 where (Kubun ='BRD' and Code =@0) OR (Kubun ='ITM' and Code =@1) OR (Kubun ='TNJ' and Code =@2)
 OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' and Code =@5) OR (Kubun ='MKR' and Code =@6)
 """
-
 			, [getString(rec, "ブランドCD"),
 				getString(rec, "アイテムCD"),
 				getString(rec, "展示会CD"),
@@ -351,22 +355,14 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 				getString(rec, "素材CD"),
 				getString(rec, "原産国CD"),
 				getString(rec, "メーカーCD")]
-			);
-			if (meisho == null)
-				meisho = [];
+			) ?? [];
 			if (meisho.Count == 0 && colsiz.Count == 0)
-				continue;
+				continue; // 1つもマスタがないのは正規商品ではない
+
 			var item = new MasterShohin() {
 				Code = code,
 				Name = getString(rec, "商品名"),
 				Ryaku = getString(rec, "略称"),
-				Code_Brand = getString(rec, "ブランドCD"),
-				Code_Item = getString(rec, "アイテムCD"),
-				Code_Tenji = getString(rec, "展示会CD"),
-				Code_Season = getString(rec, "シーズンCD"),
-				Code_Material = getString(rec, "素材CD"),
-				Code_Gensan = getString(rec, "原産国CD"),
-				Code_Maker = getString(rec, "メーカーCD"),
 				TankaJodaiOrg = getDataInt(rec, "元上代"),
 				TankaJodai = getDataInt(rec, "上代"),
 				TankaGenka = getDataInt(rec, "原価"),
@@ -374,32 +370,34 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 				DayShukka = getString(rec, "デリバリー日", "19010101"),
 				DayNohin = getString(rec, "納品日", "19010101"),
 				DayTento = getString(rec, "店頭投入日", "19010101"),
-				TaxCalc = getDataInt(rec, "消費税計算方法"),
 				Id_Tax = getDataInt(rec, "消費税CD"),
-				IsZaiko = getDataInt(rec, "在庫管理FLG"),
+				IsZaiko = (EnumYesNo)getDataInt(rec, "在庫管理FLG"),
 				MakerHin = getString(rec, "メーカー品番"),
 				SizeKu = getString(rec, "商品サイズ区分", "SIZ"),
-				Code_Soko = getString(rec, "基準倉庫CD"),
+				VSoko = new() {
+					Cd = getString(rec, "基準倉庫CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+				},
 				Memo = getString(rec, "メモ"),
 				Jcolsiz = colsiz.Count > 0 ? colsiz : null,
 				Jgenka = genka.Count > 0 ? genka : null,
 				Jgrade = grade.Count > 0 ? grade : null,
-
-				Id_MeiBrand = meisho.FirstOrDefault(m => m.Kubun == "BRD")?.Id ?? 0,
-				Id_MeiItem = meisho.FirstOrDefault(m => m.Kubun == "ITM")?.Id ?? 0,
-				Id_MeiTenji = meisho.FirstOrDefault(m => m.Kubun == "TNJ")?.Id ?? 0,
-				Id_MeiSeason = meisho.FirstOrDefault(m => m.Kubun == "SZN")?.Id ?? 0,
-				Id_MeiMaterial = meisho.FirstOrDefault(m => m.Kubun == "SZI")?.Id ?? 0,
-				Id_MeiGensan = meisho.FirstOrDefault(m => m.Kubun == "GEN")?.Id ?? 0,
-				Id_MeiMaker = meisho.FirstOrDefault(m => m.Kubun == "MKR")?.Id ?? 0,
-				Mei_Brand = meisho.FirstOrDefault(m => m.Kubun == "BRD")?.Name ?? string.Empty,
-				Mei_Item = meisho.FirstOrDefault(m => m.Kubun == "ITM")?.Name ?? string.Empty,
-				Mei_Tenji = meisho.FirstOrDefault(m => m.Kubun == "TNJ")?.Name ?? string.Empty,
-				Mei_Season = meisho.FirstOrDefault(m => m.Kubun == "SZN")?.Name ?? string.Empty,
-				Mei_Material = meisho.FirstOrDefault(m => m.Kubun == "SZI")?.Name ?? string.Empty,
-				Mei_Gensan = meisho.FirstOrDefault(m => m.Kubun == "GEN")?.Name ?? string.Empty,
-				Mei_Maker = meisho.FirstOrDefault(m => m.Kubun == "MKR")?.Name ?? string.Empty,
 			};
+			if (meisho.Count > 0) {
+				item.VBrand = new(meisho.FirstOrDefault(c => c.Kubun == "BRD") ?? new());
+				item.Id_Brand = item.VBrand.Sid;
+				item.VItem = new(meisho.FirstOrDefault(c => c.Kubun == "ITM") ?? new());
+				item.Id_Item = item.VItem.Sid;
+				item.VTenji = new(meisho.FirstOrDefault(c => c.Kubun == "TNJ") ?? new());
+				item.Id_Tenji = item.VTenji.Sid;
+				item.VSeason = new(meisho.FirstOrDefault(c => c.Kubun == "SZN") ?? new());
+				item.Id_Season = item.VSeason.Sid;
+				item.VMaterial = new(meisho.FirstOrDefault(c => c.Kubun == "SZI") ?? new());
+				item.Id_Material = item.VMaterial.Sid;
+				item.VCountry = new(meisho.FirstOrDefault(c => c.Kubun == "GEN") ?? new());
+				item.Id_Country = item.VCountry.Sid;
+				item.VMaker = new(meisho.FirstOrDefault(c => c.Kubun == "MKR") ?? new());
+				item.Id_Maker = item.VMaker.Sid;
+			}
 			var meiList = ConverterGeneralMeisho(10, "B", rec);
 			if (meiList.Count > 0)
 				item.Jsub = meiList;
@@ -433,15 +431,17 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 				Address3 = getString(rec, "住所3"),
 				Tel = getString(rec, "TEL"),
 				Id_Shain = shain?.Id ?? 0,
+				VShain = new(shain?.Id ?? 0, shain?.Code ?? string.Empty, shain?.Name ?? string.Empty),
 				RateProper = getDataInt(rec, "掛率"),
 				RateSale = getDataInt(rec, "セール掛率"),
-				ShimeBi1 = getDataInt(rec, "締日"),
-				ShimeBi2 = getDataInt(rec, "締日2"),
-				ShimeBi3 = getDataInt(rec, "締日3"),
+				Shime1 = (EnumShime)getDataInt(rec, "締日"),
+				Shime2 = (EnumShime)getDataInt(rec, "締日2"),
+				Shime3 = (EnumShime)getDataInt(rec, "締日3"),
 				PayMonth = getDataInt(rec, "入金予定月"),
-				PayDay = getDataInt(rec, "入金予定日"),
+				PayDay = (EnumShime)getDataInt(rec, "入金予定日"),
 				TenType = (EnumTokui)getDataInt(rec, "店種区分"),
-				IsZaiko = getDataInt(rec, "在庫管理FLG"),
+				IsZaiko = (EnumYesNo)getDataInt(rec, "在庫管理FLG"),
+				IsPay = (EnumYesNo)getDataInt(rec, "請求印刷"),
 				Jdetail = new MasterToriDetail() {
 					BankAccount1 = getString(rec, "振込先1"),
 					BankAccount2 = getString(rec, "振込先2"),
@@ -471,14 +471,15 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 				Address3 = getString(rec, "住所3"),
 				Tel = getString(rec, "TEL"),
 				Id_Shain = shain?.Id ?? 0,
+				VShain = new(shain?.Id ?? 0, shain?.Code ?? string.Empty, shain?.Name ?? string.Empty),
 				RateProper = getDataInt(rec, "掛率"),
 				RateSale = getDataInt(rec, "掛率2"),
-				ShimeBi1 = getDataInt(rec, "締日"),
-				ShimeBi2 = getDataInt(rec, "締日2"),
-				ShimeBi3 = getDataInt(rec, "締日3"),
-				PayMonth = getDataInt(rec, "支払予定月"),
-				PayDay = getDataInt(rec, "支払予定日"),
-				IsPay = getDataInt(rec, "支払印刷"),
+				Shime1 = (EnumShime)getDataInt(rec, "締日"),
+				Shime2 = (EnumShime)getDataInt(rec, "締日2"),
+				Shime3 = (EnumShime)getDataInt(rec, "締日3"),
+				PayMonth = getDataInt(rec, "入金予定月"),
+				PayDay = (EnumShime)getDataInt(rec, "入金予定日"),
+				IsPay = (EnumYesNo)getDataInt(rec, "支払印刷"),
 				Jdetail = new MasterToriDetail() {
 					BankAccount1 = $"{getString(rec, "振込銀行")} {getString(rec, "振込支店")} {getString(rec, "振込種別")} {getString(rec, "振込口座")}"
 				},

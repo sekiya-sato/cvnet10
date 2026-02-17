@@ -15,7 +15,9 @@ namespace Cvnet10DomainLogic;
 /// </summary>
 public partial class ExDatabase : Database {
 
-	readonly int _default_varchar2_length = 255;
+	const int _default_varchar2_length = 255; // Use for GetSqlColumns()
+	const int _default_list_length = 1000; // Use for GetSqlColumns()
+	const string _default_varchar = " default ''";// Use for GetSqlColumns()
 
 	public virtual void Open() {
 		Connection?.Open();
@@ -49,7 +51,6 @@ public partial class ExDatabase : Database {
 	}
 
 
-	static string _default_varchar = " default null";// " default '.'"
 	/// <summary>
 	/// クラスの中に含まれるプロパティの配列を"Name database型"で返す
 	/// [Return an array of properties contained within the class as "Name database type"]
@@ -158,7 +159,7 @@ public partial class ExDatabase : Database {
 					default:
 						if (item.PropertyType.Name.StartsWith("List"))
 							continue;
-						type = $"varchar({_default_varchar2_length}) " + _default_varchar;
+						type = $"varchar({_default_list_length}) " + _default_varchar;
 						break;
 				}
 			}
@@ -302,11 +303,12 @@ public partial class ExDatabase : Database {
 	/// [Create index]
 	/// </summary>
 	/// <param name="tbName">テーブル名</param> [Table name]
-	/// <param name="indexName">インデックス名</param> [Index name]
+	/// <param name="indexSubName">インデックス名</param> [Index name]
 	/// <param name="dbColumn">DBカラム名</param> [DB column name]
 	/// <param name="isForce">強制再作成するかどうか</param> [Whether to force recreation]
 	/// <returns></returns>
-	int CreateIndex(string tbName, string indexName, string dbColumn, bool isUnique = false, bool isForce = false) {
+	int CreateIndex(string tbName, string indexSubName, string dbColumn, bool isUnique = false, bool isForce = false) {
+		var indexName = $"{tbName}_{indexSubName}"; // 必ずテーブル名をつけUniqueになるように
 		// インデックスがあるかどうかの確認 [Check if the index exists]
 		var checkSql = string.Format("select COLUMN_NAME, INDEX_NAME from INFORMATION_SCHEMA.STATISTICS where TABLE_SCHEMA='{0}' and INDEX_NAME='{1}'"
 			, GetCurrentDatabase(), indexName);

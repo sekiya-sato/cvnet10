@@ -12,9 +12,9 @@ namespace Cvnet10Base;
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：ログインID管理テーブル")]
-[KeyDml("SysLogin_uq1",true, "LoginId")]
-[KeyDml("SysLogin_nk2", false, "Id_Shain")]
-[KeyDml("SysLogin_nk3", false, "Id_Role")]
+[KeyDml("uq1",true, "LoginId")]
+[KeyDml("nk2", false, "Id_Shain")]
+[KeyDml("nk3", false, "Id_Role")]
 public sealed partial class SysLogin : BaseDbClass {
 	/// <summary>
 	/// 社員ユニークキー
@@ -55,19 +55,12 @@ public sealed partial class SysLogin : BaseDbClass {
 	[property: DefaultValue("")]
 	string lastDate = string.Empty;
 	/// <summary>
-	/// 社員CD
+	/// 社員データ
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
-	string code_Shain = string.Empty;
-	/// <summary>
-	/// 社員名
-	/// </summary>
-	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: SerializedColumn]
 	[property: ColumnSizeDml(100)]
-	string mei_Shain = string.Empty;
+	CodeNameView vShain = new();
 }
 /// <summary>
 /// ログイン履歴テーブル
@@ -75,8 +68,8 @@ public sealed partial class SysLogin : BaseDbClass {
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：ログイン履歴テーブル")]
-[KeyDml("SysHistJwt_nk1", false, "Id_Login")]
-[KeyDml("SysHistJwt_nk2", false, "JwtUnixTime")]
+[KeyDml("nk1", false, "Id_Login")]
+[KeyDml("nk2", false, "JwtUnixTime")]
 public sealed partial class SysHistJwt : BaseDbClass {
 	/// <summary>
 	/// ログインユニークキー
@@ -94,7 +87,7 @@ public sealed partial class SysHistJwt : BaseDbClass {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	SysHistJwtSub? jsub;
+	SysHistJwtSub jsub=new();
 	/// <summary>
 	/// 有効期限yyyyMMddHHmmss
 	/// </summary>
@@ -132,14 +125,14 @@ public sealed partial class SysHistJwtSub : ObservableObject {
 	[property: DefaultValue("")]
 	string osVer = string.Empty;
 	/// <summary>
-	/// IPアドレス
+	/// IPアドレス : NpocoのJson実装(/src/NPoco/fastJSON/JSON.cs)が内部で直接デフォルト値を生成しているためJsonPropertyは無視される 2026/02/17
 	/// </summary>
 	[ObservableProperty]
 	[property: JsonProperty("IP")]
 	[property: DefaultValue("")]
 	string ipAddress = string.Empty;
 	/// <summary>
-	/// MACアドレス
+	/// MACアドレス : NpocoのJson実装(/src/NPoco/fastJSON/JSON.cs)が内部で直接デフォルト値を生成しているためJsonPropertyは無視される 2026/02/17
 	/// </summary>
 	[ObservableProperty]
 	[property: JsonProperty("MacA")]
@@ -153,8 +146,8 @@ public sealed partial class SysHistJwtSub : ObservableObject {
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：マスター系操作履歴テーブル")]
-[KeyDml("SysHistryMaster_nk1", false, "Vdc")]
-[KeyDml("SysHistryMaster_nk2", false, "TableName")]
+[KeyDml("nk1", false, "Vdc")]
+[KeyDml("nk2", false, "TableName")]
 public sealed partial class SysHistryMaster : BaseDbClass {
 	/// <summary>
 	/// TableName (テーブル名)

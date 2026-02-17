@@ -1,4 +1,5 @@
 ﻿using Cvnet10Base;
+using Cvnet10Base.Share;
 using Cvnet10DomainLogic;
 using NLog;
 
