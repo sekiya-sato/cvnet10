@@ -82,10 +82,27 @@ if (builder.Configuration.GetSection("WebAuthJwt") != null) {
 }
 #endregion
 
+#region スケジューラの処理 ================================================== [Processing of the scheduler]
+builder.Services.AddHostedScheduler(o => o.DateTimeKind = DateTimeKind.Local);
+/* 
+builder.Services.AddSingleton<IScheduledTask, NightlyTask>();
+builder.Services.AddSingleton<IAsyncScheduledTask, NightlyAsyncTask>();
+
+ * cronの書式 [Cron format]
+* * * * *
+| | | | +----- day of week (0 - 6) (Sunday=0)
+| | | +------- month (1 - 12)
+| | +--------- day of month (1 - 31)
+| +----------- hour (0 - 23)
++------------- min (0 - 59)
+分 時 日  月 曜日
+例) 0 0 * * * = 毎日0時0分// 30 12 * * * 毎日12:30// 1,5 * * * * 毎時間1分と5分の2回//* *／6 * * * 6時間ごと
+コントローラからタスクを追加する場合は以下のようにする [When adding a task from the controller, do it as follows]
+https://github.com/thomasgalliker/NCrontab.Scheduler/blob/develop/Samples/NCrontab.Scheduler.AspNetCoreSample/Controllers/SchedulerDemoController.cs
+ */
+#endregion
 
 /*
-// ToDo : スケジューラの処理
-builder.Services.AddHostedScheduler
 // Other(if need) : MCVコントローラの処理
 builder.Services.AddControllers();
  */
@@ -118,15 +135,16 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions {
 });
 /*
 // ToDo : 認証関係の処理
-app.UseAuthentication();
-app.UseAuthorization();
 // Other(if need) : MVCコントローラの処理
 app.MapControllers();
  */
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<LoginService>();
 app.MapGrpcService<CvnetCoreService>();
+app.MapGrpcService<SchedulerService>();
 var appInit = new AppInit(app.Configuration);
 appInit.Init(Cvnet10Base.Sqlite.ExDatabaseSqlite.GetDbConn(connStr));
 

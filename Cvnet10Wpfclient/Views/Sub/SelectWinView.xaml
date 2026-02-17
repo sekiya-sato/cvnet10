@@ -14,8 +14,8 @@
         FontSize="18"
         WindowStartupLocation="Manual"
         BorderBrush="DarkSlateGray"
-                    BorderThickness="0.5,0,1.5,1.5"
-        mc:Ignorable="d">
+        BorderThickness="0.5,0,1.5,1.5"
+    mc:Ignorable="d">
     <helpers:BaseWindow.DataContext>
         <vm:SelectWinViewModel />
     </helpers:BaseWindow.DataContext>
@@ -84,7 +84,7 @@
                 Height="3"
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
+                VerticalAlignment="Center" IsTabStop="False"
                 Background="DarkGray" />
             <Grid Grid.Row="2" Grid.Column="0">
                 <DataGrid
@@ -102,7 +102,6 @@
                     RowHeight="35"
                     SelectedItem="{Binding Current}"
                     helpers:DataGridDoubleClick.Command="{Binding DoSelectCommand}"
-                    helpers:DataGridScrollAssistant.AutoScrollToSelectedItem="True"
                     SelectionMode="Single"
                     VerticalScrollBarVisibility="Visible">
                     <DataGrid.Resources>
@@ -139,11 +138,11 @@
                         <DataGridTextColumn
                             x:Name="Col03"
                             Width="400"
-                            Binding="{Binding Path=Desc0}"
+                            Binding="{Binding Path=Ryaku}"
                             CanUserReorder="True"
                             CanUserResize="True"
                             CanUserSort="True"
-                            Header=" メモ" />
+                            Header=" 略称" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

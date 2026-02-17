@@ -23,7 +23,7 @@ public partial class CvnetCoreService {
 		_db.Insert(item);
 		item.Code = "1235";
 		item.Jsub = new List<MasterGeneralMeisho>();
-		item.Jsub.Add(new MasterGeneralMeisho(){ Kubun="COL", Code="001",Name="ブラック" });
+		item.Jsub.Add(new MasterGeneralMeisho(){ Kb="COL", Cd="001",Mei="ブラック" });
 		_db.Insert(item);
 
 		/*

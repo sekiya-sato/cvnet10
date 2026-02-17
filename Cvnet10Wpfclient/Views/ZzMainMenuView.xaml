@@ -214,14 +214,30 @@
 
                         <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20" Background="{DynamicResource panelColor}" Margin="0,16,0,0">
                             <StackPanel>
-                                <TextBlock Text="選択中メニュー" Style="{StaticResource SectionTitleText}" Foreground="{DynamicResource color9}" />
+                                <TextBlock Text="選択中メニュー  (DoubleClick)" Style="{StaticResource SectionTitleText}" Foreground="{DynamicResource color9}" />
                                 <TextBlock Text="{Binding SelectedMenu.Header}" Foreground="{DynamicResource plainTextColor0}" FontSize="22" FontWeight="Bold" />
                                 <TextBlock Text="{Binding SelectedMenu.AddInfo}" Foreground="{DynamicResource plainTextColor0}" Opacity="0.8" Margin="0,8,0,0" />
-                                <TextBlock Text="メニューを選択すると対応する画面が起動します。"
+                                <TextBlock Text="メニューをダブルクリックすると画面が起動します。"
                                            Foreground="{DynamicResource plainTextColor0}"
                                            Opacity="0.7"
-                                           Margin="0,16,0,0"
+                                           Margin="0,2,0,2"
                                            TextWrapping="Wrap" />
+                                <TextBlock d:Text="マルチウィンドウ画面"
+                                           Foreground="{DynamicResource plainTextColor0}"
+                                           Opacity="0.7"
+                                           Margin="0,2,0,2"
+                                           TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="マルチウィンドウ画面" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedMenu.IsDialog}" Value="True">
+                                                    <Setter Property="Text" Value="ダイアログ画面" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </Border>
 

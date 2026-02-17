@@ -9,7 +9,6 @@ namespace Cvnet10Base;
 /// <summary>
 /// 共通トランザクション（ヘッダ）
 /// </summary>
-[PrimaryKey("Id", AutoIncrement = true)]
 public partial class Tran99All : BaseDbClass {
 	/// <summary>
 	/// 計上日（yyyyMMdd）
@@ -17,12 +16,6 @@ public partial class Tran99All : BaseDbClass {
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
 	string denDay = "19010101";
-	/// <summary>
-	/// 掛計上日（yyyyMMdd）
-	/// </summary>
-	[ObservableProperty]
-	[property: ColumnSizeDml(8)]
-	string kakeDay = "19010101";
 	/// <summary>
 	/// 区分（2桁 10-19,20-29,30,99）
 	/// </summary>
@@ -35,38 +28,24 @@ public partial class Tran99All : BaseDbClass {
 	[ObservableProperty]
 	long id_Shain;
 	/// <summary>
-	/// 社員CD
+	/// 社員データ
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
-	string code_Shain = string.Empty;
-	/// <summary>
-	/// 社員名
-	/// </summary>
-	[ObservableProperty]
+	[property: SerializedColumn]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
-	string mei_Shain = string.Empty;
+	CodeNameView vShain = new();
 	/// <summary>
 	/// 倉庫キー
 	/// </summary>
 	[ObservableProperty]
 	long id_Soko;
 	/// <summary>
-	/// 倉庫CD
+	/// 倉庫データ
 	/// </summary>
 	[ObservableProperty]
-	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
-	string code_Soko = string.Empty;
-	/// <summary>
-	/// 倉庫名
-	/// </summary>
-	[ObservableProperty]
+	[property: SerializedColumn]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
-	string mei_Soko = string.Empty;
+	CodeNameView vSoko = new();
 	/// <summary>
 	/// 計算フラグ（1:+ -1:-, 0:計算除外）
 	/// </summary>
@@ -115,7 +94,7 @@ public partial class Tran99All : BaseDbClass {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	DetailDbClass? jdetail;
+	BaseDetailClass? jdetail;
 	/// <summary>
 	/// 明細リスト
 	/// </summary>
@@ -170,7 +149,7 @@ public partial class Tran99Meisai : ObservableObject {
 	/// 色
 	/// </summary>
 	[ObservableProperty]
-	long id_MeiCol;
+	long id_Col;
 	/// <summary>
 	/// カラーCD
 	/// </summary>
@@ -187,7 +166,7 @@ public partial class Tran99Meisai : ObservableObject {
 	/// サイズ
 	/// </summary>
 	[ObservableProperty]
-	long id_MeiSiz;
+	long id_Siz;
 	/// <summary>
 	/// サイズCD
 	/// </summary>
@@ -271,6 +250,7 @@ public partial class Tran99Meisai : ObservableObject {
 /// 棚卸 60 (倉庫 現在値)
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("nk1", false, "DenDay")]
 public partial class Tran60Tana : Tran99All {
 }
 
@@ -278,7 +258,15 @@ public partial class Tran60Tana : Tran99All {
 /// 本部売上 00 (倉庫 出)
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
+[KeyDml("nk1", false, "DenDay")]
+[KeyDml("nk2", false, "KakeDay")]
 public partial class Tran00Uriage: Tran99All {
+	/// <summary>
+	/// 掛計上日（yyyyMMdd）
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(8)]
+	string kakeDay = "19010101";
 	/// <summary>
 	/// 得意先キー
 	/// </summary>

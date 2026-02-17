@@ -1,7 +1,7 @@
 ﻿using CodeShare;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Cvnet10Asset;
-using Cvnet10Base;
+using Cvnet10Base.Share;
 using Cvnet10Base.Oracle;
 using Cvnet10DomainLogic;
 using Microsoft.AspNetCore.Authorization;

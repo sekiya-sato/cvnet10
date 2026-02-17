@@ -118,8 +118,8 @@
                     <DataGrid.Columns>
                         <!--  LoginId,ExpDate,LastDate,CryptPassword,Id,Vdc,Vdu,Id_Shain,Id_Role  -->
                         <DataGridTextColumn Binding="{Binding LoginId}" Header="Login ID" />
-                        <DataGridTextColumn Binding="{Binding ExpDate}" Header="有効期限" />
-                        <DataGridTextColumn Binding="{Binding LastDate}" Header="最終ログイン" />
+                        <DataGridTextColumn Binding="{Binding ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}" Header="有効期限" />
+                        <DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DateTimeYmdHmsConverter}}" Header="最終ログイン" />
                         <DataGridTextColumn Binding="{Binding CryptPassword}" Header="パスワード" />
                         <DataGridTextColumn Binding="{Binding VdateC}" Header="作成日" />
                         <DataGridTextColumn Binding="{Binding VdateU}" Header="修正日" />
@@ -286,8 +286,8 @@
                     TextWrapping="Wrap"  >
                     <TextBox.Text>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="CurrentEdit.Code_Shain" />
-                            <Binding Path="CurrentEdit.Mei_Shain" />
+                            <Binding Path="CurrentEdit.VShain.Cd" />
+                            <Binding Path="CurrentEdit.VShain.Mei" />
                         </MultiBinding>
                     </TextBox.Text>
                     

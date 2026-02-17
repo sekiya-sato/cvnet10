@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Cvnet10Wpfclient.Helpers;
@@ -69,8 +71,9 @@ public static class DataGridLongMsgFocus {
 
 	private static void FocusById(DataGrid grid, long value) {
 		var targetId = value;
-		if(value == 0) return;
 		if (grid.Items.Count == 0 || grid.Columns.Count == 0) return;
+		if (targetId == 0)
+			return;
 
 		var idPropertyName = GetIdPropertyName(grid);
 		var targetItem = grid.Items.Cast<object>()
@@ -84,10 +87,50 @@ public static class DataGridLongMsgFocus {
 			grid.ScrollIntoView(targetItem);
 			grid.CurrentItem = targetItem;
 			grid.CurrentCell = new DataGridCellInfo(targetItem, grid.Columns[0]);
-			grid.Focus();
+			var cell = GetCell(grid, grid.CurrentCell);
+			if (cell != null) {
+				cell.Focus();
+			}
+			else {
+				grid.Focus();
+			}
 		}, DispatcherPriority.Background);
 	}
+	private static DataGridCell? GetCell(DataGrid grid, DataGridCellInfo cellInfo) {
+		if (cellInfo.Item == null || cellInfo.Column == null) return null;
 
+		var row = grid.ItemContainerGenerator.ContainerFromItem(cellInfo.Item) as DataGridRow;
+		if (row == null) {
+			grid.ScrollIntoView(cellInfo.Item);
+			row = grid.ItemContainerGenerator.ContainerFromItem(cellInfo.Item) as DataGridRow;
+		}
+		if (row == null) return null;
+
+		var presenter = FindVisualChild<DataGridCellsPresenter>(row);
+		if (presenter == null) {
+			row.ApplyTemplate();
+			presenter = FindVisualChild<DataGridCellsPresenter>(row);
+		}
+		if (presenter == null) return null;
+
+		var cell = presenter.ItemContainerGenerator.ContainerFromIndex(cellInfo.Column.DisplayIndex) as DataGridCell;
+		if (cell == null) {
+			grid.ScrollIntoView(row, cellInfo.Column);
+			cell = presenter.ItemContainerGenerator.ContainerFromIndex(cellInfo.Column.DisplayIndex) as DataGridCell;
+		}
+
+		return cell;
+	}
+	private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject {
+		for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++) {
+			var child = VisualTreeHelper.GetChild(parent, i);
+			if (child is T typed) return typed;
+
+			var found = FindVisualChild<T>(child);
+			if (found != null) return found;
+		}
+		return null;
+	}
 	private static bool TryGetItemId(object item, string idPropertyName, out long id) {
 		id = 0;
 		var prop = item.GetType().GetProperty(idPropertyName);

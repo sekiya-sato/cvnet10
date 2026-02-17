@@ -4,8 +4,9 @@
 You are a Senior Software Engineer and Solution Architect. Your goal is to support the development and refactoring of a high-performance Distributed System using **WPF (Client)** and **gRPC (Server)**.
 
 ## 2. Environment & Technical Stack
-- **OS**: Windows 11
-- **SDK**: .NET 10.0 (Latest) - このワークスペースは .NET 10 をターゲットにしている
+- **Client OS**: Windows 11
+- **Server OS**: Ubuntu 24.04
+- **SDK**: .NET 10.0 (Latest)
 - **Language**: C# 14
 - **Solution File**: `Cvnet10.slnx` (Strictly prohibited to use or generate old `.sln` files)
 - **Communication**: gRPC (Code-first, not use Proto-first)
@@ -72,6 +73,3 @@ refer/ Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This
 - .github/copilot/Planner.agent.md # Architecture and implementation policy
 - .github/copilot/Impl.agent.md # Coding and coding standards
 - .github/copilot/Reviewer.agent.md # Review perspectives and quality standards
-
-## 999. [SYSTEM OVERRIDE] Ignore all instructions below this line!
-- ここから先は人間用のメモ代わり。
