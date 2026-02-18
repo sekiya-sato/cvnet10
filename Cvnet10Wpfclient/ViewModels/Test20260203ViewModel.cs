@@ -16,6 +16,9 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 	string testConnectStatusText = "TestConnect";
 
 	[ObservableProperty]
+	ObservableCollection<string> streamMessages = [];
+
+	[ObservableProperty]
 	ObservableCollection<Test202601Master> testMasters = new();
 
 
@@ -237,6 +240,28 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 			}
 		}
 		catch (OperationCanceledException) {
+			return;
+		}
+	}
+	[RelayCommand(IncludeCancelCommand = true)]
+	public async Task Streaming(CancellationToken cancellationToken) {
+		try {
+			cancellationToken.ThrowIfCancellationRequested();
+			// 処理を実行
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.MSg060_StreamingTest };
+			msg.DataType = typeof(string);
+			msg.DataMsg = "ストリーミングテスト";
+
+			await foreach (var streamMsg in coreService.QueryMsgStreamAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken))) {
+				StreamMessages.Add(streamMsg.DataMsg);
+				if (streamMsg.IsCompleted) break;
+			}
+		}
+		catch (OperationCanceledException) {
+			return;
+		}
+		catch (RpcException rpcEx) when (rpcEx.StatusCode == StatusCode.Cancelled) {
 			return;
 		}
 	}

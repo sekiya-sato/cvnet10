@@ -1,8 +1,8 @@
 ﻿using CodeShare;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Cvnet10Asset;
-using Cvnet10Base.Share;
 using Cvnet10Base.Oracle;
+using Cvnet10Base.Share;
 using Cvnet10DomainLogic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.Sqlite;
@@ -10,6 +10,7 @@ using Oracle.ManagedDataAccess.Client;
 using ProtoBuf.Grpc;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 
 namespace Cvnet10Server.Services;
@@ -122,5 +123,101 @@ public partial class CvnetCoreService : ICvnetCoreService {
 
 
 		return Task.FromResult(result);
+	}
+
+	/// <summary>
+	/// ストリーミングメッセージを処理する
+	/// </summary>
+	/// <param name="request"></param>
+	/// <param name="context"></param>
+	/// <returns></returns>
+	[AllowAnonymous]
+	//[Authorize]
+	public async IAsyncEnumerable<StreamMsg> QueryMsgStreamAsync(CvnetMsg request, CallContext context = default) {
+		ArgumentNullException.ThrowIfNull(request);
+		var ct = context.CancellationToken;
+		_logger.LogInformation("gRPCストリーミングリクエスト QueryMsgStreamAsync Flag: {Flag}, DataType: {DataType}", request.Flag, request.DataType);
+		await Task.Yield();
+
+		if (request.Flag is not CvnetFlag.MSg060_StreamingTest) {
+			yield return new StreamMsg {
+				Flag = request.Flag,
+				Code = -1,
+				DataType = typeof(string),
+				DataMsg = "Unimplemented function.",
+				Progress = 0,
+				IsCompleted = true,
+				IsError = true
+			};
+			yield break;
+		}
+		// 順番にメッセージを返す
+		// Note: 初期化処理,dbの前処理など
+		/* 
+		var oracleConnectionString = _configuration.GetConnectionString("oracle");
+		if (string.IsNullOrWhiteSpace(oracleConnectionString)) {
+			yield return new StreamMsg {
+				Flag = request.Flag,
+				Code = -1,
+				Message = "Connection string 'oracle' is missing. Configure it in appsettings.json under ConnectionStrings.",
+				Progress = 0,
+				IsCompleted = true,
+				IsError = true
+			};
+			yield break;
+		}
+		*/
+		var start = DateTime.Now;
+
+		var steps = new (string Name, Func<int> Action)[] {
+			("This is First Step", () => SleepTask()),
+			("This is Second Step", () => SleepTask()),
+			("This is Third Step", () => SleepTask()),
+			("This is 4th Step", () => SleepTask()),
+			("This is 5th Step", () => SleepTask()),
+			("This is 6th Step", () => SleepTask()),
+			("This is 7th Step", () => SleepTask()),
+			("This is 8th Step", () => SleepTask()),
+		};
+
+		for (var index = 0; index < steps.Length; index++) {
+			ct.ThrowIfCancellationRequested();
+			var (name, action) = steps[index];
+			var startProgress = index * 100 / steps.Length;
+			yield return new StreamMsg {
+				Flag = request.Flag,
+				Code = 0,
+				DataType = typeof(string),
+				DataMsg = $"開始: {name} ------------",
+				Progress = startProgress
+			};
+
+			var count = action();
+			var endProgress = (int)Math.Round((index + 1) * 100d / steps.Length, MidpointRounding.AwayFromZero);
+			yield return new StreamMsg {
+				Flag = request.Flag,
+				Code = 0,
+				DataType = typeof(string),
+				DataMsg = $"完了: {name} 件数={count}",
+				Progress = endProgress
+			};
+		}
+
+		var elapsed = DateTime.Now - start;
+		yield return new StreamMsg {
+			Flag = request.Flag,
+			Code = 0,
+			DataType = typeof(string),
+			DataMsg = $"完了: {elapsed.TotalSeconds:0.0}s",
+			Progress = 100,
+			IsCompleted = true
+		};
+	}
+
+	static int SleepTask() {
+		for (int i = 0; i < 3; i++) {
+			Thread.Sleep(1000); // await Task.Delay(1000);
+		}
+		return 0;
 	}
 }
