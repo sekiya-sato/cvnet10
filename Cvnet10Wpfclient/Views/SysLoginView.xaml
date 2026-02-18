@@ -4,6 +4,7 @@
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Cvnet10Wpfclient.Views"
     xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
+    xmlns:rs="clr-namespace:Cvnet10Wpfclient.Resources"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -265,20 +266,8 @@
                 -->
                 <TextBox
                     Grid.Column="1"
-                    Width="70"
                     Height="40"
                     Margin="10,300,10,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Right"
-                    d:Text="123456"
-                    IsReadOnly="True"
-                    Text="{Binding CurrentEdit.Id_Shain}"
-                    TextWrapping="Wrap"  />
-                <TextBox
-                    Grid.Column="1"
-                    Height="40"
-                    Margin="100,300,10,0"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     d:Text="区分名"
@@ -290,16 +279,8 @@
                             <Binding Path="CurrentEdit.VShain.Mei" />
                         </MultiBinding>
                     </TextBox.Text>
-                    
+
                 </TextBox>
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="20,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Command="{Binding DoSelectShainCommand}"
-                    Content="社員選択" />
                 <TextBlock
                     Grid.Column="1"
                     Margin="10,440,10,0"
@@ -331,6 +312,24 @@
                     VerticalAlignment="Top"
                     Command="{Binding DoSetPassCommand}"
                     Content="パス暗号化" />
+                <rs:SearchTextBox
+                    Width="135"
+                    Height="30"
+                    Margin="0,310,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Text="{Binding CurrentEdit.Id_Shain, UpdateSourceTrigger=PropertyChanged}"
+                    BorderThickness="0,0,0,1"
+                    TextHorizontalContentAlignment="Right" 
+                    Command="{Binding DoSelectShainCommand}">
+                    <rs:SearchTextBox.Style>
+                        <Style TargetType="{x:Type rs:SearchTextBox}">
+                            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="ButtonBackground" Value="LightGray"/>
+                        </Style>
+                    </rs:SearchTextBox.Style>
+                </rs:SearchTextBox>
             </Grid>
 
 
