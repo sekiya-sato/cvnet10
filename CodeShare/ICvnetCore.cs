@@ -1,4 +1,5 @@
 ﻿using ProtoBuf.Grpc;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 
@@ -32,6 +33,48 @@ public sealed class CvnetMsg {
 
 	[DataMember(Order = 5)]
 	public string Option { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// ストリーミング応答メッセージ
+/// </summary>
+[DataContract]
+public sealed record class StreamMsg {
+	/// <summary>
+	/// メッセージ種別
+	/// </summary>
+	[DataMember(Order = 1)]
+	public required CvnetFlag Flag { get; init; }
+	/// <summary>
+	/// コード（リターンコード、その他）
+	/// </summary>
+	[DataMember(Order = 2)]
+	public int Code { get; init; }
+	/// <summary>
+	/// メッセージ型
+	/// </summary>
+	[DataMember(Order = 3)]
+	public Type DataType { get; set; } = typeof(string);
+	/// <summary>
+	/// メッセージ本体
+	/// </summary>
+	[DataMember(Order = 4)]
+	public string DataMsg { get; set; } = string.Empty;
+	/// <summary>
+	/// 進捗（0-100）
+	/// </summary>
+	[DataMember(Order = 5)]
+	public int Progress { get; init; }
+	/// <summary>
+	/// 完了フラグ
+	/// </summary>
+	[DataMember(Order = 6)]
+	public bool IsCompleted { get; init; }
+	/// <summary>
+	/// エラーフラグ
+	/// </summary>
+	[DataMember(Order = 7)]
+	public bool IsError { get; init; }
 }
 
 
@@ -68,6 +111,7 @@ public enum CvnetFlag {
 	/// テスト
 	/// </summary>
 	MSg050_Test = 50,
+	MSg060_StreamingTest = 60,
 	/// <summary>
 	/// DBデータを取得する
 	/// </summary>
@@ -190,6 +234,15 @@ public interface ICvnetCoreService {
 	/// <returns></returns>
 	[OperationContract]
 	Task<CvnetMsg> QueryMsgAsync(CvnetMsg request, CallContext context = default);
+
+	/// <summary>
+	/// ストリーミングで一般リクエストを送信する
+	/// </summary>
+	/// <param name="request">パラメータは1つのみ</param>
+	/// <param name="context"></param>
+	/// <returns></returns>
+	[OperationContract]
+	IAsyncEnumerable<StreamMsg> QueryMsgStreamAsync(CvnetMsg request, CallContext context = default);
 
 	/*
 	[OperationContract]
