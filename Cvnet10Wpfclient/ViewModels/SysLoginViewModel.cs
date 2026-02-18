@@ -5,13 +5,15 @@ using Cvnet10Asset;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewServices;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.ServiceModel.Channels;
 
 
 namespace Cvnet10Wpfclient.ViewModels;
 
-internal partial class SysLoginViewModel : Sub.BaseMenteViewModel<SysLogin> {
+internal partial class SysLoginViewModel : Helpers.BaseMenteViewModel<SysLogin> {
 	[ObservableProperty]
 	string title = "ログインマスターメンテ画面";
 
@@ -34,11 +36,18 @@ internal partial class SysLoginViewModel : Sub.BaseMenteViewModel<SysLogin> {
 
 	protected override bool CanDelete() =>
 		ListData.Count > 0 && Current.Id > 0;
+	protected override void AfterList(IList list) {
+		Message = $"リスト取得しました (件数={list.Count}, 取得時間 {StartTime.ToDtStrTime()} // {GetListTime.ToStrSpan()})";
+	}
+	protected override void AfterInsert(SysLogin item) {
+		Message = $"追加しました (Login={item.LoginId}, Id={item.Id})";
+	}
 
 	protected override void AfterUpdate(SysLogin item) {
-		MessageEx.ShowInformationDialog(
-			$"更新しました (Login={CurrentEdit.LoginId}, Id={CurrentEdit.Id})",
-			owner: ClientLib.GetActiveView(this));
+		Message = $"修正しました (Login={item.LoginId}, Id={item.Id})";
+	}
+	protected override void AfterDelete(SysLogin item) {
+		Message = $"削除しました (Login={item.LoginId}, Id={item.Id})";
 	}
 
 	[RelayCommand]

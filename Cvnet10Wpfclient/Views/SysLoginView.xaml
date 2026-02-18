@@ -169,7 +169,7 @@
                     Margin="24,55,0,0"
                     VerticalAlignment="Top"
                     d:Content="4567"
-                    Content="{Binding Desc0}"
+                    Content="{Binding Message}"
                     FontSize="14" />
             </Grid>
             <Grid Grid.Row="2" Grid.Column="2">

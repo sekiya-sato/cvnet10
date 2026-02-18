@@ -103,9 +103,10 @@
                 </ScrollViewer>
             </GroupBox>
             <DataGrid Grid.Column="1" HorizontalAlignment="Center" Height="146" Margin="0,307,0,0" VerticalAlignment="Top" Width="575" d:ItemsSource="{d:SampleData ItemCount=5}"
-                      ItemsSource="{Binding CurrentEdit.Jcolsiz}"  />
+                      ItemsSource="{Binding CurrentEdit.Jcolsiz}" Style="{StaticResource MaterialDesignDataGrid}"
+                      />
             <DataGrid Grid.Column="1" HorizontalAlignment="Center" Height="126" Margin="0,474,0,0" VerticalAlignment="Top" Width="575" d:ItemsSource="{d:SampleData ItemCount=5}"
-                      ItemsSource="{Binding CurrentEdit.ListMeisho}"  />
+                      ItemsSource="{Binding CurrentEdit.ListMeisho}"  Style="{StaticResource MaterialDesignDataGrid}" />
         </Grid>
         <Button Grid.Row="2" Content="&#x7D42;&#x4E86;" Width="132" Height="56" HorizontalAlignment="Right" Margin="0,10,0,0"
                 Command="{Binding ExitCommand}" />
@@ -118,5 +119,18 @@
             <Button Content="&#x30C6;&#x30B9;&#x30C8;" Command="{Binding XxxRecordCommand}" Height="26" Width="80" />
         </StackPanel>
         <Button Content="テスト" Command="{Binding StreamingCommand}" Margin="30,5,882,29" Grid.Row="2" />
+        <ProgressBar Value="{Binding ProgressValue}" HorizontalAlignment="Left" Height="28" d:Visibility="Visible"
+                     Margin="153,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="179">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsProgressVisible}" Value="true">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
     </Grid>
 </helpers:BaseWindow>

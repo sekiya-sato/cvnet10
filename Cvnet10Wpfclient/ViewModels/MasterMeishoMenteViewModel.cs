@@ -5,12 +5,13 @@ using Cvnet10Asset;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewServices;
 using System.Windows;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace Cvnet10Wpfclient.ViewModels;
 
-public partial class MasterMeishoMenteViewModel : Sub.BaseMenteViewModel<MasterMeisho> {
+public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<MasterMeisho> {
 	[ObservableProperty]
-	string title = "名称マスター保守";
+	string title = "名称マスターメンテ";
 
 	protected override string? ListOrder => "Kubun,Code";
 
@@ -21,30 +22,24 @@ public partial class MasterMeishoMenteViewModel : Sub.BaseMenteViewModel<MasterM
 	}
 
 	protected override string GetInsertConfirmMessage() =>
-		$"新規登録しますか？ {Current.Code}";
+		$"追加しますか？ (CD={Current.Code})";
 
 	protected override string GetUpdateConfirmMessage() =>
-		$"更新しますか？ (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
+		$"修正しますか？ (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
 
 	protected override string GetDeleteConfirmMessage() =>
 		$"削除しますか？ (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
 
 	protected override void AfterInsert(MasterMeisho item) {
-		MessageEx.ShowInformationDialog(
-			$"登録しました (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})",
-			owner: ClientLib.GetActiveView(this));
+		Message = $"追加しました (CD={item.Code}, Id={item.Id})";
 	}
 
 	protected override void AfterUpdate(MasterMeisho item) {
-		MessageEx.ShowInformationDialog(
-			$"更新しました (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})",
-			owner: ClientLib.GetActiveView(this));
+		Message = $"修正しました (CD={item.Code}, Id={item.Id})";
 	}
 
 	protected override void AfterDelete(MasterMeisho removedItem) {
-		MessageEx.ShowInformationDialog(
-			$"削除しました (CD={removedItem.Code}, Id={removedItem.Id})",
-			owner: ClientLib.GetActiveView(this));
+		Message = $"削除しました (CD={removedItem.Code}, Id={removedItem.Id})";
 	}
 
 	[RelayCommand]

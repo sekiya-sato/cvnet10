@@ -168,18 +168,12 @@
                     Content="{Binding Count}"
                     ContentStringFormat="{}件数={0:N0}" />
                 <TextBlock 
+                    Text="{Binding Message}"
                     Height="34"
                     Margin="24,55,0,0"
                     VerticalAlignment="Top"
                     FontSize="16"
-                    TextWrapping="Wrap">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}取得日時={0}, 取得時間={1}">
-                            <Binding Path="StartTime" />
-                            <Binding Path="GetListTime" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                    TextWrapping="Wrap"/>
             </Grid>
             <Grid  Margin="10" Grid.Row="2" Grid.Column="2">
                 <Grid.ColumnDefinitions>

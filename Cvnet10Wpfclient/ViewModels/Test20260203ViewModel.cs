@@ -243,25 +243,37 @@ public partial class Test20260203ViewModel : Helpers.BaseViewModel {
 			return;
 		}
 	}
+	[ObservableProperty]
+	int progressValue;
+
+	[ObservableProperty]
+	bool isProgressVisible = false;
+
+
 	[RelayCommand(IncludeCancelCommand = true)]
 	public async Task Streaming(CancellationToken cancellationToken) {
 		try {
+			ProgressValue = 0;
+			IsProgressVisible = true;
 			cancellationToken.ThrowIfCancellationRequested();
 			// 処理を実行
 			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.MSg060_StreamingTest };
 			msg.DataType = typeof(string);
 			msg.DataMsg = "ストリーミングテスト";
-
 			await foreach (var streamMsg in coreService.QueryMsgStreamAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken))) {
-				StreamMessages.Add(streamMsg.DataMsg);
+				StreamMessages.Insert(0, streamMsg.DataMsg);
+				ProgressValue = streamMsg.Progress;
 				if (streamMsg.IsCompleted) break;
 			}
+			IsProgressVisible = false;
 		}
 		catch (OperationCanceledException) {
+			IsProgressVisible = false;
 			return;
 		}
 		catch (RpcException rpcEx) when (rpcEx.StatusCode == StatusCode.Cancelled) {
+			IsProgressVisible = false;
 			return;
 		}
 	}
