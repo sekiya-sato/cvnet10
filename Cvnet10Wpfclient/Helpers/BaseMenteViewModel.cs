@@ -1,6 +1,6 @@
-﻿using CodeShare;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CodeShare;
 using Cvnet10Asset;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewServices;
@@ -10,13 +10,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 
-namespace Cvnet10Wpfclient.ViewModels.Sub;
+namespace Cvnet10Wpfclient.Helpers;
 
 /// <summary>
 /// メンテ画面共通処理
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel where T : BaseDbClass, new() {
+public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : BaseDbClass, new() {
 	[ObservableProperty]
 	ObservableCollection<T> listData = [];
 
@@ -33,6 +33,7 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 		if (oldValue?.Id != newValue.Id && newValue.Id>0) {
 			CurrentEdit = Common.CloneObject(newValue);
 		}
+		Message = string.Empty;
 	}
 
 	[ObservableProperty]
@@ -47,22 +48,27 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 	[ObservableProperty]
 	TimeSpan getListTime = TimeSpan.Zero;
 
+	[ObservableProperty]
+	string message = string.Empty;
+
 	protected virtual Type Tabletype => typeof(T);
 	protected virtual string? ListWhere => null;
 	protected virtual string? ListOrder => null;
 
+	protected virtual string[]? ListParams => null;
+
 	protected virtual bool ConfirmAction(string message) =>
 		MessageEx.ShowQuestionDialog(message, owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes;
 
-	protected virtual string GetInsertConfirmMessage() => "挿入しますか？";
-	protected virtual string GetUpdateConfirmMessage() => "更新しますか？";
+	protected virtual string GetInsertConfirmMessage() => "追加しますか？";
+	protected virtual string GetUpdateConfirmMessage() => "修正しますか？";
 	protected virtual string GetDeleteConfirmMessage() => "削除しますか？";
 
 	protected virtual bool CanUpdate() => true;
 
 	protected virtual bool CanDelete() {
 		if (ListData.Count == 0) return false;
-		return Current.Id > 0;
+		return CurrentEdit.Id > 0;
 	}
 
 	protected virtual object CreateInsertParam() =>
@@ -96,7 +102,8 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 				DataMsg = Common.SerializeObject(new QueryListParam(
 					itemType: Tabletype,
 					where: ListWhere,
-					order: ListOrder
+					order: ListOrder,
+					parameters: ListParams
 				))
 			};
 
@@ -111,8 +118,13 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 
 			GetListTime = DateTime.Now - StartTime;
 		}
+		catch (OperationCanceledException cancel) {
+			Message = $"Cancelエラー：{cancel.Message}";
+			return;
+		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"データ取得失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			Message = $"データ取得失敗: {ex.Message}";
+			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
 		}
 	}
 	/// <summary>
@@ -145,8 +157,13 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 				AfterInsert(item);
 			}
 		}
+		catch (OperationCanceledException cancel) {
+			Message = $"Cancelエラー：{cancel.Message}";
+			return;
+		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"登録失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			Message = $"追加失敗: {ex.Message}";
+			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
 		}
 	}
 	/// <summary>
@@ -178,11 +195,13 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 				AfterUpdate(item);
 			}
 		}
-		catch (OperationCanceledException) {
+		catch (OperationCanceledException cancel) {
+			Message = $"Cancelエラー：{cancel.Message}";
 			return;
 		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"更新失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			Message = $"修正失敗: {ex.Message}";
+			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
 		}
 	}
 	/// <summary>
@@ -227,11 +246,13 @@ public abstract partial class BaseMenteViewModel<T> : Helpers.BaseViewModel wher
 
 			AfterDelete(removedItem);
 		}
-		catch (OperationCanceledException) {
+		catch (OperationCanceledException cancel) {
+			Message = $"Cancelエラー：{cancel.Message}";
 			return;
 		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"削除失敗: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			Message = $"削除失敗：{ex.Message}";
+			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
 		}
 	}
 
