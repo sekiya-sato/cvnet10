@@ -126,11 +126,14 @@
 
 
                                     <Button Command="{Binding MinimizeCommand}"
-                                            Style="{StaticResource MinimizeWinBtn}" Opacity="0.6" />
+                                            Opacity="0.6"
+                                            Style="{StaticResource MinimizeWinBtn}" />
                                     <Button Command="{Binding MenuOnlyCommand}"
-                                            Style="{StaticResource MenuonlyWinBtn}" Opacity="0.6"  />
+                                            Opacity="0.6"
+                                            Style="{StaticResource MenuonlyWinBtn}" />
                                     <Button Command="{Binding ExitCommand}"
-                                            Style="{StaticResource CloseWinBtn}"  Opacity="0.6" />
+                                            Opacity="0.6"
+                                            Style="{StaticResource CloseWinBtn}" />
                                 </StackPanel>
                             </StackPanel>
                         </Border>
