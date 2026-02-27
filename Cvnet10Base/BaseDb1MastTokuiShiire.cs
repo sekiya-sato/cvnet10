@@ -16,28 +16,28 @@ public partial class MasterTorihiki : BaseDbHasAddress, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kana = string.Empty;
 	/// <summary>
 	/// 担当者
@@ -174,24 +174,24 @@ public sealed partial class MasterToriDetail : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
-	[property: JsonProperty("Bank1")]
+	[property: System.ComponentModel.DefaultValue("")]
+	[property: Newtonsoft.Json.JsonProperty("Bank1")]
 	string bankAccount1 = string.Empty;
 	/// <summary>
 	/// 振込先2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
-	[property: JsonProperty("Bank2")]
+	[property: System.ComponentModel.DefaultValue("")]
+	[property: Newtonsoft.Json.JsonProperty("Bank2")]
 	string bankAccount2 = string.Empty;
 	/// <summary>
 	/// 振込先3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
-	[property: JsonProperty("Bank3")]
+	[property: System.ComponentModel.DefaultValue("")]
+	[property: Newtonsoft.Json.JsonProperty("Bank3")]
 	string bankAccount3 = string.Empty;
 }
 /// <summary>

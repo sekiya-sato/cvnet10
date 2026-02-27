@@ -1,16 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Cvnet10Base.Share;
-using Newtonsoft.Json.Linq;
 using NPoco;
-using System.Diagnostics.Metrics;
-using System.Xml.Linq;
 
 namespace Cvnet10Base;
 /// <summary>
 /// テスト用商品マスター
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
-public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName , IBaseViewDefine {
+public partial class Test202601Master : BaseDbHasAddress, IBaseCodeName, IBaseViewDefine {
 	/// <summary>
 	/// コード
 	/// </summary>
@@ -238,7 +235,7 @@ public static class Test202601MasterExtensions {
 		// 各マスタの jcolsiz に名称をセット
 		foreach (var master in masterList) {
 			foreach (var item in master.Jcolsiz!) {
-				if (item.Id_Col > 0 && meishoDict.TryGetValue(item.Id ,out var colMei)) {
+				if (item.Id_Col > 0 && meishoDict.TryGetValue(item.Id, out var colMei)) {
 					item.Code_Col = colMei.Code;
 					item.Mei_Col = colMei.Name;
 				}
@@ -308,7 +305,7 @@ public static class Test202601MasterExtensions {
 		IDatabase db,
 		bool serializeMeisho = false) {
 
-		foreach(var list in masters) {
+		foreach (var list in masters) {
 			if (list.ListMeisho == null || list.ListMeisho.Count == 0) {
 				list.ListMeisho =
 					[
@@ -349,7 +346,7 @@ public static class Test202601MasterExtensions {
 
 		// 各マスタの jcolsiz に名称をセット
 		foreach (var master in masterList) {
-			if(master.ListMeisho == null) continue;
+			if (master.ListMeisho == null) continue;
 			foreach (var item in master.ListMeisho) {
 				if (!string.IsNullOrEmpty(item.Kb) && meishoKubuns.TryGetValue(item.Kb, out var codeKubun))
 					item.Kbname = codeKubun.Name;

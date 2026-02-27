@@ -203,17 +203,73 @@ Prompt:  # 見出し - 箇条書き *..* 強調ポイント > 引用 ``` コー�
 - 2026/02/06-02/11
 	- ショートカットメモ:  ctl+E,D ドキュメントフォーマット  ctl+E,F 選択範囲フォーマット ctl+R,G Usingの整理
 	- プロンプトメモ:
-	- 現在ファイルのみ、 string? [項目名]; のすべてに対し、 string [項目名] =string.Empty; さらに属性 [property: DefaultValue("")] をつける。また、string 型で初期値が="19010101"; の場合、属性 [property: DefaultValue("19010101")] をつける。
+	- 現在ファイルのみ、 string? [項目名]; のすべてに対し、 string [項目名] =string.Empty; さらに属性 [property: System.ComponentModel.DefaultValue("")] をつける。また、string 型で初期値が="19010101"; の場合、属性 [property: System.ComponentModel.DefaultValue("19010101")] をつける。
 	- 1) ソースコードを説明し、具体的な使用例を見せて 2) upgrade assesment for .NET 10 / C# 14 for only this sourcecode. 3) 全て説明は日本語で。4) 出力はマークダウン形式。
 - 2026/02/12-02/18
 	- クライアント・サーバ間のCRUDオペレーションの整理、Tran系テーブル作成、Cvnet8とCvnetClientのクライアント画面を除くモジュールの統合
 	- サーバ側：PrintロジックはIKVMパッケージ、FtpはFluentFTP、スケジューラはNCrontab.Scheduler.AspNetCoreを使う。
 	- Geminiのgemプロンプトの整理、Copilotのmdファイルの整理
     - Cvnet10Base: テーブル整理
+- 2026/02/23-03/--
+    - .editorconfigの追加とコード整理
 
 
 
 
 
 # ToDo 残作業
+
+namespace Cvnet10Base;
+ ToDo: 必要となる予定のテーブル
+ 設定テーブル (システム設定、店舗設定、税率設定、支払条件設定)
+ ログテーブル (操作ログ、エラーログ、アクセスログ)
+ マスターテーブル (商品マスタ、得意先マスタ、仕入先マスタ、社員マスタ、権限マスタ)
+ 伝票テーブル (受注伝票、発注伝票、売上伝票、仕入伝票、在庫移動伝票)
+ 集計テーブル (売上集計、仕入集計、在庫集計、買掛、売掛、支払、請求、顧客ポイント)
+(上の作業がある程度完了したら)Test用テーブルの削除
+
+namespace Cvnet10DomainLogic;
+ ToDo: 必要となる予定のロジック
+在庫更新ロジック
+買掛、売掛更新ロジック
+支払、請求更新ロジック
+外部連携ロジック (委託倉庫、他社POS、他社EC)
+自動実行処理 (NCrontab.Scheduler.AspNetCore を利用)
+検証終了(Windows上で): 印刷処理 ( <PackageReference Include="IKVM" )
+	// PrintStream DLLの登録
+	// IKVMの初期化コストを考慮し、インスタンス管理をDIに任せる App.xaml.cs などで登録
+		builder.Services.AddScoped<IPrintService, PrintAdapter>();
+	// 出力するgRPCサービスにIPrintServiceを注入(IDisposable)
+	private readonly IPrintService _printService;
+	public PrintController(ILogger<PrintController> logger, IPrintService printService, IWebHostEnvironment env) {
+			_logger = logger;
+			_printService = printService;
+			_env = env;
+		}
+	// ubuntu上での必要ライブラリ
+		sudo apt install -y libgdiplus fontconfig
+		sudo apt install fonts-ipafont
+
+
+namespace Cvnet10Server;
+ ToDo: 必要となる予定のサービス
+Cvnet10DomainLogic の各機能を呼び出すサービスを実装する
+自動実行処理 (NCrontab.Scheduler.AspNetCore を利用)
+(上の作業がある程度完了したら)Test用サービスの削除
+
+
+namespace Cvnet10Wpfclient;
+ ToDo: 必要となる予定の画面
+メニューに登録する画面
+- マスタ系
+- 伝票入力系
+- 帳票印刷系
+- 各種設定系
+- 更新実行系
+(上の作業がある程度完了したら)Test用ViewおよびViewModelの削除
+				- WPF で DI コンテナ（Microsoft.Extensions.Hosting + Generic Host）を導入し、ViewModel/サービスの注入とテスト容易性を向上。
+				- UI リソースは既に分割済み (UIColors.xaml 等) だが、テーマ切替やダークモード対応を早期に設計する。
+				- コマンド/非同期処理は CancellationToken を用いてキャンセル可能にする。
+					- 実施例: App.xaml.cs を IHost 起動に切替え、MainWindow の DataContext を DI で解決。
+
 

@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NPoco;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 
 namespace Cvnet10Base;
@@ -12,7 +10,7 @@ namespace Cvnet10Base;
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [Comment("システム：ログインID管理テーブル")]
-[KeyDml("uq1",true, "LoginId")]
+[KeyDml("uq1", true, "LoginId")]
 [KeyDml("nk2", false, "Id_Shain")]
 [KeyDml("nk3", false, "Id_Role")]
 public sealed partial class SysLogin : BaseDbClass {
@@ -31,28 +29,28 @@ public sealed partial class SysLogin : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string loginId = string.Empty;
 	/// <summary>
 	/// パスワード 暗号化by Vdc
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string cryptPassword = string.Empty;
 	/// <summary>
 	/// 有効期限 yyyyMMddHHmmss
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string expDate = string.Empty;
 	/// <summary>
 	/// 最終ログイン yyyyMMddHHmmss
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string lastDate = string.Empty;
 	/// <summary>
 	/// 社員データ
@@ -87,27 +85,27 @@ public sealed partial class SysHistJwt : BaseDbClass {
 	[ObservableProperty]
 	[property: SerializedColumn]
 	[property: ColumnSizeDml(1000)]
-	SysHistJwtSub jsub=new();
+	SysHistJwtSub jsub = new();
 	/// <summary>
 	/// 有効期限yyyyMMddHHmmss
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(14)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string expDate = string.Empty;
 	/// <summary>
 	/// IPアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ip = string.Empty;
 	/// <summary>
 	/// サービスオペレーション
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string op = string.Empty;
 }
 /// <summary>
@@ -116,27 +114,27 @@ public sealed partial class SysHistJwt : BaseDbClass {
 [NoCreate]
 public sealed partial class SysHistJwtSub : ObservableObject {
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string machine = string.Empty;
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string user = string.Empty;
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string osVer = string.Empty;
 	/// <summary>
 	/// IPアドレス : NpocoのJson実装(/src/NPoco/fastJSON/JSON.cs)が内部で直接デフォルト値を生成しているためJsonPropertyは無視される 2026/02/17
 	/// </summary>
 	[ObservableProperty]
-	[property: JsonProperty("IP")]
-	[property: DefaultValue("")]
+	[property: Newtonsoft.Json.JsonProperty("IP")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ipAddress = string.Empty;
 	/// <summary>
 	/// MACアドレス : NpocoのJson実装(/src/NPoco/fastJSON/JSON.cs)が内部で直接デフォルト値を生成しているためJsonPropertyは無視される 2026/02/17
 	/// </summary>
 	[ObservableProperty]
-	[property: JsonProperty("MacA")]
-	[property: DefaultValue("")]
+	[property: Newtonsoft.Json.JsonProperty("MacA")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string macAddress = string.Empty;
 }
 
@@ -155,7 +153,7 @@ public sealed partial class SysHistryMaster : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string tableName = string.Empty;
 	/// <summary>
 	/// テーブルIdユニークキー
@@ -179,13 +177,13 @@ public sealed partial class SysHistryMaster : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(1000)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string itemBefore = string.Empty;
 	/// <summary>
 	/// 変更後JSONデータ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(1000)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string itemAfter = string.Empty;
 }

@@ -10,4 +10,8 @@
     <PackageReference Include="protobuf-net.Grpc" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\gitroot\new2022\Cvnet10\CodeShare\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -1,14 +1,7 @@
 ﻿using CodeShare;
 using Cvnet10Asset;
 using Cvnet10Base;
-using Cvnet10Base.Share;
-using NPoco;
 using ProtoBuf.Grpc;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Resources;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Cvnet10Server.Services;
 
@@ -107,7 +100,7 @@ public partial class CvnetCoreService {
 		var querySql = param as QueryListSqlParam;
 		if (querySql != null) {
 			_logger.LogInformation($"パラメータ QueryListSqlParam.ItemType={querySql.ItemType} 内容{Common.SerializeObject(querySql)}");
-			sql = querySql.Sql?? "";
+			sql = querySql.Sql ?? "";
 			try {
 				var list = _db.Fetch(querySql.ItemType, sql, querySql.Parameters);
 				if (list == null || list.Count == 0) {
@@ -240,7 +233,7 @@ public partial class CvnetCoreService {
 		var deleteById = param as DeleteByIdParam;
 		if (deleteById != null) {
 			_logger.LogInformation($"パラメータ DeleteByIdParam.ItemType={deleteById.ItemType} Id={deleteById.Id} 内容{Common.SerializeObject(deleteById)}");
-			var item = _db.Fetch(deleteById.ItemType, "where Id=@0", deleteById.Id)?.First()?? new();
+			var item = _db.Fetch(deleteById.ItemType, "where Id=@0", deleteById.Id)?.First() ?? new();
 			if (typeof(BaseDbClass).IsAssignableFrom(deleteById.ItemType)) {
 				if (item is BaseDbClass db) {
 					var orgItem = _db.Fetch(deleteById.ItemType, "where Id=@0", db.Id)?.First() ?? new();

@@ -18,35 +18,35 @@ public sealed partial class MasterShain : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kana = string.Empty;
 	/// <summary>
 	/// メールアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mail = string.Empty;
 	/// <summary>
 	/// 店舗Id
@@ -99,35 +99,35 @@ public sealed partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName 
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(12)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code = string.Empty;
 	/// <summary>
 	/// 名前
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kana = string.Empty;
 	/// <summary>
 	/// ランク
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string rank = string.Empty;
 	/// <summary>
 	/// 店舗Id
@@ -146,21 +146,21 @@ public sealed partial class MasterEndCustomer : BaseDbHasAddress, IBaseCodeName 
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string birthday = string.Empty;
 	/// <summary>
 	/// 誕生日 MMdd
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(4)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string birthNoyear = string.Empty;
 	/// <summary>
 	/// メモ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string memo = string.Empty;
 	/// <summary>
 	/// 性別 0=不明 1=男性 2=女性
@@ -223,21 +223,21 @@ public sealed partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(80)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name = string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ryaku = string.Empty;
 	/// <summary>
 	/// カナ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kana = string.Empty;
 	/// <summary>
 	/// ブランド
@@ -385,7 +385,7 @@ public sealed partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string makerHin = string.Empty;
 	/// <summary>
 	/// 商品サイズ区分
@@ -410,7 +410,7 @@ public sealed partial class MasterShohin : BaseDbClass, IBaseCodeName {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string memo = string.Empty;
 	/// <summary>
 	/// 原価リスト
@@ -465,14 +465,14 @@ public sealed partial class MasterShohinColSiz : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Col = string.Empty;
 	/// <summary>
 	/// カラー名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Col = string.Empty;
 	/// <summary>
 	/// サイズ
@@ -484,35 +484,35 @@ public sealed partial class MasterShohinColSiz : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Siz = string.Empty;
 	/// <summary>
 	/// サイズ名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Siz = string.Empty;
 	/// <summary>
 	/// JANコード1
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string jan1 = string.Empty;
 	/// <summary>
 	/// JANコード2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string jan2 = string.Empty;
 	/// <summary>
 	/// JANコード3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string jan3 = string.Empty;
 }
 /// <summary>
@@ -530,7 +530,7 @@ public sealed partial class MasterShohinGrade : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(40)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string hinshitu = string.Empty;
 	/// <summary>
 	/// ％

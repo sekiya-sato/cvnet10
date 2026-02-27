@@ -1,15 +1,16 @@
 ﻿using Cvnet10Base;
 using Cvnet10Base.Share;
 using Cvnet10DomainLogic;
-using NLog;
 
 namespace Cvnet10Server;
+
 public class AppInit {
 	private readonly IConfiguration _configuration;
 	// ToDo: バージョン番号は手動で更新すること
 	readonly string verStr = "0.0.099";
 	readonly DateTime buildDate = BuildMetadata.BuildDate;
 	static VersionInfo? _ver;
+	public static int Counter = 0;
 	/// <summary>
 	/// アプリケーションのバージョン情報を取得します。
 	/// </summary>
@@ -18,7 +19,6 @@ public class AppInit {
 			return _ver ?? throw new ArgumentNullException(nameof(VersionInfo));
 		}
 	}
-
 	public AppInit(IConfiguration configuration) {
 		_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 		_ver = new VersionInfo {
@@ -28,6 +28,7 @@ public class AppInit {
 			StartTime = DateTime.Now,
 			BaseDir = AppContext.BaseDirectory
 		};
+		Counter++;
 	}
 
 	/// <summary>

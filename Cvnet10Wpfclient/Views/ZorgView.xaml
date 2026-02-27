@@ -324,11 +324,11 @@
                     </StackPanel>
                 </materialDesign:Card>
                 <ListBox x:Name="SampleList"
-         Width="760"
-         Height="240"
-         HorizontalContentAlignment="Stretch"
+                         Width="760"
+                         Height="240"
+                         HorizontalContentAlignment="Stretch"
                          ItemsSource="{Binding ColorItems}"
-         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,5">
@@ -340,42 +340,42 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0"
-                            Margin="2">
+                                            Margin="2">
                                     <Border Height="40"
-                            Background="{Binding Color1}"
-                            CornerRadius="2" />
+                                            Background="{Binding Color1}"
+                                            CornerRadius="2" />
                                     <TextBlock FontSize="10"
-                               Text="{Binding Color1}"
-                               TextAlignment="Center" />
+                                               Text="{Binding Color1}"
+                                               TextAlignment="Center" />
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1"
-                            Margin="2">
+                                            Margin="2">
                                     <Border Height="40"
-                            Background="{Binding Color2}"
-                            CornerRadius="2" />
+                                            Background="{Binding Color2}"
+                                            CornerRadius="2" />
                                     <TextBlock FontSize="10"
-                               Text="{Binding Color2}"
-                               TextAlignment="Center" />
+                                               Text="{Binding Color2}"
+                                               TextAlignment="Center" />
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2"
-                            Margin="2">
+                                            Margin="2">
                                     <Border Height="40"
-                            Background="{Binding Color3}"
-                            CornerRadius="2" />
+                                            Background="{Binding Color3}"
+                                            CornerRadius="2" />
                                     <TextBlock FontSize="10"
-                               Text="{Binding Color3}"
-                               TextAlignment="Center" />
+                                               Text="{Binding Color3}"
+                                               TextAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="3"
-                            Margin="2">
+                                            Margin="2">
                                     <Border Height="40"
-                            Background="{Binding Color4}"
-                            CornerRadius="2" />
+                                            Background="{Binding Color4}"
+                                            CornerRadius="2" />
                                     <TextBlock FontSize="10"
-                               Text="{Binding Color4}"
-                               TextAlignment="Center" />
+                                               Text="{Binding Color4}"
+                                               TextAlignment="Center" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
