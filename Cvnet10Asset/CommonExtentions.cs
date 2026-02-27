@@ -15,6 +15,7 @@ public static void Method(IEnumerable<int> values) { }
 public static void Method(ReadOnlySpan<int> values) { }
 */
 
+
 /// <summary>
 /// 拡張メソッド
 /// </summary>

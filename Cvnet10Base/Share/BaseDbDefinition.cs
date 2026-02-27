@@ -50,7 +50,7 @@ public partial class BaseDbClass : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ResultColumn]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string disp0 = string.Empty;
 }
 /// <summary>
@@ -62,42 +62,42 @@ public partial class BaseDbHasAddress : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string postalCode = string.Empty;
 	/// <summary>
 	/// 住所1 都道府県
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string address1 = string.Empty;
 	/// <summary>
 	/// 住所2 市区町村
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string address2 = string.Empty;
 	/// <summary>
 	/// 住所3 番地
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(60)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string address3 = string.Empty;
 	/// <summary>
 	/// 電話番号
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string tel = string.Empty;
 	/// <summary>
 	/// メールアドレス
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mail = string.Empty;
 }
 
@@ -111,14 +111,14 @@ public partial class BaseDetailClass : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string yobi1 = string.Empty;
 	/// <summary>
 	/// 予備項目1
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(120)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string yobi2 = string.Empty;
 }
 /// <summary>
@@ -136,14 +136,14 @@ public partial class CodeNameView : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string cd = string.Empty;
 	/// <summary>
 	/// 対象テーブルのName
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei = string.Empty;
 
 	public CodeNameView() :base() {
@@ -169,14 +169,14 @@ public sealed partial class MasterGeneralMeisho : CodeNameView {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(10)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kb = string.Empty;
 	/// <summary>
 	/// 区分名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(40)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kbname = string.Empty;
 }
 

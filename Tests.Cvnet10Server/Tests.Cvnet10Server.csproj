@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Cvnet10Server.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- プロジェクト参照はリポジトリ内の相対パスに合わせて必要に応じて調整してください -->
+    <ProjectReference Include="..\Cvnet10Server\Cvnet10Server.csproj" />
+    <ProjectReference Include="..\Cvnet10Base\Cvnet10Base.csproj" />
+    <ProjectReference Include="..\Cvnet10BaseSqlite\Cvnet10BaseSqlite.csproj" />
+    <ProjectReference Include="..\Cvnet10Asset\Cvnet10Asset.csproj" />
+    <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
+    <ProjectReference Include="..\Cvnet10DomainLogic\Cvnet10DomainLogic.csproj" />
+  </ItemGroup>
+
+</Project>

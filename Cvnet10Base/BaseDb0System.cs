@@ -17,14 +17,14 @@ public sealed partial class MasterSysman : BaseDbHasAddress {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name =string.Empty;
 	/// <summary>
 	/// ホームページ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string hp =string.Empty;
 	/// <summary>
 	/// 自社締め日 1-31,99
@@ -56,28 +56,28 @@ public sealed partial class MasterSysman : BaseDbHasAddress {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string bankAccount1 =string.Empty;
 	/// <summary>
 	/// 振込先2
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string bankAccount2 =string.Empty;
 	/// <summary>
 	/// 振込先3
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(30)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string bankAccount3 =string.Empty;
 	/// <summary>
 	/// 期首年月日
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	[property: DefaultValue("19010101")]
+	[property: System.ComponentModel.DefaultValue("19010101")]
 	string fiscalStartDate="19010101";
 	/// <summary>
 	/// 消費税率リスト
@@ -104,7 +104,7 @@ public sealed partial class MasterSysTax: ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	[property: DefaultValue("19010101")]
+	[property: System.ComponentModel.DefaultValue("19010101")]
 	string dateFrom = "19010101";
 	/// <summary>
 	/// 新消費税率 (%) 例:10
@@ -124,42 +124,42 @@ public sealed partial class MasterMeisho : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(8)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kubun = string.Empty;
 	/// <summary>
 	/// 区分名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(40)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kubunName = string.Empty;
 	/// <summary>
 	/// 名称コード
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code = "";
 	/// <summary>
 	/// 名称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string name =string.Empty;
 	/// <summary>
 	/// 略称
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string ryaku =string.Empty;
 	/// <summary>
 	/// よみがな
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string kana =string.Empty;
 	/// <summary>
 	/// 並び順

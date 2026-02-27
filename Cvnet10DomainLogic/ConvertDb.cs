@@ -1,9 +1,6 @@
-﻿using Cvnet10Base;
-using Cvnet10Base.Share;
-using System.Linq;
-using Cvnet10Asset;
+﻿using Cvnet10Asset;
+using Cvnet10Base;
 using NLog;
-using NPoco.Expressions;
 
 namespace Cvnet10DomainLogic;
 /// <summary>
@@ -113,7 +110,7 @@ public class ConvertDb {
 		foreach (var meisho in meishoList) {
 			retList.Add(new MasterGeneralMeisho() {
 				Kb = meisho.Kubun,
-				Kbname= meisho.KubunName,
+				Kbname = meisho.KubunName,
 				Sid = meisho.Id,
 				Cd = meisho.Code,
 				Mei = meisho.Name,
@@ -199,7 +196,7 @@ public class ConvertDb {
 					Cd = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
 				},
 				Id_Bumon = bumonMeisho?.Id ?? 0,
-				VBumon = new(bumonMeisho??new()),
+				VBumon = new(bumonMeisho ?? new()),
 			};
 			var meiList = ConverterGeneralMeisho(5, "E", rec);
 			if (meiList.Count > 0)

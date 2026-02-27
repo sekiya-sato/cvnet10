@@ -86,7 +86,7 @@ public partial class Tran99All : BaseDbClass {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(200)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string memo = string.Empty;
 	/// <summary>
 	/// 詳細内容
@@ -129,21 +129,21 @@ public partial class Tran99Meisai : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Shohin = string.Empty;
 	/// <summary>
 	/// 商品名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Shohin = string.Empty;
 	/// <summary>
 	/// 入力JANコード
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string janCode = string.Empty;
 	/// <summary>
 	/// 色
@@ -154,13 +154,13 @@ public partial class Tran99Meisai : ObservableObject {
 	/// カラーCD
 	/// </summary>
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Col = string.Empty;
 	/// <summary>
 	/// カラー名
 	/// </summary>
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Col = string.Empty;
 	/// <summary>
 	/// サイズ
@@ -171,13 +171,13 @@ public partial class Tran99Meisai : ObservableObject {
 	/// サイズCD
 	/// </summary>
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Siz = string.Empty;
 	/// <summary>
 	/// サイズ名
 	/// </summary>
 	[ObservableProperty]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Siz = string.Empty;
 	/// <summary>
 	/// 数量
@@ -229,21 +229,21 @@ public partial class Tran99Meisai : ObservableObject {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Shain = string.Empty;
 	/// <summary>
 	/// 社員名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Shain = string.Empty;
 	/// <summary>
 	/// 明細メモ
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(200)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string memo = string.Empty;
 }
 /// <summary>
@@ -277,14 +277,14 @@ public partial class Tran00Uriage: Tran99All {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Tokui = string.Empty;
 	/// <summary>
 	/// 得意先名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Tokui = string.Empty;
 }
 /// <summary>
@@ -302,14 +302,14 @@ public partial class Tran01Tenuri : Tran99All {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Tenpo = string.Empty;
 	/// <summary>
 	/// 店舗名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Tenpo = string.Empty;
 	/// <summary>
 	/// 顧客キー
@@ -321,14 +321,14 @@ public partial class Tran01Tenuri : Tran99All {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Customer = string.Empty;
 	/// <summary>
 	/// 顧客名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Customer = string.Empty;
 }
 
@@ -347,14 +347,14 @@ public partial class Tran03Shiire : Tran99All {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Shiire = string.Empty;
 	/// <summary>
 	/// 仕入先名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Shiire = string.Empty;
 }
 
@@ -373,13 +373,13 @@ public partial class Tran05Ido : Tran99All {
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(20)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string code_Ido = string.Empty;
 	/// <summary>
 	/// 移動先名
 	/// </summary>
 	[ObservableProperty]
 	[property: ColumnSizeDml(100)]
-	[property: DefaultValue("")]
+	[property: System.ComponentModel.DefaultValue("")]
 	string mei_Ido = string.Empty;
 }

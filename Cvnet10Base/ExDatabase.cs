@@ -446,7 +446,7 @@ public partial class ExDatabase : Database {
 	private static readonly JsonSerializerSettings jsonOptions = new() {
 		NullValueHandling = NullValueHandling.Ignore,
 		Formatting = Formatting.None,
-		DefaultValueHandling = DefaultValueHandling.Ignore,
+		DefaultValueHandling = System.ComponentModel.DefaultValueHandling.Ignore,
 	};
 	*/
 
