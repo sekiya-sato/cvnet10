@@ -37,11 +37,11 @@ public partial class CvnetCoreService : ICvnetCoreService {
 			[CvnetFlag.Msg003_GetEnv] = HandleGetEnv,
 			[CvnetFlag.MSg040_ConvertDb] = HandleConvertDb,
 			[CvnetFlag.MSg041_ConvertDbInit] = HandleConvertDb,
-			[CvnetFlag.Msg101_Op_Query] = (req, ctx) => subLogicMsg_Op_Query(req, ctx),
-			[CvnetFlag.Msg201_Op_Execute] = (req, ctx) => subLogicMsg_Op_Execute(req, ctx),
-			[CvnetFlag.Msg700_Test_Start] = (req, ctx) => subLogicMsg700(req, ctx),
-			[CvnetFlag.Msg701_TestCase001] = (req, ctx) => subLogicMsg701(req, ctx),
-			[CvnetFlag.Msg702_TestCase002] = (req, ctx) => subLogicMsg702(req, ctx),
+			[CvnetFlag.Msg101_Op_Query] = (req, ctx) => HandleOpQuery(req, ctx),
+			[CvnetFlag.Msg201_Op_Execute] = (req, ctx) => HandleOpExecute(req, ctx),
+			[CvnetFlag.Msg700_Test_Start] = (req, ctx) => TestLogicMsg700(req, ctx),
+			[CvnetFlag.Msg701_TestCase001] = (req, ctx) => TestLogicMsg701(req, ctx),
+			[CvnetFlag.Msg702_TestCase002] = (req, ctx) => TestLogicMsg702(req, ctx),
 		};
 	}
 	// ToDo : テストが終わったら、[AllowAnonymous] を [Authorize] へ変更

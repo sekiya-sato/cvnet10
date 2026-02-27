@@ -18,7 +18,7 @@ public class ConvertDb {
 	}
 	public void ConvertAll(bool isInit = true) {
 		logger.Info("変換処理開始");
-		/*
+		/* ToDo : リリース段階で最後にコメントを外す ※ただしうっかり実行した場合、元データを消してしまう可能性があるため、慎重に扱うこと
 		CnvMasterSys(isInit);
 		CnvMasterMeisho(isInit);
 		CnvMasterShain(isInit);
@@ -26,6 +26,7 @@ public class ConvertDb {
 		CnvMasterShohin(isInit);
 		CnvMasterTokui(isInit);
 		CnvMasterShiire(isInit);
+		CnvAfterMaster(); // マスタ変換後の追加処理（例：関連テーブルの更新など）
 		 */
 		/*
 		 */
@@ -193,7 +194,7 @@ public class ConvertDb {
 				Kana = getString(rec, "フリカナ"),
 				Mail = getString(rec, "メール"),
 				VTenpo = new() {
-					Cd = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+					Cd = getString(rec, "店舗CD"), // 残りはCnvAfterMaster()でセット
 				},
 				Id_Bumon = bumonMeisho?.Id ?? 0,
 				VBumon = new(bumonMeisho ?? new()),
@@ -224,7 +225,7 @@ public class ConvertDb {
 				Tel = getString(rec, "TEL").DefaultIfEmpty(getString(rec, "TEL2")),
 				Memo = getString(rec, "拡張メモ"),
 				VTenpo = new() {
-					Cd = getString(rec, "店舗CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+					Cd = getString(rec, "店舗CD"),  // 残りはCnvAfterMaster()でセット
 				},
 			};
 			var meiList = ConverterGeneralMeisho(10, "K", rec);
@@ -238,7 +239,7 @@ public class ConvertDb {
 	/// </summary>
 	/// <param name="isInit"></param>
 	/// <returns></returns>
-	public int CnvOptionMasterEndCustomer__NoUse() {
+	private int CnvOptionMasterEndCustomer__NoUse() {
 		const string sql = "select 顧客CD,拡張メモ from HC$master_kokyaku where 顧客CD>'.' and 拡張メモ>'.'  order by 顧客CD"; // 顧客分類 'K01'-'K10'
 		var rows = _fromDb.Fetch<Dictionary<string, object>>(sql);
 		if (rows.Count == 0)
@@ -372,7 +373,7 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 				MakerHin = getString(rec, "メーカー品番"),
 				SizeKu = getString(rec, "商品サイズ区分", "SIZ"),
 				VSoko = new() {
-					Cd = getString(rec, "基準倉庫CD"), // ToDo: 店舗マスタ(得意先マスタ)読み込み後再度残りの項目を設定する
+					Cd = getString(rec, "基準倉庫CD"), // // 残りはCnvAfterMaster()でセット
 				},
 				Memo = getString(rec, "メモ"),
 				Jcolsiz = colsiz.Count > 0 ? colsiz : null,
@@ -493,4 +494,95 @@ OR (Kubun ='SZN' and Code =@3) OR (Kubun ='SZI' and Code =@4) OR (Kubun ='GEN' a
 			return item;
 		});
 	}
+	public int CnvAfterMaster() {
+		int cnt = 0;
+		// MasterShain の VTenpo.Cd をキーに MasterTokui を検索し、該当する場合は MasterShain の VTenpo と Id_Tenpo を更新する
+		var shainList = _toDb.Fetch<MasterShain>("where json_extract(VTenpo, '$.Cd') IS NOT NULL AND json_extract(VTenpo, '$.Cd') <> ''");
+		if (shainList != null && shainList.Count > 0) {
+			foreach (var shain in shainList) {
+				try {
+					var code = shain?.VTenpo?.Cd ?? string.Empty;
+					if (shain == null || string.IsNullOrWhiteSpace(code))
+						continue;
+
+					// 該当Codeを持つ MasterTokui を取得し、存在すれば shain.VTenpo と Id_Tenpo を設定する
+					var tokui = _toDb.FirstOrDefault<MasterTokui>("where Code=@0", code);
+					if (tokui != null) {
+						shain.VTenpo = new CodeNameView(tokui.Id, tokui.Code, tokui.Name);
+						shain.Id_Tenpo = tokui.Id;
+						// 必要ならデータベース上の shain レコードを更新
+						try {
+							_toDb.Update(shain);
+						}
+						catch (Exception updEx) {
+							logger?.Warn(updEx, "CnvAfterMaster: Failed to update MasterShain Id={0}", shain.Id);
+						}
+					}
+				}
+				catch (Exception ex) {
+					logger?.Warn(ex, "CnvAfterMaster: Failed to resolve VTenpo for MasterShain Code={0}", shain?.Code);
+				}
+			}
+			cnt += shainList.Count;
+		}
+		var customerList = _toDb.Fetch<MasterEndCustomer>("where json_extract(VTenpo, '$.Cd') IS NOT NULL AND json_extract(VTenpo, '$.Cd') <> ''");
+		if (customerList != null && customerList.Count > 0) {
+			foreach (var customer in customerList) {
+				try {
+					var code = customer?.VTenpo?.Cd ?? string.Empty;
+					if (customer == null || string.IsNullOrWhiteSpace(code))
+						continue;
+
+					// 該当Codeを持つ MasterTokui を取得し、存在すれば customer.VTenpo と Id_Tenpo を設定する
+					var tokui = _toDb.FirstOrDefault<MasterTokui>("where Code=@0", code);
+					if (tokui != null) {
+						customer.VTenpo = new CodeNameView(tokui.Id, tokui.Code, tokui.Name);
+						customer.Id_Tenpo = tokui.Id;
+						// 必要ならデータベース上の customer レコードを更新
+						try {
+							_toDb.Update(customer);
+						}
+						catch (Exception updEx) {
+							logger?.Warn(updEx, "CnvAfterMaster: Failed to update MasterEndCustomer Id={0}", customer.Id);
+						}
+					}
+				}
+				catch (Exception ex) {
+					logger?.Warn(ex, "CnvAfterMaster: Failed to resolve VTenpo for MasterEndCustomer Code={0}", customer?.Code);
+				}
+			}
+			cnt += customerList.Count;
+		}
+		var shohinList = _toDb.Fetch<MasterShohin>("where json_extract(VSoko, '$.Cd') IS NOT NULL AND json_extract(VSoko, '$.Cd') <> ''");
+		if (shohinList != null && shohinList.Count > 0) {
+			foreach (var shohin in shohinList) {
+				try {
+					var code = shohin?.VSoko?.Cd ?? string.Empty;
+					if (shohin == null || string.IsNullOrWhiteSpace(code))
+						continue;
+
+					// 該当Codeを持つ MasterTokui を取得し、存在すれば shohin.VTenpo と Id_Tenpo を設定する
+					var tokui = _toDb.FirstOrDefault<MasterTokui>("where Code=@0", code);
+					if (tokui != null) {
+						shohin.VSoko = new CodeNameView(tokui.Id, tokui.Code, tokui.Name);
+						shohin.Id_Soko = tokui.Id;
+						// 必要ならデータベース上の shohin レコードを更新
+						try {
+							_toDb.Update(shohin);
+						}
+						catch (Exception updEx) {
+							logger?.Warn(updEx, "CnvAfterMaster: Failed to update MasterShohin Id={0}", shohin.Id);
+						}
+					}
+				}
+				catch (Exception ex) {
+					logger?.Warn(ex, "CnvAfterMaster: Failed to resolve VTenpo for MasterShohin Code={0}", shohin?.Code);
+				}
+			}
+			cnt += shohinList.Count;
+		}
+		return cnt;
+	}
+
+
 }
