@@ -2,18 +2,17 @@
 using Cvnet10Asset;
 using Cvnet10Base;
 using ProtoBuf.Grpc;
-using System.ComponentModel;
 
 namespace Cvnet10Server.Services;
 
 
 public partial class CvnetCoreService {
 
-	CvnetMsg subLogicMsg700(CvnetMsg request, CallContext context = default) {
+	CvnetMsg TestLogicMsg700(CvnetMsg request, CallContext context = default) {
 		// 未実装
 		throw new NotImplementedException();
 	}
-	CvnetMsg subLogicMsg701(CvnetMsg request, CallContext context = default) {
+	CvnetMsg TestLogicMsg701(CvnetMsg request, CallContext context = default) {
 		//var sql = Test202601Master.ViewSql;
 		var list = _db.Fetch<Test202601Master>();
 		var list2 = _db.Fetch<MasterShain>();
@@ -23,7 +22,7 @@ public partial class CvnetCoreService {
 		_db.Insert(item);
 		item.Code = "1235";
 		item.Jsub = new List<MasterGeneralMeisho>();
-		item.Jsub.Add(new MasterGeneralMeisho(){ Kb="COL", Cd="001",Mei="ブラック" });
+		item.Jsub.Add(new MasterGeneralMeisho() { Kb = "COL", Cd = "001", Mei = "ブラック" });
 		_db.Insert(item);
 
 		/*
@@ -100,13 +99,13 @@ order by T.Id
 		// ✅ jcolsiz 内の名称を自動的にセット
 		list.LoadAllJcolsizMeishoNames(_db, true);
 		list.LoadAllGeneralMeishoNames(_db, true);
-		var ret = new CvnetMsg() { Flag = request.Flag};
+		var ret = new CvnetMsg() { Flag = request.Flag };
 		ret.Code = 0;
 		ret.DataType = typeof(List<Test202601Master>);
 		ret.DataMsg = Common.SerializeObject(list);
 		return ret;
 	}
-	CvnetMsg subLogicMsg702(CvnetMsg request, CallContext context = default) {
+	CvnetMsg TestLogicMsg702(CvnetMsg request, CallContext context = default) {
 		// 未実装
 		throw new NotImplementedException();
 	}

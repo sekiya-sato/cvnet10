@@ -8,7 +8,7 @@
 // - ログや中間ウェアを追加する前にパフォーマンス/セキュリティへの影響を確認してください。
 // COPILOT: 新しいサービスをマップする場合は .MapGrpcService<> とルートハンドラーを適切に配置し、ヘルスチェックやメトリクスの露出も検討すること。
 
-using Cvnet10Base;
+using Cvnet10DomainLogic;
 using Cvnet10Server;
 using Cvnet10Server.Services;
 using Grpc.Net.Compression;
@@ -22,7 +22,6 @@ using ProtoBuf.Grpc.Server;
 using System.IO.Compression;
 using System.Security.Claims;
 using System.Text;
-using Cvnet10DomainLogic;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,22 +32,22 @@ builder.Logging.AddNLogWeb();
 
 
 builder.Services.AddCodeFirstGrpc((options => {
-    // CompressionLevel は用途に応じて調整 (Fastest, Optimal 等)
-    options.CompressionProviders.Add(new GzipCompressionProvider(CompressionLevel.Fastest));
-    // サーバーから圧縮済みレスポンスを返す際に使うアルゴリズム名
-    options.ResponseCompressionAlgorithm = "gzip";
-    options.EnableDetailedErrors = true;
-    options.MaxReceiveMessageSize = 800 * 1024 * 1024; // 800 MB
-    options.MaxSendMessageSize = 800 * 1024 * 1024; // 800 MB
+	// CompressionLevel は用途に応じて調整 (Fastest, Optimal 等)
+	options.CompressionProviders.Add(new GzipCompressionProvider(CompressionLevel.Fastest));
+	// サーバーから圧縮済みレスポンスを返す際に使うアルゴリズム名
+	options.ResponseCompressionAlgorithm = "gzip";
+	options.EnableDetailedErrors = true;
+	options.MaxReceiveMessageSize = 800 * 1024 * 1024; // 800 MB
+	options.MaxSendMessageSize = 800 * 1024 * 1024; // 800 MB
 	options.Interceptors.Add<ErrorInterceptor>();
 }));
 
 builder.WebHost.ConfigureKestrel(serverOptions => {
-    // TODO: Kestrel デフォルトのオプションは必要に応じて追加する(2024/08/15)
-    // [TODO: Add default options for Kestrel as needed]
-    serverOptions.Limits.MaxRequestBodySize = 838_860_800; // 800 MB
-    serverOptions.Limits.MaxConcurrentConnections = 100; // 最大同時接続数 [Maximum number of simultaneous connections]
-    serverOptions.Limits.Http2.MaxStreamsPerConnection = 100; // 最大ストリーム数 [Maximum number of streams]
+	// TODO: Kestrel デフォルトのオプションは必要に応じて追加する(2024/08/15)
+	// [TODO: Add default options for Kestrel as needed]
+	serverOptions.Limits.MaxRequestBodySize = 838_860_800; // 800 MB
+	serverOptions.Limits.MaxConcurrentConnections = 100; // 最大同時接続数 [Maximum number of simultaneous connections]
+	serverOptions.Limits.Http2.MaxStreamsPerConnection = 100; // 最大ストリーム数 [Maximum number of streams]
 });
 builder.Services.AddHttpContextAccessor(); // HttpContextを取得可能にする [Make HttpContext accessible]
 
@@ -118,23 +117,22 @@ var logger = app.Logger;
 logger.LogDebug("Application Start ------------------------------------");
 // リクエスト／レスポンスヘッダをログするミドルウェア
 app.Use(async (context, next) => {
-    var logger = app.Logger;
-    logger.LogInformation("Incoming request path: {Path}", context.Request.Path);
-    foreach (var h in context.Request.Headers)
-        logger.LogInformation("REQ HDR: {Key} = {Value}", h.Key, h.Value.ToString());
+	var logger = app.Logger;
+	logger.LogInformation("Incoming request path: {Path}", context.Request.Path);
+	foreach (var h in context.Request.Headers)
+		logger.LogInformation("REQ HDR: {Key} = {Value}", h.Key, h.Value.ToString());
 
-    await next();
+	await next();
 
-    // レスポンスヘッダ（トレーラはここで見えない場合あり）
-    foreach (var h in context.Response.Headers)
-        logger.LogInformation("RES HDR: {Key} = {Value}", h.Key, h.Value.ToString());
+	// レスポンスヘッダ（トレーラはここで見えない場合あり）
+	foreach (var h in context.Response.Headers)
+		logger.LogInformation("RES HDR: {Key} = {Value}", h.Key, h.Value.ToString());
 });
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 /*
-// ToDo : 認証関係の処理
 // Other(if need) : MVCコントローラの処理
 app.MapControllers();
  */

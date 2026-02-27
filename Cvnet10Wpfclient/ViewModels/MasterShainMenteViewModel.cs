@@ -44,8 +44,8 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 		vm.SetParam(typeof(MasterTokui), "TenType=6", "Code");
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		var meisho = vm.Current as MasterTokui;
-		CurrentEdit.Id_Tenpo = meisho?.Id??0;
-		CurrentEdit.VTenpo = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei= meisho?.Name ?? "" };
+		CurrentEdit.Id_Tenpo = meisho?.Id ?? 0;
+		CurrentEdit.VTenpo = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
 	}
 	[RelayCommand]
 	void DoSelectBumon() {
