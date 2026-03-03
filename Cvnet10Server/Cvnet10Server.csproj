@@ -4,15 +4,15 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <BuildDate>$([System.DateTime]::Now.ToString("yyyy,M,d,H,m,s"))</BuildDate>
+    <MachineName>$([System.Environment]::MachineName)</MachineName>
+    <UserName>$([System.Environment]::UserName)</UserName>
+    <OSDescription>$([System.Runtime.InteropServices.RuntimeInformation]::OSDescription)</OSDescription>
+    <FrameworkDescription>$([System.Runtime.InteropServices.RuntimeInformation]::FrameworkDescription)</FrameworkDescription>
+    <BuildConfiguration>$(Configuration)</BuildConfiguration>
+    <CI>$(CI)</CI>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="BuildInfo.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BuildInfo.tt</DependentUpon>
-    </None>
-  </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" />
@@ -20,6 +20,7 @@
 	<PackageReference Include="NLog.Web.AspNetCore" />
 	<PackageReference Include="NLog.Targets.Network" />
 	<PackageReference Include="protobuf-net.Grpc.AspNetCore" />
+	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />
@@ -31,19 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="BuildInfo.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BuildInfo.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="BuildInfo.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BuildInfo.g.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

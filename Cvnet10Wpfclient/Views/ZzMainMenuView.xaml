@@ -128,17 +128,17 @@
 
 
 									<Button Command="{Binding MinimizeCommand}"
-                                            ToolTip="最小化"
 										Opacity="0.6"
-										Style="{StaticResource MinimizeWinBtn}" />
+										Style="{StaticResource MinimizeWinBtn}"
+										ToolTip="最小化" />
 									<Button Command="{Binding MenuOnlyCommand}"
 										Opacity="0.6"
-                                            ToolTip="メニューのみ/通常"
-										Style="{StaticResource MenuonlyWinBtn}" />
+										Style="{StaticResource MenuonlyWinBtn}"
+										ToolTip="メニューのみ/通常" />
 									<Button Command="{Binding ExitCommand}"
 										Opacity="0.6"
-                                            ToolTip="終了"
-										Style="{StaticResource CloseWinBtn}" />
+										Style="{StaticResource CloseWinBtn}"
+										ToolTip="終了" />
 								</StackPanel>
 							</StackPanel>
 						</Border>
@@ -147,17 +147,17 @@
 							<StackPanel Orientation="Vertical">
 								<TextBlock Width="100"
 									HorizontalAlignment="Center"
+									d:Text="99/12/31"
 									Foreground="{DynamicResource SubTitleColor}"
 									Style="{StaticResource MetricLabel}"
-                                           d:Text="99/12/31"
 									Text="{Binding CurrentDate, FallbackValue='00/00/00'}" />
 
 								<TextBlock Width="90"
 									HorizontalAlignment="Center"
+									d:Text="00:00:00"
 									FontSize="18"
 									FontWeight="Bold"
 									Foreground="{DynamicResource TitleColor}"
-                                           d:Text="00:00:00"
 									Text="{Binding CurrentTime, FallbackValue='00:00:00'}" />
 							</StackPanel>
 						</Border>

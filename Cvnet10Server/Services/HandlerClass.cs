@@ -45,7 +45,9 @@ public partial class CvnetCoreService {
 		result.Flag = request.Flag;
 
 		// 環境変数を取得して Dictionary<string,string> に変換、JSON シリアライズして返す
+#pragma warning disable RS1035 // アナライザーに対して禁止された API を使用しない
 		var envVars = Environment.GetEnvironmentVariables();
+#pragma warning restore RS1035 // アナライザーに対して禁止された API を使用しない
 		var dict0 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 		foreach (DictionaryEntry entry in envVars) {
 			var key = entry.Key?.ToString() ?? string.Empty;
