@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CodeShare;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Cvnet10Asset;
+using Grpc.Core;
 using System.Collections.ObjectModel;
 
 namespace Cvnet10Wpfclient.ViewModels;
@@ -21,6 +25,9 @@ public partial class ZorgViewModel : Helpers.BaseViewModel {
 		}
 	}
 	*/
+	/// <summary>
+	/// カラーバランスの見本
+	/// </summary>
 	[ObservableProperty]
 	private ObservableCollection<ColorBalanceItem> colorItems = new()
 	{
@@ -54,6 +61,85 @@ public partial class ZorgViewModel : Helpers.BaseViewModel {
 		new("#", "#", "#","#"),
 	};
 
+	#region ストリーミングテスト
+	[ObservableProperty]
+	string streamStatusText = "TestStream";
+
+	[ObservableProperty]
+	ObservableCollection<string> streamMessages = [];
+
+	[ObservableProperty]
+	int progressValue;
+
+	[ObservableProperty]
+	bool isProgressVisible = false;
+
+	/// <summary>
+	/// gRPCストリーミングのテスト
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+
+	[RelayCommand(IncludeCancelCommand = true)]
+	public async Task Streaming(CancellationToken cancellationToken) {
+		try {
+			ProgressValue = 0;
+			IsProgressVisible = true;
+			StreamMessages.Clear();
+			cancellationToken.ThrowIfCancellationRequested();
+			// 処理を実行
+			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+			var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.MSg060_StreamingTest };
+			msg.DataType = typeof(string);
+			msg.DataMsg = "ストリーミングテスト";
+			await foreach (var streamMsg in coreService.QueryMsgStreamAsync(msg, AppGlobal.GetDefaultCallContext(cancellationToken))) {
+				StreamMessages.Insert(0, streamMsg.DataMsg);
+				ProgressValue = streamMsg.Progress;
+				if (streamMsg.IsCompleted) break;
+			}
+			IsProgressVisible = false;
+		}
+		catch (OperationCanceledException) {
+			IsProgressVisible = false;
+			return;
+		}
+		catch (RpcException rpcEx) when (rpcEx.StatusCode == StatusCode.Cancelled) {
+			IsProgressVisible = false;
+			return;
+		}
+	}
+	#endregion
+
+	#region テストメッセージ 001, 002, 003
+	[ObservableProperty]
+	string testMsg001Text = $"テストメッセージ {DateTime.Now}";
+	[ObservableProperty]
+	string testMsg001Result = string.Empty;
+
+	[RelayCommand(IncludeCancelCommand = true)]
+	public async Task TestMsg001(CancellationToken ct) {
+		var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+		var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg001_CopyReply };
+		msg.DataType = typeof(string);
+		msg.DataMsg = TestMsg001Text;
+		var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
+		TestMsg001Result = reply.DataMsg;
+	}
+
+	[ObservableProperty]
+	string testMsg002Result = string.Empty;
+
+	[RelayCommand(IncludeCancelCommand = true)]
+	public async Task TestMsg002(CancellationToken ct) {
+		var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+		var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg002_GetVersion };
+		var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
+		if (reply?.DataMsg != null && reply?.DataType != null) {
+			var versionInfo = Common.DeserializeObject<Cvnet10Base.Share.VersionInfo>(reply.DataMsg);
+			TestMsg002Result = $"{versionInfo?.Product}-{versionInfo?.BuildDate} Ver.{versionInfo?.Version} Base:{versionInfo?.BaseDir}";
+		}
+	}
+	#endregion
 }
 
 
