@@ -6,22 +6,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <BuildDate>$([System.DateTime]::Now.ToString("yyyy,M,d,H,m,s"))</BuildDate>
-    <MachineName>$([System.Environment]::MachineName)</MachineName>
-    <UserName>$([System.Environment]::UserName)</UserName>
     <OSDescription>$([System.Runtime.InteropServices.RuntimeInformation]::OSDescription)</OSDescription>
     <FrameworkDescription>$([System.Runtime.InteropServices.RuntimeInformation]::FrameworkDescription)</FrameworkDescription>
     <BuildConfiguration>$(Configuration)</BuildConfiguration>
-    <CI>$(CI)</CI>
-    <CompilerVisibleProperty>BuildDate;MachineName;UserName;OSDescription;FrameworkDescription;BuildConfiguration;CI</CompilerVisibleProperty>
+	  <SourceGeneratorTimestamp>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</SourceGeneratorTimestamp>
+	  <CI>$(CI)</CI>
+    <CompilerVisibleProperty>BuildDate;OSDescription;FrameworkDescription;BuildConfiguration;CI;SourceGeneratorTimestamp</CompilerVisibleProperty>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildDate" Value="$(BuildDate)" />
+  </ItemGroup>
+
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" />
-	<PackageReference Include="Newtonsoft.Json" />
 	<PackageReference Include="NLog.Web.AspNetCore" />
-	<PackageReference Include="NLog.Targets.Network" />
 	<PackageReference Include="protobuf-net.Grpc.AspNetCore" />
-	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeShare\CodeShare.csproj" />

@@ -267,7 +267,7 @@ public partial class TranKinHeader : BaseDbClass {
 	[ObservableProperty]
 	long id_Torisaki;
 	/// <summary>
-	/// 倉庫データ
+	/// 取引先データ
 	/// </summary>
 	[ObservableProperty]
 	[property: SerializedColumn]
@@ -341,7 +341,7 @@ public sealed partial class TranKinMeisai : ObservableObject {
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [KeyDml("nk1", false, "DenDay")]
-[KeyDml("nk2", false, ["Id_Soko"])]
+[KeyDml("nk2", false, ["Id_Torisaki"])]
 public sealed partial class Tran06Nyukin : TranKinHeader {
 }
 /// <summary>
@@ -349,7 +349,7 @@ public sealed partial class Tran06Nyukin : TranKinHeader {
 /// </summary>
 [PrimaryKey("Id", AutoIncrement = true)]
 [KeyDml("nk1", false, "DenDay")]
-[KeyDml("nk2", false, ["Id_Soko"])]
+[KeyDml("nk2", false, ["Id_Torisaki"])]
 public sealed partial class Tran07Shiharai : TranKinHeader {
 }
 

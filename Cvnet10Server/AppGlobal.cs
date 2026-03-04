@@ -27,8 +27,10 @@ public class AppGlobal {
 			return _ver;
 		}
 	}
-	public string MachineName => BuildMetadata.MachineName ?? string.Empty;
-	public string UserName => BuildMetadata.UserName ?? string.Empty;
+#pragma warning disable RS1035 // アナライザーに対して禁止された API を使用しない
+	public string MachineName => Environment.MachineName ?? string.Empty;
+	public string UserName => Environment.UserName ?? string.Empty;
+#pragma warning restore RS1035 // アナライザーに対して禁止された API を使用しない
 	public string OSVersion => BuildMetadata.OSVersion ?? string.Empty;
 	public string DotNetVersion => BuildMetadata.DotNetVersion ?? string.Empty;
 
