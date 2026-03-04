@@ -13,7 +13,7 @@ public partial class SelectShainViewModel : Helpers.BaseViewModel {
 
 	public void Initialize(string? fromCode, string? toCode) {
 		FromCode = fromCode?.Trim() ?? string.Empty;
-		ToCode = toCode?.Trim() ?? string.Empty;
+		ToCode = toCode?.Trim() ?? "99999999";
 	}
 
 	[RelayCommand]
@@ -21,8 +21,4 @@ public partial class SelectShainViewModel : Helpers.BaseViewModel {
 		ClientLib.ExitDialogResult(this, true);
 	}
 
-	[RelayCommand]
-	void Cancel() {
-		ClientLib.ExitDialogResult(this, false);
-	}
 }

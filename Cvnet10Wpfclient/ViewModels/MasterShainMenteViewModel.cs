@@ -19,7 +19,7 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 
 	[RelayCommand]
 	async Task Init() {
-		await DoList(CancellationToken.None);
+		// await DoList(CancellationToken.None);
 	}
 
 	protected override string GetInsertConfirmMessage() =>
