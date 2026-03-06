@@ -1,16 +1,10 @@
 ﻿<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views._00System.LoginView"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
-	xmlns:local="clr-namespace:Cvnet10Wpfclient.Views"
-	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
+	xmlns:local="clr-namespace:Cvnet10Wpfclient.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels._00System"
 	Title="ログイン"
-	Width="500"
-	Height="370"
+	Width="500" Height="370"
 	Background="{DynamicResource AppCommonBackgroundBrush}"
 	FocusManager.FocusedElement="{Binding ElementName=LoginIdTextBox}"
 	Foreground="{DynamicResource MaterialDesignBody}"
@@ -21,9 +15,7 @@
 	</helpers:BaseWindow.DataContext>
 	<TabControl>
 		<TabItem Height="0"
-			d:Header="Login"
-			d:Height="40"
-			d:Visibility="Visible">
+			d:Header="Login" d:Height="40" d:Visibility="Visible">
 			<TabItem.Style>
 				<Style TargetType="TabItem">
 					<Setter Property="Visibility" Value="Visible" />
@@ -41,8 +33,7 @@
 				<Border Padding="40">
 					<StackPanel VerticalAlignment="Center">
 
-						<TextBlock Margin="0,0,0,30"
-							HorizontalAlignment="Center"
+						<TextBlock Margin="0,0,0,30" HorizontalAlignment="Center"
 							FontWeight="Bold"
 							Style="{StaticResource MaterialDesignHeadline4TextBlock}"
 							Text="SYSTEM LOGIN" />
@@ -50,8 +41,7 @@
 							Margin="0,0,0,20"
 							helpers:FocusHelper.IsEnterToNext="True"
 							materialDesign:HintAssist.Foreground="{DynamicResource MaterialDesignBody}"
-							materialDesign:HintAssist.Hint="ログインIDを入力してください"
-							materialDesign:TextFieldAssist.HasClearButton="True"
+							materialDesign:HintAssist.Hint="ログインIDを入力してください" materialDesign:TextFieldAssist.HasClearButton="True"
 							CaretBrush="{DynamicResource MaterialDesignBody}"
 							FontSize="16"
 							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -76,14 +66,12 @@
 							<Button Grid.Column="0"
 								Margin="0,0,10,0"
 								Command="{Binding LoginCommand}"
-								Content="OK (Enter)"
-								IsDefault="True" />
+								Content="OK (Enter)" IsDefault="True" />
 
 							<Button Grid.Column="1"
 								Margin="10,0,0,0"
 								Command="{Binding ExitCommand}"
-								Content="キャンセル (ESC)"
-								IsCancel="True" />
+								Content="キャンセル (ESC)" IsCancel="True" />
 						</Grid>
 
 					</StackPanel>
@@ -91,9 +79,7 @@
 			</Grid>
 		</TabItem>
 		<TabItem Height="0"
-			d:Header="Refresh"
-			d:Height="40"
-			d:Visibility="Visible">
+			d:Header="Refresh" d:Height="40" d:Visibility="Visible">
 			<TabItem.Style>
 				<Style TargetType="TabItem">
 					<Setter Property="Visibility" Value="Hidden" />
@@ -108,24 +94,20 @@
 				</Style>
 			</TabItem.Style>
 			<StackPanel VerticalAlignment="Center">
-				<TextBlock Margin="0,0,0,30"
-					HorizontalAlignment="Center"
+				<TextBlock Margin="0,0,0,30" HorizontalAlignment="Center"
 					FontWeight="Bold"
 					Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-					Text="LOGIN Refresh" />
-				<TextBlock Margin="20"
-					HorizontalAlignment="Center"
+					Text="Login-Token Refresh" />
+				<TextBlock Margin="20" HorizontalAlignment="Center"
 					FontWeight="Bold"
 					Style="{StaticResource MaterialDesignBody1TextBlock}"
 					Text="現在の接続トークンを使ってリフレッシュを行います" />
 				<Button Margin="40,0,40,0"
 					Command="{Binding RefreshCommand}"
-					Content="リフレッシュ"
-					IsDefault="True" />
+					Content="リフレッシュ" IsDefault="True" />
 				<Button Margin="50,20,50,0"
 					Command="{Binding ExitCommand}"
-					Content="キャンセル(ESC)"
-					IsDefault="True" />
+					Content="キャンセル(ESC)" IsDefault="True" />
 			</StackPanel>
 
 		</TabItem>
