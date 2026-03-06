@@ -14,6 +14,8 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 	protected override string? ListWhere => BuildRangeWhere();
 	protected override string? ListOrder => "Code";
 
+	string? rangeFromId;
+	string? rangeToId;
 	string? rangeFromCode;
 	string? rangeToCode;
 
@@ -48,11 +50,13 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 		if (selWin.DataContext is not SelectShainViewModel vm) {
 			return new ValueTask<bool>(true);
 		}
-		vm.Initialize(rangeFromCode, rangeToCode);
+		vm.Initialize(rangeFromId, rangeToId, rangeFromCode, rangeToCode);
 		var dialogResult = ClientLib.ShowDialogView(selWin, this, true);
 		if (dialogResult != true) {
 			return new ValueTask<bool>(false);
 		}
+		rangeFromId = string.IsNullOrWhiteSpace(vm.FromId) ? null : vm.FromId;
+		rangeToId = string.IsNullOrWhiteSpace(vm.ToId) ? null : vm.ToId;
 		rangeFromCode = string.IsNullOrWhiteSpace(vm.FromCode) ? null : vm.FromCode;
 		rangeToCode = string.IsNullOrWhiteSpace(vm.ToCode) ? null : vm.ToCode;
 		return new ValueTask<bool>(true);
@@ -83,6 +87,16 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 
 	string? BuildRangeWhere() {
 		var clauses = new List<string>();
+		if (!string.IsNullOrWhiteSpace(rangeFromId)) {
+			if (long.TryParse(rangeFromId, out var fromIdVal)) {
+				clauses.Add($"Id >= {fromIdVal}");
+			}
+		}
+		if (!string.IsNullOrWhiteSpace(rangeToId)) {
+			if (long.TryParse(rangeToId, out var toIdVal)) {
+				clauses.Add($"Id <= {toIdVal}");
+			}
+		}
 		if (!string.IsNullOrWhiteSpace(rangeFromCode)) {
 			clauses.Add($"Code >= '{Escape(rangeFromCode)}'");
 		}

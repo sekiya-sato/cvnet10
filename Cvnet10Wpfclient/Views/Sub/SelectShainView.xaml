@@ -42,39 +42,73 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="160" />
-					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="180" />
+					<ColumnDefinition Width="10" />
+					<ColumnDefinition Width="40" />
+					<ColumnDefinition Width="180" />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
-				<TextBlock Grid.Row="0"
+                <TextBlock Grid.Row="0"
 					Grid.Column="0"
 					VerticalAlignment="Center"
 					FontWeight="SemiBold"
-					Text="社員CD From" />
-				<TextBox Grid.Row="0"
+					><Run Language="ja-jp" Text="Id"/></TextBlock>
+                <TextBox Grid.Row="0"
 					Grid.Column="1"
 					Height="36"
-					Margin="8,4,0,4"
+					Margin="4,4,4,4"
 					VerticalContentAlignment="Center"
 					FontSize="16"
-					Text="{Binding FromCode, UpdateSourceTrigger=PropertyChanged}" />
+					Text="{Binding FromId, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="0"
+					Grid.Column="3"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					FontWeight="SemiBold"
+					><Run Language="ja-jp" Text="-"/></TextBlock>
+                <TextBox Grid.Row="0"
+					Grid.Column="4"
+					Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4"
+					VerticalContentAlignment="Center"
+					FontSize="16"
+					Text="{Binding ToId, UpdateSourceTrigger=PropertyChanged}" />
 
 				<TextBlock Grid.Row="1"
 					Grid.Column="0"
 					VerticalAlignment="Center"
 					FontWeight="SemiBold"
-					Text="社員CD To" />
+					Text="社員CD From" />
 				<TextBox Grid.Row="1"
 					Grid.Column="1"
 					Height="36"
-					Margin="8,4,0,4"
+					Margin="4,4,4,4"
+					VerticalContentAlignment="Center"
+					FontSize="16"
+					Text="{Binding FromCode, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="1"
+					Grid.Column="3"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					FontWeight="SemiBold"
+					><Run Language="ja-jp" Text="-"/></TextBlock>
+                <TextBox Grid.Row="1"
+					Grid.Column="4"
+					Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4"
 					VerticalContentAlignment="Center"
 					FontSize="16"
 					Text="{Binding ToCode, UpdateSourceTrigger=PropertyChanged}" />
 
 				<TextBlock Grid.Row="2"
 					Grid.Column="0"
-					Grid.ColumnSpan="2"
+					Grid.ColumnSpan="6"
 					Margin="0,12,0,0"
 					Foreground="Gray"
 					TextWrapping="Wrap">

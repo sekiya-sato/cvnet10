@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+ï»¿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Wpfclient.Services;
 using Cvnet10Wpfclient.ViewServices;
@@ -27,7 +27,7 @@ public partial class SettingSystemViewModel : Helpers.BaseViewModel {
 		LoadSettings();
 	}
 	protected override void OnExit() {
-		if (MessageEx.ShowQuestionDialog("I—¹‚µ‚Ü‚·‚©H", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
+		if (MessageEx.ShowQuestionDialog("çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", owner: ClientLib.GetActiveView(this)) == MessageBoxResult.Yes) {
 			ExitWithResultFalse();
 		}
 	}
@@ -36,7 +36,7 @@ public partial class SettingSystemViewModel : Helpers.BaseViewModel {
 	[RelayCommand(IncludeCancelCommand = true)]
 	private async Task SaveAsync(CancellationToken cancellationToken) {
 		if (string.IsNullOrWhiteSpace(Url)) {
-			MessageEx.ShowErrorDialog("Ú‘±æ URL ‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B", owner: ClientLib.GetActiveView(this));
+			MessageEx.ShowErrorDialog("æ¥ç¶šå…ˆ URL ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚", owner: ClientLib.GetActiveView(this));
 			return;
 		}
 
@@ -49,7 +49,7 @@ public partial class SettingSystemViewModel : Helpers.BaseViewModel {
 			_store.Save(_currentSettings);
 		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"İ’è‚Ì•Û‘¶‚É¸”s‚µ‚Ü‚µ‚½: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			MessageEx.ShowErrorDialog($"è¨­å®šã®ä¿å­˜ã«å¤±æ•—ã—ã¾ã—ãŸ: {ex.Message}", owner: ClientLib.GetActiveView(this));
 			return;
 		}
 
@@ -59,7 +59,7 @@ public partial class SettingSystemViewModel : Helpers.BaseViewModel {
 				await App.RestartHostAsync(cancellationToken);
 			}
 			catch (Exception ex) {
-				MessageEx.ShowErrorDialog($"Ú‘±æ‚ÌÄ\’z‚É¸”s‚µ‚Ü‚µ‚½: {ex.Message}", owner: ClientLib.GetActiveView(this));
+				MessageEx.ShowErrorDialog($"æ¥ç¶šå…ˆã®å†æ§‹ç¯‰ã«å¤±æ•—ã—ã¾ã—ãŸ: {ex.Message}", owner: ClientLib.GetActiveView(this));
 				return;
 			}
 		}

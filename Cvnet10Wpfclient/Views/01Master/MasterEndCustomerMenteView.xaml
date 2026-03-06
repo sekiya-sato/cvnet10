@@ -1,4 +1,4 @@
-﻿<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views._01Master.MasterEndCustomerMenteView"
+<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views._01Master.MasterEndCustomerMenteView"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
@@ -193,330 +193,439 @@
 			<Grid Grid.Row="2"
 				Grid.Column="2"
 				Margin="10">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="65*" />
-					<RowDefinition Height="35*" />
-				</Grid.RowDefinitions>
+				<TabControl Style="{StaticResource MaterialDesignTabControl}">
+					<TabItem Header="詳細">
+						<ScrollViewer VerticalScrollBarVisibility="Auto">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="30*" />
+									<ColumnDefinition Width="70*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
 
-				<Grid Grid.Row="0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="30*" />
-						<ColumnDefinition Width="70*" />
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
+								<Label Grid.Row="0"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="コード" />
+								<TextBox Grid.Row="0"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Code}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="0"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="コード" />
-					<TextBox Grid.Row="0"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Code}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="1"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="名前" />
+								<TextBox Grid.Row="1"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Name}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="1"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="名前" />
-					<TextBox Grid.Row="1"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Name}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="2"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="略称" />
+								<TextBox Grid.Row="2"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Ryaku}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="2"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="略称" />
-					<TextBox Grid.Row="2"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Ryaku}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="3"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="カナ" />
+								<TextBox Grid.Row="3"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Kana}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="3"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="カナ" />
-					<TextBox Grid.Row="3"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Kana}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="4"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="ランク" />
+								<TextBox Grid.Row="4"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Rank}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="4"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="ランク" />
-					<TextBox Grid.Row="4"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Rank}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="5"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="性別" />
+								<ComboBox Grid.Row="5"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									SelectedIndex="{Binding CurrentEdit.Gendar, Mode=TwoWay}">
+									<ComboBoxItem Content="不明" />
+									<ComboBoxItem Content="女性" />
+									<ComboBoxItem Content="男性" />
+								</ComboBox>
 
-					<Label Grid.Row="5"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="性別" />
-					<TextBox Grid.Row="5"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Gendar}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="6"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="〒" />
+								<TextBox Grid.Row="6"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.PostalCode}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="6"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="〒" />
-					<TextBox Grid.Row="6"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.PostalCode}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="7"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="住所1" />
+								<TextBox Grid.Row="7"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Address1}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="7"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="住所1" />
-					<TextBox Grid.Row="7"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Address1}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="8"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="住所2" />
+								<TextBox Grid.Row="8"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Address2}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="8"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="住所2" />
-					<TextBox Grid.Row="8"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Address2}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="9"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="住所3" />
+								<TextBox Grid.Row="9"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Address3}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="9"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="住所3" />
-					<TextBox Grid.Row="9"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Address3}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="10"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="TEL" />
+								<TextBox Grid.Row="10"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Tel}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="10"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="TEL" />
-					<TextBox Grid.Row="10"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Tel}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="11"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="Mail" />
+								<TextBox Grid.Row="11"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Mail}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="11"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="Mail" />
-					<TextBox Grid.Row="11"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Mail}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="12"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="誕生日(yyyyMMdd)" />
+								<TextBox Grid.Row="12"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Birthday}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="12"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="誕生日(yyyyMMdd)" />
-					<TextBox Grid.Row="12"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Birthday}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="13"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="誕生日(MMdd)" />
+								<TextBox Grid.Row="13"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.BirthNoyear}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="13"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="誕生日(MMdd)" />
-					<TextBox Grid.Row="13"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.BirthNoyear}"
-						TextWrapping="Wrap" />
+								<Label Grid.Row="14"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="店舗" />
+								<helpers:SearchTextBox Grid.Row="14"
+									Grid.Column="1"
+									Width="135"
+									Height="36"
+									Margin="10,10,0,0"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Top"
+									BorderThickness="0,0,0,1"
+									Command="{Binding DoSelectTenpoCommand}"
+									Text="{Binding CurrentEdit.Id_Tenpo, UpdateSourceTrigger=PropertyChanged}"
+									TextHorizontalContentAlignment="Left">
+									<helpers:SearchTextBox.Style>
+										<Style TargetType="{x:Type helpers:SearchTextBox}">
+											<Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
+											<Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}" />
+											<Setter Property="ButtonBackground" Value="{DynamicResource SearchButtonBackgroundBrush}" />
+										</Style>
+									</helpers:SearchTextBox.Style>
+								</helpers:SearchTextBox>
 
-					<Label Grid.Row="14"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="店舗" />
-					<helpers:SearchTextBox Grid.Row="14"
-						Grid.Column="1"
-						Width="135"
-						Height="36"
-						Margin="10,10,0,0"
-						HorizontalAlignment="Left"
-						VerticalAlignment="Top"
-						BorderThickness="0,0,0,1"
-						Command="{Binding DoSelectTenpoCommand}"
-						Text="{Binding CurrentEdit.Id_Tenpo, UpdateSourceTrigger=PropertyChanged}"
-						TextHorizontalContentAlignment="Left">
-						<helpers:SearchTextBox.Style>
-							<Style TargetType="{x:Type helpers:SearchTextBox}">
-								<Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
-								<Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}" />
-								<Setter Property="ButtonBackground" Value="{DynamicResource SearchButtonBackgroundBrush}" />
-							</Style>
-						</helpers:SearchTextBox.Style>
-					</helpers:SearchTextBox>
+								<Label Grid.Row="15"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="店舗名" />
+								<TextBox Grid.Row="15"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									IsReadOnly="True"
+									TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat="{}[{0}] {1}">
+											<Binding Path="CurrentEdit.VTenpo.Cd" />
+											<Binding Path="CurrentEdit.VTenpo.Mei" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 
-					<Label Grid.Row="15"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="店舗名" />
-					<TextBox Grid.Row="15"
-						Grid.Column="1"
-						Height="36"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						IsReadOnly="True"
-						TextWrapping="Wrap">
-						<TextBox.Text>
-							<MultiBinding StringFormat="{}[{0}] {1}">
-								<Binding Path="CurrentEdit.VTenpo.Cd" />
-								<Binding Path="CurrentEdit.VTenpo.Mei" />
-							</MultiBinding>
-						</TextBox.Text>
-					</TextBox>
+								<Label Grid.Row="16"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="ポイント" />
+								<TextBox Grid.Row="16"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Point}"
+									TextWrapping="Wrap" />
 
-					<Label Grid.Row="16"
-						Height="36"
-						Margin="15,10,0,0"
-						VerticalAlignment="Top"
-						Content="メモ" />
-					<TextBox Grid.Row="16"
-						Grid.Column="1"
-						Height="60"
-						Margin="10,10,10,0"
-						VerticalAlignment="Top"
-						Foreground="{DynamicResource MaterialDesignBody}"
-						Text="{Binding CurrentEdit.Memo}"
-						TextWrapping="Wrap" />
-				</Grid>
+								<Label Grid.Row="17"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="累計購買回数" />
+								<TextBox Grid.Row="17"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.SalesCount}"
+									TextWrapping="Wrap" />
 
-				<DataGrid x:Name="JsubGrid"
-					Grid.Row="1"
-					Margin="0,10,0,0"
-					d:ItemsSource="{d:SampleData ItemCount=3}"
-					helpers:DataGridScrollAssistant.AutoScrollToSelectedItem="True"
-					AutoGenerateColumns="False"
-					EnableRowVirtualization="True"
-					GridLinesVisibility="Horizontal"
-					HorizontalGridLinesBrush="White"
-					IsReadOnly="True"
-					ItemsSource="{Binding CurrentEdit.Jsub}"
-					Style="{StaticResource MaterialDesignDataGrid}"
-					VirtualizingPanel.IsVirtualizing="True"
-					VirtualizingPanel.VirtualizationMode="Recycling">
-					<DataGrid.Columns>
-						<DataGridTextColumn Width="100"
-							Binding="{Binding Kb}"
-							Header="区分" />
-						<DataGridTextColumn Width="120"
-							Binding="{Binding Cd}"
-							Header="コード" />
-						<DataGridTextColumn Width="200"
-							Binding="{Binding Mei}"
-							Header="名称" />
-						<DataGridTextColumn Width="*"
-							Binding="{Binding Kbname}"
-							Header="区分名" />
-					</DataGrid.Columns>
-					<DataGrid.ColumnHeaderStyle>
-						<Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
-							TargetType="DataGridColumnHeader">
-							<Setter Property="Background" Value="Black" />
-							<Setter Property="Foreground" Value="White" />
-							<Setter Property="BorderThickness" Value="0.5" />
-						</Style>
-					</DataGrid.ColumnHeaderStyle>
-				</DataGrid>
+								<Label Grid.Row="18"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="累計購買金額" />
+								<TextBox Grid.Row="18"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.SalesKingaku}"
+									TextWrapping="Wrap" />
+
+								<Label Grid.Row="19"
+									Height="36"
+									Margin="15,10,0,0"
+									VerticalAlignment="Top"
+									Content="メモ" />
+								<TextBox Grid.Row="19"
+									Grid.Column="1"
+									Height="60"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Memo}"
+									TextWrapping="Wrap" />
+							</Grid>
+						</ScrollViewer>
+					</TabItem>
+					<TabItem Header="名称・詳細">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+
+							<Label Grid.Row="0"
+								Height="30"
+								Margin="10,10,0,0"
+								VerticalAlignment="Top"
+								Content="名称リスト"
+								FontSize="14" />
+							<DataGrid x:Name="JsubGrid"
+								Grid.Row="1"
+								Margin="10,5,10,0"
+								d:ItemsSource="{d:SampleData ItemCount=3}"
+								helpers:DataGridScrollAssistant.AutoScrollToSelectedItem="True"
+								AutoGenerateColumns="False"
+								EnableRowVirtualization="True"
+								GridLinesVisibility="Horizontal"
+								HorizontalGridLinesBrush="White"
+								IsReadOnly="True"
+								ItemsSource="{Binding CurrentEdit.Jsub}"
+								Style="{StaticResource MaterialDesignDataGrid}"
+								VirtualizingPanel.IsVirtualizing="True"
+								VirtualizingPanel.VirtualizationMode="Recycling">
+								<DataGrid.Columns>
+									<DataGridTextColumn Width="100"
+										Binding="{Binding Kb}"
+										Header="区分" />
+									<DataGridTextColumn Width="120"
+										Binding="{Binding Cd}"
+										Header="コード" />
+									<DataGridTextColumn Width="200"
+										Binding="{Binding Mei}"
+										Header="名称" />
+									<DataGridTextColumn Width="*"
+										Binding="{Binding Kbname}"
+										Header="区分名" />
+								</DataGrid.Columns>
+								<DataGrid.ColumnHeaderStyle>
+									<Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+										TargetType="DataGridColumnHeader">
+										<Setter Property="Background" Value="Black" />
+										<Setter Property="Foreground" Value="White" />
+										<Setter Property="BorderThickness" Value="0.5" />
+									</Style>
+								</DataGrid.ColumnHeaderStyle>
+							</DataGrid>
+
+							<Label Grid.Row="2"
+								Height="30"
+								Margin="10,10,0,0"
+								VerticalAlignment="Top"
+								Content="詳細内容"
+								FontSize="14" />
+							<Grid Grid.Row="3" Margin="10,5,10,10">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="30*" />
+									<ColumnDefinition Width="70*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Label Grid.Row="0"
+									Height="36"
+									Margin="5,5,0,0"
+									VerticalAlignment="Top"
+									Content="予備項目1" />
+								<TextBox Grid.Row="0"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,5,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Jdetail.Yobi1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									TextWrapping="Wrap" />
+
+								<Label Grid.Row="1"
+									Height="36"
+									Margin="5,10,0,0"
+									VerticalAlignment="Top"
+									Content="予備項目2" />
+								<TextBox Grid.Row="1"
+									Grid.Column="1"
+									Height="36"
+									Margin="10,10,10,0"
+									VerticalAlignment="Top"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Text="{Binding CurrentEdit.Jdetail.Yobi2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									TextWrapping="Wrap" />
+							</Grid>
+						</Grid>
+					</TabItem>
+				</TabControl>
 			</Grid>
 		</Grid>
 	</Grid>

@@ -1,4 +1,4 @@
-using CodeShare;
+ï»¿using CodeShare;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Base;
@@ -31,7 +31,7 @@ public partial class SettingSystemViewModel {
 			}
 		}
 		catch (Exception ex) {
-			MessageEx.ShowErrorDialog($"ƒf[ƒ^æ“¾¸”s: {ex.Message}", owner: ClientLib.GetActiveView(this));
+			MessageEx.ShowErrorDialog($"ãƒ‡ãƒ¼ã‚¿å–å¾—å¤±æ•—: {ex.Message}", owner: ClientLib.GetActiveView(this));
 		}
 
 	}

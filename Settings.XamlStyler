@@ -1,8 +1,8 @@
 {
   "AttributesTolerance": 1,
   "KeepFirstAttributeOnSameLine": true,
-  "MaxAttributeCharactersPerLine": 0,
-  "MaxAttributesPerLine": 1,
+  "MaxAttributeCharactersPerLine": 180,
+  "MaxAttributesPerLine": 0,
   "IndentWithTabs": true,
   "IndentSize": 1,
   "EnableVisualStudioTabSize": false,
