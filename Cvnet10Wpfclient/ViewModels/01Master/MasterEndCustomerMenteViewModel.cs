@@ -22,7 +22,7 @@ public partial class MasterEndCustomerMenteViewModel : Helpers.BaseMenteViewMode
 
 	[RelayCommand]
 	async Task Init() {
-		// await DoList(CancellationToken.None);
+		await DoList(CancellationToken.None);
 	}
 
 	protected override string GetInsertConfirmMessage() =>

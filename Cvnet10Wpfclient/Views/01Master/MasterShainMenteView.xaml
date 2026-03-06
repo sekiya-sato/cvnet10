@@ -14,12 +14,6 @@
 		<vm:MasterShainMenteViewModel />
 	</helpers:BaseWindow.DataContext>
 
-	<behaviors:Interaction.Triggers>
-		<behaviors:EventTrigger EventName="ContentRendered">
-			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-		</behaviors:EventTrigger>
-	</behaviors:Interaction.Triggers>
-
 	<helpers:BaseWindow.InputBindings>
 		<KeyBinding Command="{Binding DoUpdateCommand}"
 			Gesture="F2" />
