@@ -27,6 +27,9 @@ using System.Windows.Input;
 namespace Cvnet10Wpfclient.Helpers;
 
 public class BaseWindow : Window {
+	private INotifyPropertyChanged? dataContextNotifier;
+	private const string IsRunningPropertyName = "IsRunning";
+
 	public BaseWindow() {
 		// ViewModel 側から Dialog を閉じるための共通メッセージ登録
 		// 複数のウィンドウで使う場合には登録してある全てのWindowが反応する
@@ -49,6 +52,7 @@ public class BaseWindow : Window {
 		UseLayoutRounding = true;
 		SnapsToDevicePixels = true;
 	}
+
 	/// <summary>
 	/// 派生クラスでは必ずbase.OnPreviewKeyDown(e);を呼ぶ(ESCを有効にしたい場合)
 	/// </summary>
@@ -76,15 +80,19 @@ public class BaseWindow : Window {
 			cmd.Execute(null);
 		}
 	}
+
 	protected override void OnClosing(CancelEventArgs e) {
 		base.OnClosing(e);
 		CancelViewModelCommands();
 	}
+
 	protected override void OnClosed(EventArgs e) {
 		base.OnClosed(e);
+
 		// メモリリーク防止のため登録解除
 		WeakReferenceMessenger.Default.UnregisterAll(this);
 	}
+
 	private void CancelViewModelCommands() {
 		var dc = DataContext;
 		if (dc == null) return;

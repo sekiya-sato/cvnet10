@@ -3,34 +3,6 @@
 - このファイルは人間用のメモ。
 
 
-# プロジェクトの運用および設定に関するメモ
-
-## Nginx リバースプロキシ設定例
-
-- /etc/nginx/sites-available/default などで HTTPSポート1つのみで複数のgRPCサービスを振り分ける例
-
-```
-server {
-    listen 443 ssl http2;
-    # ... SSL設定はそのまま ...
-    # 1. デフォルト（DB1：5001番ポートへ）
-    location / {
-        grpc_set_header Content-Type application/grpc;
-        grpc_pass grpc://localhost:5001;
-    }
-    # 2. 第二のDB（DB2：5002番ポートへ）
-    # クライアント側でベースアドレスを "https://domain/cv10second" と指定する場合
-    location /cv10second/ {
-        # 先頭の /cv10second を削ってバックエンドに渡す
-        rewrite ^/cv10second/(.*) /$1 break;
-        grpc_set_header Content-Type application/grpc;
-        grpc_pass grpc://localhost:5002;
-    }
-}
-
-```
-
-
 # AIに関するメモ
 
 
@@ -186,6 +158,35 @@ GitHub Actions のワークフロー定義ファイル(.yml): .github\workflows\
     - https://github.com/RyoMurakami1983/skills_repository?tab=readme-ov-file
 
 
+
+# プロジェクトの運用および設定に関するメモ
+
+## Nginx リバースプロキシ設定例
+
+- /etc/nginx/sites-available/default などで HTTPSポート1つのみで複数のgRPCサービスを振り分ける例
+
+```
+server {
+    listen 443 ssl http2;
+    # ... SSL設定はそのまま ...
+    # 1. デフォルト（DB1：5001番ポートへ）
+    location / {
+        grpc_set_header Content-Type application/grpc;
+        grpc_pass grpc://localhost:5001;
+    }
+    # 2. 第二のDB（DB2：5002番ポートへ）
+    # クライアント側でベースアドレスを "https://domain/cv10second" と指定する場合
+    location /cv10second/ {
+        # 先頭の /cv10second を削ってバックエンドに渡す
+        rewrite ^/cv10second/(.*) /$1 break;
+        grpc_set_header Content-Type application/grpc;
+        grpc_pass grpc://localhost:5002;
+    }
+}
+
+```
+
+
  
 # 進捗状況と今後の予定
 
@@ -201,7 +202,7 @@ GitHub Actions のワークフロー定義ファイル(.yml): .github\workflows\
 2025/10 ClientのみのWPF作成プロジェクト(既存Cvnetサーバ)
 2025/11 .NET10 release C# 14 , Visual Studio 2026 AIネイティブIDE GitHub Copilotとの統合, 
 2025/11 CV.net 10 : Sqlite + Asp.net core + gRPC + nginx + WPF(MVVM) で再設計
-2026/01 本格的なAI駆動開発体制へ移行, Cvnet8, CvnetClinet リポジトリの技術吸収
+2026/01 本格的なAI駆動開発体制へ移行, Cvnet8, CvnetClinet リポジトリの技術吸収 (Github Copilot 使用)
 
 - 2026/01/29
 	- Cvnet10Server, Cvnet10Wpfclient の基本的な gRPC 通信と認証ロジックが完了。
@@ -229,10 +230,11 @@ GitHub Actions のワークフロー定義ファイル(.yml): .github\workflows\
 	- サーバ側：PrintロジックはIKVMパッケージ、FtpはFluentFTP、スケジューラはNCrontab.Scheduler.AspNetCoreを使う。
 	- Geminiのgemプロンプトの整理、Copilotのmdファイルの整理
 	- Cvnet10Base: テーブル整理
-- 2026/02/23-03/06
+- 2026/02/23-03/06 GPT5.1-Codex-Mini
 	- .editorconfigの追加、xmstylerの修正、コード整理、設定Option(テキストエディタ - コードのクリーンアップ Profile1)
     - マスターテーブル、トランザクションテーブルの作成
     - BuildMetadata をT4ファイルからソースジェネレータへ実装変更
+    - 名前空間の整理、リソースの整理
 - 2026/03/16-03/31
     - 
 

@@ -154,18 +154,17 @@ public class ClientLib {
 		}
 	}
 	/// <summary>
-	/// マウスカーソルをWaitにして処理を実行する
-	/// [Change the mouse cursor to "Wait" and execute the process]
+	/// マウスカーソルを待機状態にする
 	/// </summary>
-	/// <param name="method"></param>
-	/// <returns></returns>
-	public static TimeSpan WaitCursor(Action method) {
-		var start = DateTime.Now;
+	public static void Cursor2Wait() {
 		System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-		method();
-		System.Windows.Input.Mouse.OverrideCursor = null;
-		var span = DateTime.Now - start;
-		return span;
 	}
+	/// <summary>
+	///	マウスカーソルを標準に戻す
+	/// </summary>
+	public static void Cursor2Normal() {
+		System.Windows.Input.Mouse.OverrideCursor = null;
+	}
+
 }
 
