@@ -22,12 +22,6 @@
 		<vm:SettingSystemViewModel />
 	</helpers:BaseWindow.DataContext>
 
-	<behaviors:Interaction.Triggers>
-		<behaviors:EventTrigger EventName="ContentRendered">
-			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-		</behaviors:EventTrigger>
-	</behaviors:Interaction.Triggers>
-
 	<Border Padding="40">
 		<StackPanel VerticalAlignment="Center">
 			<TextBlock Margin="0,0,0,30"
