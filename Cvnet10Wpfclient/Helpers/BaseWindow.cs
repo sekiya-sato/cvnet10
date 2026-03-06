@@ -1,24 +1,4 @@
-﻿/*
-# file name
-BaseWindow.cs
-
-# description
-新規作成のViewに、CloseMessage登録とInitCommand()の実行処理を提供する
-
-# example
-View側:
-<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views.NewTargetView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Cvnet10Wpfclient.Views"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels"
-    xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
-*/
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
@@ -27,8 +7,6 @@ using System.Windows.Input;
 namespace Cvnet10Wpfclient.Helpers;
 
 public class BaseWindow : Window {
-	private INotifyPropertyChanged? dataContextNotifier;
-	private const string IsRunningPropertyName = "IsRunning";
 
 	public BaseWindow() {
 		// ViewModel 側から Dialog を閉じるための共通メッセージ登録
