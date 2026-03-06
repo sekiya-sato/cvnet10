@@ -100,6 +100,7 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 		}
 		StartTime = DateTime.Now;
 		try {
+			ClientLib.Cursor2Wait();
 			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
 			var msg = new CvnetMsg {
 				Code = 0,
@@ -131,6 +132,9 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 		catch (Exception ex) {
 			Message = $"データ取得失敗: {ex.Message}";
 			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
+		}
+		finally {
+			ClientLib.Cursor2Normal();
 		}
 	}
 	/// <summary>

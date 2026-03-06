@@ -23,7 +23,6 @@ public partial class BaseViewModel : ObservableObject, IBaseViewModel {
 	public int InitParam { get; set; }
 	public string? AddInfo { get; set; }
 
-
 	// Base が提供する Exit コマンド（派生は OnExit をオーバーライドして振る舞いを変えられる）
 	public ICommand ExitCommand { get; }
 

@@ -6,6 +6,7 @@
 	xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:md="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
 	xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels._01Master"
 	Title="{Binding Title}"
 	Width="1024"
@@ -18,6 +19,18 @@
 	<helpers:BaseWindow.DataContext>
 		<vm:MasterMeishoMenteViewModel />
 	</helpers:BaseWindow.DataContext>
+	<!--
+	<helpers:BaseWindow.Style>
+		<Style TargetType="{x:Type helpers:BaseWindow}">
+			<Setter Property="Cursor" Value="Arrow" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding DoListCommand.IsRunning}" Value="True">
+					<Setter Property="Cursor" Value="Wait" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</helpers:BaseWindow.Style>
+	-->
 	<helpers:BaseWindow.InputBindings>
 		<KeyBinding Command="{Binding DoUpdateCommand}"
 			Gesture="F2" />
@@ -38,9 +51,9 @@
 		<Grid Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}"
 			Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="12*" />
+				<RowDefinition Height="16*" />
 				<RowDefinition Height="Auto" />
-				<RowDefinition Height="88*" />
+				<RowDefinition Height="84*" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="45*" />
@@ -71,17 +84,23 @@
 					VerticalAlignment="Top"
 					Command="{Binding DoOutputJsonCommand}"
 					Content="JSON出力 F6" />
-				<Label Height="34"
-					Margin="20,49,99,0"
-					VerticalAlignment="Top"
-					d:Content="Title"
-					Content="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-					FontSize="14" />
-				<materialDesign:PackIcon Width="62"
-					Height="70"
-					Margin="370,10,0,0"
-					Foreground="Blue"
-					Kind="FormatListBulletedSquare" />
+				<ComboBox Width="300"
+					VerticalAlignment="Bottom"
+					materialDesign:HintAssist.Hint="区分選択"
+						  FontSize="14"
+					ItemsSource="{Binding KubunList}"
+					SelectedItem="{Binding SelectedKubun}"
+					Style="{StaticResource MaterialDesignOutlinedComboBox}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Code}" />
+								<TextBlock Text=" " />
+								<TextBlock Text="{Binding Name}" />
+							</StackPanel>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 			</Grid>
 			<GridSplitter Grid.Row="1"
 				Grid.ColumnSpan="3"
@@ -251,19 +270,8 @@
 					Text="{Binding CurrentEdit.Odr}"
 					TextWrapping="Wrap" />
 				<TextBox Grid.Column="1"
-					Width="70"
 					Height="40"
 					Margin="10,300,10,0"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					HorizontalContentAlignment="Right"
-					d:Text="123456"
-					IsReadOnly="True"
-					Text="{Binding CurrentEdit.Kubun}"
-					TextWrapping="Wrap" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="100,300,10,0"
 					VerticalAlignment="Top"
 					HorizontalContentAlignment="Left"
 					d:Text="区分名"
