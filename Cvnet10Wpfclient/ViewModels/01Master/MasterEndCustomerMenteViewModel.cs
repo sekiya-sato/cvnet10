@@ -14,14 +14,9 @@ public partial class MasterEndCustomerMenteViewModel : Helpers.BaseMenteViewMode
 	protected override string? ListWhere => BuildRangeWhere();
 	protected override string? ListOrder => "Code";
 
-	string? rangeFromId;
-	string? rangeToId;
-	string? rangeFromCode;
-	string? rangeToCode;
-	string? rangeName;
-	string? rangeMaxCount;
+	SelectCodeParameter? selectCodeParam;
 
-	protected override int? ListMaxCount => string.IsNullOrWhiteSpace(rangeMaxCount) ? null : int.TryParse(rangeMaxCount, out var mc) ? mc : null;
+	protected override int? ListMaxCount => string.IsNullOrWhiteSpace(selectCodeParam?.MaxCount) ? null : int.TryParse(selectCodeParam.MaxCount, out var mc) ? mc : null;
 
 	[RelayCommand]
 	async Task Init() {
@@ -55,17 +50,21 @@ public partial class MasterEndCustomerMenteViewModel : Helpers.BaseMenteViewMode
 		if (selWin.DataContext is not SelectCodeViewModel vm) {
 			return new ValueTask<bool>(true);
 		}
-		vm.Initialize(rangeFromId, rangeToId, rangeFromCode, rangeToCode, "顧客", rangeName);
+		selectCodeParam ??= new SelectCodeParameter { CdName = "顧客" };
+		vm.Initialize(selectCodeParam);
 		var dialogResult = ClientLib.ShowDialogView(selWin, this, true);
 		if (dialogResult != true) {
 			return new ValueTask<bool>(false);
 		}
-		rangeFromId = string.IsNullOrWhiteSpace(vm.FromId) ? null : vm.FromId;
-		rangeToId = string.IsNullOrWhiteSpace(vm.ToId) ? null : vm.ToId;
-		rangeFromCode = string.IsNullOrWhiteSpace(vm.FromCode) ? null : vm.FromCode;
-		rangeToCode = string.IsNullOrWhiteSpace(vm.ToCode) ? null : vm.ToCode;
-		rangeName = string.IsNullOrWhiteSpace(vm.Name) ? null : vm.Name;
-		rangeMaxCount = string.IsNullOrWhiteSpace(vm.MaxCount) ? null : vm.MaxCount;
+		selectCodeParam = new SelectCodeParameter {
+			FromId = string.IsNullOrWhiteSpace(vm.Parameter.FromId) ? null : vm.Parameter.FromId,
+			ToId = string.IsNullOrWhiteSpace(vm.Parameter.ToId) ? null : vm.Parameter.ToId,
+			FromCode = string.IsNullOrWhiteSpace(vm.Parameter.FromCode) ? null : vm.Parameter.FromCode,
+			ToCode = string.IsNullOrWhiteSpace(vm.Parameter.ToCode) ? null : vm.Parameter.ToCode,
+			Name = string.IsNullOrWhiteSpace(vm.Parameter.Name) ? null : vm.Parameter.Name,
+			MaxCount = string.IsNullOrWhiteSpace(vm.Parameter.MaxCount) ? null : vm.Parameter.MaxCount,
+			CdName = vm.Parameter.CdName
+		};
 		return new ValueTask<bool>(true);
 	}
 
@@ -82,25 +81,26 @@ public partial class MasterEndCustomerMenteViewModel : Helpers.BaseMenteViewMode
 	}
 
 	string? BuildRangeWhere() {
+		if (selectCodeParam == null) return null;
 		var clauses = new List<string>();
-		if (!string.IsNullOrWhiteSpace(rangeFromId)) {
-			if (long.TryParse(rangeFromId, out var fromIdVal)) {
+		if (!string.IsNullOrWhiteSpace(selectCodeParam.FromId)) {
+			if (long.TryParse(selectCodeParam.FromId, out var fromIdVal)) {
 				clauses.Add($"Id >= {fromIdVal}");
 			}
 		}
-		if (!string.IsNullOrWhiteSpace(rangeToId)) {
-			if (long.TryParse(rangeToId, out var toIdVal)) {
+		if (!string.IsNullOrWhiteSpace(selectCodeParam.ToId)) {
+			if (long.TryParse(selectCodeParam.ToId, out var toIdVal)) {
 				clauses.Add($"Id <= {toIdVal}");
 			}
 		}
-		if (!string.IsNullOrWhiteSpace(rangeFromCode)) {
-			clauses.Add($"Code >= '{Escape(rangeFromCode)}'");
+		if (!string.IsNullOrWhiteSpace(selectCodeParam.FromCode)) {
+			clauses.Add($"Code >= '{Escape(selectCodeParam.FromCode)}'");
 		}
-		if (!string.IsNullOrWhiteSpace(rangeToCode)) {
-			clauses.Add($"Code <= '{Escape(rangeToCode)}'");
+		if (!string.IsNullOrWhiteSpace(selectCodeParam.ToCode)) {
+			clauses.Add($"Code <= '{Escape(selectCodeParam.ToCode)}'");
 		}
-		if (!string.IsNullOrWhiteSpace(rangeName)) {
-			clauses.Add($"Name LIKE '%{Escape(rangeName)}%'");
+		if (!string.IsNullOrWhiteSpace(selectCodeParam.Name)) {
+			clauses.Add($"Name LIKE '%{Escape(selectCodeParam.Name)}%'");
 		}
 		return clauses.Count == 0 ? null : string.Join(" AND ", clauses);
 	}
