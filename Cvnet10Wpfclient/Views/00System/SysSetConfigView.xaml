@@ -54,7 +54,7 @@
 				helpers:PasswordBoxAssistant.BoundPassword="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				materialDesign:HintAssist.Foreground="{DynamicResource MaterialDesignBody}"
 				materialDesign:HintAssist.Hint="ログインパスワード"
-				CaretBrush="{DynamicResource color2}"
+				CaretBrush="{DynamicResource CaretColor}"
 				FontSize="16"
 				Foreground="{DynamicResource MaterialDesignBody2}"
 				Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />

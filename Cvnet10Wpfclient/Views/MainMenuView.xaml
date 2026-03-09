@@ -249,7 +249,7 @@
 							Background="{DynamicResource panelColor}"
 							Style="{StaticResource MainMenuDashboardCard}">
 							<StackPanel>
-								<TextBlock Foreground="{DynamicResource color9}"
+								<TextBlock Foreground="{DynamicResource MenuTitleColor}"
 									Style="{StaticResource SectionTitleText}"
 									Text="選択中メニュー  (DoubleClick)" />
 								<TextBlock FontSize="22"
@@ -291,7 +291,7 @@
 							Background="{DynamicResource panelColor}"
 							Style="{StaticResource MainMenuDashboardCard}">
 							<StackPanel>
-								<TextBlock Foreground="{DynamicResource color6}"
+								<TextBlock Foreground="{DynamicResource StatusTitleColor}"
 									Style="{StaticResource SectionTitleText}"
 									Text="ステータスログ" />
 								<TextBlock FontSize="16"
