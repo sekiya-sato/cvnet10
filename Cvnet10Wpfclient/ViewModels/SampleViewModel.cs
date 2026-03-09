@@ -3,7 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Grpc.Core;
+using ProtoBuf.Grpc;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Cvnet10Wpfclient.ViewModels;
 
@@ -139,6 +142,23 @@ public partial class SampleViewModel : Helpers.BaseViewModel {
 			TestMsg002Result = $"{versionInfo?.Product}-{versionInfo?.BuildDate} Ver.{versionInfo?.Version} Base:{versionInfo?.BaseDir}";
 		}
 	}
+
+	[ObservableProperty]
+	ObservableCollection<EnvDisplayItem> testMsg003Items = [];
+
+	[RelayCommand(IncludeCancelCommand = true)]
+	public async Task TestMsg003(CancellationToken ct) {
+		var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
+		var msg = new CvnetMsg { Code = 0, Flag = CvnetFlag.Msg003_GetEnv };
+		var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
+		if (reply?.DataMsg != null && reply?.DataType != null) {
+			var envItems = Common.DeserializeObject<Dictionary<string, string>>(reply.DataMsg)
+				?? new Dictionary<string, string>();
+			TestMsg003Items = [.. envItems
+				.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase)
+				.Select(x => new EnvDisplayItem(x.Key, x.Value))];
+		}
+	}
 	#endregion
 }
 
@@ -147,4 +167,6 @@ public partial class SampleViewModel : Helpers.BaseViewModel {
 /// カラーバランス確認用アイテムモデル
 /// </summary>
 public record ColorBalanceItem(string Color1, string Color2, string Color3, string Color4);
+
+public record EnvDisplayItem(string Key, string Value);
 
