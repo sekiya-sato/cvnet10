@@ -14,6 +14,9 @@
 	BorderBrush="DarkSlateGray"
 	BorderThickness="0.5,0,1.5,1.5"
 	FontSize="18"
+	helpers:OwnerWindowPlacement.IsEnabled="True"
+	helpers:OwnerWindowPlacement.LeftOffset="-40"
+	helpers:OwnerWindowPlacement.TopOffset="-20"
 	WindowStartupLocation="Manual"
 	mc:Ignorable="d">
 	<helpers:BaseWindow.DataContext>
@@ -89,6 +92,7 @@
 				<DataGrid x:Name="SelectGrid"
 					d:ItemsSource="{d:SampleData ItemCount=5}"
 					helpers:DataGridDoubleClick.Command="{Binding DoSelectCommand}"
+					helpers:DataGridEnterCommand.TargetButton="{Binding ElementName=DefaultButton}"
 					helpers:DataGridLongMsgFocus.IsEnabled="True"
 					AutoGenerateColumns="False"
 					FrozenColumnCount="2"
@@ -96,7 +100,6 @@
 					IsReadOnly="True"
 					IsSynchronizedWithCurrentItem="True"
 					ItemsSource="{Binding ListData}"
-					PreviewKeyDown="SelectGrid_PreviewKeyDown"
 					RowHeight="35"
 					SelectedItem="{Binding Current}"
 					SelectionMode="Single"
