@@ -16,6 +16,8 @@ public partial class SelectWinViewModel : Helpers.BaseViewModel {
 
 	Type MyType = typeof(string);
 
+	string Kubun = string.Empty;
+
 	string Where = string.Empty;
 	string Order = string.Empty;
 	string[] Parameters = [];
@@ -23,7 +25,7 @@ public partial class SelectWinViewModel : Helpers.BaseViewModel {
 
 	[RelayCommand]
 	async Task Init(CancellationToken ct) {
-		await InitList(ct, typeof(MasterMeisho), "");
+		await InitList(ct, MyType, Kubun);
 	}
 
 	async Task InitList(CancellationToken ct, Type type, string kubun = "", long limit = 999999) {
@@ -34,21 +36,13 @@ public partial class SelectWinViewModel : Helpers.BaseViewModel {
 			var msg = new CvnetMsg {
 				Code = 0,
 				Flag = CvnetFlag.Msg101_Op_Query,
-				DataType = typeof(QueryListParam),
+				DataType = typeof(QueryListSimpleParam),
 				DataMsg = Common.SerializeObject(new QueryListParam(
 					itemType: MyType,
 					where: Where,
 					order: Order,
 					parameters: Parameters
 				))
-				/*
-				DataType = typeof(QueryListSqlParam),
-				DataMsg = Common.SerializeObject(new QueryListSqlParam(
-					itemType: MyType,
-					sql: $"SELECT Code,Name FROM {type.Name} order by Code LIMIT {limit}",
-					parameters: Parameters
-				))
-				*/
 			};
 			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
 			ct.ThrowIfCancellationRequested();

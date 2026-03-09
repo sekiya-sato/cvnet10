@@ -16,7 +16,7 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 
 	SelectCodeParameter? selectCodeParam;
 
-	protected override int? ListMaxCount => string.IsNullOrWhiteSpace(selectCodeParam?.MaxCount) ? null : int.TryParse(selectCodeParam.MaxCount, out var mc) ? mc : null;
+	protected override int? ListMaxCount => selectCodeParam?.MaxCount;
 
 	[RelayCommand]
 	async Task Init() {
@@ -50,20 +50,20 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		if (selWin.DataContext is not SelectCodeViewModel vm) {
 			return new ValueTask<bool>(true);
 		}
-		selectCodeParam ??= new SelectCodeParameter { CdName = "商品" };
+		selectCodeParam ??= new SelectCodeParameter { DisplayName = "商品" };
 		vm.Initialize(selectCodeParam);
 		var dialogResult = ClientLib.ShowDialogView(selWin, this, true);
 		if (dialogResult != true) {
 			return new ValueTask<bool>(false);
 		}
 		selectCodeParam = new SelectCodeParameter {
-			FromId = string.IsNullOrWhiteSpace(vm.Parameter.FromId) ? null : vm.Parameter.FromId,
-			ToId = string.IsNullOrWhiteSpace(vm.Parameter.ToId) ? null : vm.Parameter.ToId,
+			FromId = vm.Parameter.FromId,
+			ToId = vm.Parameter.ToId,
 			FromCode = string.IsNullOrWhiteSpace(vm.Parameter.FromCode) ? null : vm.Parameter.FromCode,
 			ToCode = string.IsNullOrWhiteSpace(vm.Parameter.ToCode) ? null : vm.Parameter.ToCode,
 			Name = string.IsNullOrWhiteSpace(vm.Parameter.Name) ? null : vm.Parameter.Name,
-			MaxCount = string.IsNullOrWhiteSpace(vm.Parameter.MaxCount) ? null : vm.Parameter.MaxCount,
-			CdName = vm.Parameter.CdName
+			MaxCount = vm.Parameter.MaxCount,
+			DisplayName = vm.Parameter.DisplayName
 		};
 		return new ValueTask<bool>(true);
 	}
@@ -71,15 +71,11 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 	string? BuildRangeWhere() {
 		if (selectCodeParam == null) return null;
 		var clauses = new List<string>();
-		if (!string.IsNullOrWhiteSpace(selectCodeParam.FromId)) {
-			if (long.TryParse(selectCodeParam.FromId, out var fromIdVal)) {
-				clauses.Add($"Id >= {fromIdVal}");
-			}
+		if (selectCodeParam.FromId.HasValue) {
+			clauses.Add($"Id >= {selectCodeParam.FromId.Value}");
 		}
-		if (!string.IsNullOrWhiteSpace(selectCodeParam.ToId)) {
-			if (long.TryParse(selectCodeParam.ToId, out var toIdVal)) {
-				clauses.Add($"Id <= {toIdVal}");
-			}
+		if (selectCodeParam.ToId.HasValue) {
+			clauses.Add($"Id <= {selectCodeParam.ToId.Value}");
 		}
 		if (!string.IsNullOrWhiteSpace(selectCodeParam.FromCode)) {
 			clauses.Add($"Code >= '{Escape(selectCodeParam.FromCode)}'");

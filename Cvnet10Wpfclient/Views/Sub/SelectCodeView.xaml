@@ -2,7 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels.Sub"
-	Title="{Binding Parameter.CdName, StringFormat={}{0}選択}"
+	Title="{Binding Parameter.DisplayName, StringFormat={}{0}選択}"
 	Width="620" Height="420"
 	Background="{DynamicResource AppCommonBackgroundBrush}"
 	FontSize="18" WindowStartupLocation="CenterOwner"
@@ -21,19 +21,19 @@
 			Margin="0,0,0,12"
 			FontSize="20" FontWeight="Bold"
 			Foreground="{DynamicResource MaterialDesignBody}"
-			Text="{Binding Parameter.CdName, StringFormat={}{0}一覧の対象範囲を指定してください}" />
+			Text="{Binding Parameter.DisplayName, StringFormat={}{0}一覧の対象範囲を指定してください}" />
 		<Border Grid.Row="1"
 			Padding="16"
 			Background="{DynamicResource MaterialDesignPaper}"
 			CornerRadius="6">
 			<Grid Margin="8">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="150" />
 					<ColumnDefinition Width="160" />
@@ -49,6 +49,7 @@
 				<TextBox Grid.Row="0" Grid.Column="1"
 					Height="36"
 					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					HorizontalContentAlignment="Right"
 					FontSize="16"
 					Text="{Binding Parameter.FromId, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -58,13 +59,14 @@
 				<TextBox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"
 					Height="36"
 					Margin="4,4,0,4" VerticalContentAlignment="Center"
+					HorizontalContentAlignment="Right"
 					FontSize="16"
 					Text="{Binding Parameter.ToId, UpdateSourceTrigger=PropertyChanged}" />
 
 				<TextBlock Grid.Row="1" Grid.Column="0"
 					VerticalAlignment="Center"
 					FontWeight="SemiBold"
-					Text="{Binding Parameter.CdName, StringFormat={}{0}CD}" />
+					Text="{Binding Parameter.DisplayName, StringFormat={}{0}CD}" />
 				<TextBox Grid.Row="1" Grid.Column="1"
 					Height="36"
 					Margin="4,4,4,4" VerticalContentAlignment="Center"
@@ -89,24 +91,24 @@
 					FontSize="16"
 					Text="{Binding Parameter.Name, UpdateSourceTrigger=PropertyChanged}" />
 
-			<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"
-				Margin="0,12,0,0"
-				Foreground="Gray"
-				Text="{Binding Parameter.CdName, StringFormat={}範囲を指定しない場合、すべての{0}が対象になります。}"
-				TextWrapping="Wrap" />
+				<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"
+					Margin="0,12,0,0"
+					Foreground="Gray"
+					Text="{Binding Parameter.DisplayName, StringFormat={}範囲を指定しない場合、すべての{0}が対象になります。}"
+					TextWrapping="Wrap" />
 
-			<TextBlock Grid.Row="4" Grid.Column="0"
-				VerticalAlignment="Center"
-				FontWeight="SemiBold"><Run Language="ja-jp" Text="件数" /></TextBlock>
-			<TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-				Height="36"
-				Margin="4,4,4,4" VerticalContentAlignment="Center"
-				FontSize="16"
-				Text="{Binding Parameter.MaxCount, UpdateSourceTrigger=PropertyChanged}" />
-			<TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3"
-				VerticalAlignment="Center"
-				Foreground="Gray"
-				Text="(空白:全件取得)" />
+				<TextBlock Grid.Row="4" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="件数" /></TextBlock>
+				<TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					HorizontalContentAlignment="Right"
+					FontSize="16"
+					Text="{Binding Parameter.MaxCount, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3"
+					VerticalAlignment="Center"
+					Foreground="Gray" Text="(空白:全件取得)" />
 
 			</Grid>
 		</Border>

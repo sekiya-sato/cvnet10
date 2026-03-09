@@ -153,8 +153,13 @@ public partial class CvnetCoreService {
 		}
 		var queryList = param as QueryListParam;
 		if (queryList != null) {
-			_logger.LogInformation($"パラメータ QueryListParam.ItemType={queryList.ItemType} 内容{Common.SerializeObject(queryList)}");
-			sql = queryList.AddWhereOrder();
+			if (queryList is QueryListSimpleParam) { // QueryListSimpleParam は QueryListParam を継承してるので
+				sql = $"select Id,Vdc,Vdu,Code,Name,Ryaku,Kana From {_db.GetTableName(queryList.ItemType)} {queryList.AddWhereOrder()}";
+			}
+			else {
+				sql = queryList.AddWhereOrder();
+			}
+			_logger.LogInformation($"パラメータ QueryListParam.ItemType={queryList.ItemType} 内容{Common.SerializeObject(queryList)} SQL={sql}");
 			try {
 				var list = _db.Fetch(queryList.ItemType, sql, queryList.Parameters);
 				if (list == null || list.Count == 0) {
@@ -180,7 +185,7 @@ public partial class CvnetCoreService {
 		}
 		var querySql = param as QueryListSqlParam;
 		if (querySql != null) {
-			_logger.LogInformation($"パラメータ QueryListSqlParam.ItemType={querySql.ItemType} 内容{Common.SerializeObject(querySql)}");
+			_logger.LogInformation($"パラメータ QueryListSqlParam.ItemType={querySql.ItemType} 内容{Common.SerializeObject(querySql)} SQL={querySql.Sql}");
 			sql = querySql.Sql ?? "";
 			try {
 				var list = _db.Fetch(querySql.ItemType, sql, querySql.Parameters);
