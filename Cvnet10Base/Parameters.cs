@@ -37,7 +37,7 @@ public sealed class QuerybyIdParam {
 	}
 }
 
-public sealed class QueryListParam {
+public class QueryListParam {
 	public string? Where { get; }
 	public string? Order { get; }
 	public string[] Parameters { get; }
@@ -60,8 +60,14 @@ public sealed class QueryListParam {
 		ItemType = itemType;
 		MaxCount = maxCount;
 	}
-
 }
+public sealed class QueryListSimpleParam : QueryListParam {
+	public QueryListSimpleParam(Type itemType, string? where = null, string? order = null, string[]? parameters = null, int? maxCount = null)
+		: base(itemType, where, order, parameters, maxCount) {
+	}
+}
+
+
 public sealed class QueryListSqlParam {
 	public string? Sql { get; }
 	public string[] Parameters { get; }

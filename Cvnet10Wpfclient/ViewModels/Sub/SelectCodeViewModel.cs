@@ -9,10 +9,7 @@ public partial class SelectCodeViewModel : Helpers.BaseViewModel {
 	SelectCodeParameter parameter = new();
 
 	public void Initialize(SelectCodeParameter? param) {
-		if (param == null) {
-			return;
-		}
-		Parameter = param;
+		Parameter = param ?? new();
 	}
 
 	[RelayCommand]
