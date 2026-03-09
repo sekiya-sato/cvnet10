@@ -101,95 +101,95 @@
 							<UniformGrid Margin="0,10,0,10"
 								Columns="4">
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color1}"
+									Background="{StaticResource PalettePink1}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color1" />
+										Text="PalettePink1" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color2}"
+									Background="{StaticResource CaretColor}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color2" />
+										Text="CaretColor" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color3}"
+									Background="{StaticResource PaletteCyan}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color3" />
+										Text="PaletteCyan" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color4}"
+									Background="{StaticResource PalettePink2}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color4" />
+										Text="PalettePink2" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color5}"
+									Background="{StaticResource PalettePurple1}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color5" />
+										Text="PalettePurple1" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color6}"
+									Background="{StaticResource StatusTitleColor}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color6" />
+										Text="StatusTitleColor" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color7}"
+									Background="{StaticResource PalettePink3}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color7" />
+										Text="PalettePink3" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color8}"
+									Background="{StaticResource PaletteBlue1}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color8" />
+										Text="PaletteBlue1" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color9}"
+									Background="{StaticResource MenuTitleColor}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color9" />
+										Text="MenuTitleColor" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color10}"
+									Background="{StaticResource PaletteSalmon}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color10" />
+										Text="PaletteSalmon" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color11}"
+									Background="{StaticResource PaletteGreen}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color11" />
+										Text="PaletteGreen" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color12}"
+									Background="{StaticResource PaletteBlue2}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color12" />
+										Text="PaletteBlue2" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource color13}"
+									Background="{StaticResource PaletteNavy}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="color13" />
+										Text="PaletteNavy" />
 								</Border>
 								<Border Margin="6" Padding="10"
 									Background="{StaticResource panelColor}"
@@ -213,11 +213,11 @@
 										Text="panelActiveColor" />
 								</Border>
 								<Border Margin="6" Padding="10"
-									Background="{StaticResource buttonColor1}"
+									Background="{StaticResource PrimaryButtonColor}"
 									BorderBrush="{DynamicResource MaterialDesignDivider}"
 									BorderThickness="1">
 									<TextBlock Foreground="{DynamicResource MaterialDesignBody}"
-										Text="buttonColor1" />
+										Text="PrimaryButtonColor" />
 								</Border>
 								<Border Margin="6" Padding="10"
 									Background="{StaticResource AppCommonBackgroundBrush}"
