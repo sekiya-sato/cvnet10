@@ -8,183 +8,90 @@ public partial class ConvertDb {
 	/// 本部売上変換
 	/// </summary>
 	public int CnvTran00Uri(bool isInit = true) {
-		var tranHeader = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$tran_tori0 where 伝票処理区分=0 order by SEQ_NO");
-		_toDb.CreateTable(typeof(Tran00Uriage), isInit);
+		return ConvertTranHeaders(
+			0,
+			isInit,
+			rec => {
+				var shain = getCodeNameView<MasterShain>(getString(rec, "入力社員CD"), out var id_shain) ?? new();
+				var soko = getCodeNameView<MasterTokui>(getString(rec, "倉庫CD"), out var id_soko) ?? new();
+				var tokui = getCodeNameView<MasterTokui>(getString(rec, "取引先CD1"), out var id_tokui) ?? new();
+				var kubun = getDataInt(rec, "取引区分");
+				var meisaiList = BuildTranMeisaiList(rec);
 
-		if (tranHeader.Count == 0)
-			return 0;
-
-		Dictionary<string, MasterShain?> shainCache = [];
-		Dictionary<string, MasterTokui?> tokuiCache = [];
-		Dictionary<string, MasterShohin?> shohinCache = [];
-		Dictionary<string, MasterMeisho?> meishoCache = [];
-
-		List<Tran00Uriage> list = new(tranHeader.Count);
-		foreach (var rec in tranHeader) {
-			var shain = getCodeNameView<MasterShain>(getString(rec, "入力社員CD"), out var id_shain) ?? new();
-			var soko = getCodeNameView<MasterTokui>(getString(rec, "倉庫CD"), out var id_soko) ?? new();
-			var tokui = getCodeNameView<MasterTokui>(getString(rec, "取引先CD1"), out var id_tokui) ?? new();
-
-			var item = new Tran00Uriage() {
-				DenDay = getString(rec, "在庫計上日", "19010101"),
-				KakeDay = getString(rec, "掛計上日", "19010101"),
-				Kubun = getDataInt(rec, "取引区分"),
-				CalcFlag = getCalcFlag(getDataInt(rec, "取引区分")),
-				ManualNo = getString(rec, "手入力伝票NO"),
-				RelateNo1 = getDataInt(rec, "関連伝票NO"),
-				RelateNo2 = getDataInt(rec, "関連伝票NO2"),
-				SuTotal = getDataInt(rec, "数量合計"),
-				KingakuTotal = getDataInt(rec, "明細金額合計"),
-				JodaiTotal = getDataInt(rec, "上代合計"),
-				GedaiTotal = getDataInt(rec, "下代合計"),
-				Nebiki00Total = getDataInt(rec, "値引1") + getDataInt(rec, "値引2") + getDataInt(rec, "値引3"),
-				Nebiki01Meisai = 0,
-				Memo = getString(rec, "メモ"),
-				Jdetail = new BaseDetailClass() {
-					Yobi1 = getString(rec, "取引先CD2"),
-					Yobi2 = getString(rec, "顧客TEL"),
-				},
-				IsPay = getDataInt(rec, "掛計上FLG"),
-				Id_Shain = id_shain,
-				VShain = shain,
-				Id_Soko = id_soko,
-				VSoko = soko,
-				Id_Tokui = id_tokui,
-				VTokui = tokui,
-			};
-			var detailRows = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$tran_tori1 where ヘッダNO=@0 order by 行NO", getDataInt(rec, "SEQ_NO"));
-
-			List<Tran99Meisai>? meisaiList = null;
-			if (detailRows.Count > 0) {
-				meisaiList = new List<Tran99Meisai>(detailRows.Count);
-				foreach (var detailRec in detailRows) {
-					var shohin = getMaster<MasterShohin>(getString(detailRec, "商品CD"));
-					var col = getMaster<MasterMeisho>(getString(detailRec, "色CD"));
-					var siz = getMaster<MasterMeisho>(getString(detailRec, "サイズCD"));
-
-					meisaiList.Add(new Tran99Meisai() {
-						No = getDataInt(detailRec, "行NO"),
-						Kubun = getDataInt(detailRec, "明細取引区分"),
-						Id_Shohin = shohin?.Id ?? 0,
-						Code_Shohin = shohin?.Code ?? string.Empty,
-						Mei_Shohin = shohin?.Name ?? string.Empty,
-						JanCode = getString(detailRec, "JANCODE"),
-						Id_Col = col?.Id ?? 0,
-						Code_Col = col?.Code ?? string.Empty,
-						Mei_Col = col?.Name ?? string.Empty,
-						Id_Siz = siz?.Id ?? 0,
-						Code_Siz = siz?.Code ?? string.Empty,
-						Mei_Siz = siz?.Name ?? string.Empty,
-						Su = getDataInt(detailRec, "数量"),
-						Tanka = getDataInt(detailRec, "単価"),
-						Kingaku = getDataInt(detailRec, "金額"),
-						Jodai = getDataInt(detailRec, "上代金額"),
-						Gedai = getDataInt(detailRec, "下代金額"),
-						Nebiki00 = getDataInt(detailRec, "明細値引"),
-						Nebiki01 = getDataInt(detailRec, "明細値引1"),
-						Nebiki02 = getDataInt(detailRec, "小計値引") + getDataInt(detailRec, "小計値引1"),
-						Memo = getString(detailRec, "明細メモ"),
-					});
-				}
-			}
-
-			list.Add(item);
-		}
-		_toDb.BeginTransaction();
-		_toDb.InsertBulk<Tran00Uriage>(list);
-		_toDb.CompleteTransaction();
-		return list.Count;
+				return new Tran00Uriage() {
+					DenDay = getString(rec, "在庫計上日", "19010101"),
+					KakeDay = getString(rec, "掛計上日", "19010101"),
+					Kubun = kubun,
+					CalcFlag = getCalcFlag(kubun),
+					ManualNo = getString(rec, "手入力伝票NO"),
+					RelateNo1 = getDataInt(rec, "関連伝票NO"),
+					RelateNo2 = getDataInt(rec, "関連伝票NO2"),
+					SuTotal = getDataInt(rec, "数量合計"),
+					KingakuTotal = getDataInt(rec, "明細金額合計"),
+					JodaiTotal = getDataInt(rec, "上代合計"),
+					GedaiTotal = getDataInt(rec, "下代合計"),
+					Nebiki00Total = getHeaderNebiki(rec),
+					Nebiki01Meisai = 0,
+					Memo = getString(rec, "メモ"),
+					Jdetail = new BaseDetailClass() {
+						Yobi1 = getString(rec, "取引先CD2"),
+						Yobi2 = getString(rec, "顧客TEL"),
+					},
+					Jmeisai = meisaiList,
+					IsPay = getDataInt(rec, "掛計上FLG"),
+					Id_Shain = id_shain,
+					VShain = shain,
+					Id_Soko = id_soko,
+					VSoko = soko,
+					Id_Tokui = id_tokui,
+					VTokui = tokui,
+				};
+			});
 	}
 	/// <summary>
 	/// 店舗売上変換
 	/// </summary>
 	public int CnvTran01Uri(bool isInit = true) {
-		var tranHeader = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$tran_tori0 where 伝票処理区分=1 order by SEQ_NO");
-		_toDb.CreateTable(typeof(Tran01Tenuri), isInit);
+		return ConvertTranHeaders(
+			1,
+			isInit,
+			rec => {
+				var shain = getCodeNameView<MasterShain>(getString(rec, "入力社員CD"), out var id_shain) ?? new();
+				var soko = getCodeNameView<MasterTokui>(getString(rec, "倉庫CD"), out var id_soko) ?? new();
+				var tenpo = getCodeNameView<MasterTokui>(getString(rec, "取引先CD1"), out var id_tenpo) ?? new();
+				var kokyakuCode = getString(rec, "顧客TEL");
+				var kokyaku = getCodeNameView<MasterEndCustomer>(kokyakuCode, out var id_kokyaku) ?? new();
+				var kubun = getDataInt(rec, "取引区分");
+				var meisaiList = BuildTranMeisaiList(rec);
 
-		if (tranHeader.Count == 0)
-			return 0;
-
-		Dictionary<string, MasterShain?> shainCache = [];
-		Dictionary<string, MasterTokui?> tokuiCache = [];
-		Dictionary<string, MasterShohin?> shohinCache = [];
-		Dictionary<string, MasterMeisho?> meishoCache = [];
-
-		List<Tran01Tenuri> list = new(tranHeader.Count);
-		foreach (var rec in tranHeader) {
-			var shain = getCodeNameView<MasterShain>(getString(rec, "入力社員CD"), out var id_shain) ?? new();
-			var soko = getCodeNameView<MasterTokui>(getString(rec, "倉庫CD"), out var id_soko) ?? new();
-			var tokui = getCodeNameView<MasterTokui>(getString(rec, "取引先CD1"), out var id_tokui) ?? new();
-			var kokyaku = getCodeNameView<MasterEndCustomer>(getString(rec, "顧客TEL"), out var id_kokyaku) ?? new();
-
-			var item = new Tran01Tenuri() {
-				DenDay = getString(rec, "在庫計上日", "19010101"),
-				Kubun = getDataInt(rec, "取引区分"),
-				CalcFlag = getCalcFlag(getDataInt(rec, "取引区分")),
-				RelateNo1 = getDataInt(rec, "関連伝票NO"),
-				SuTotal = getDataInt(rec, "数量合計"),
-				KingakuTotal = getDataInt(rec, "明細金額合計"),
-				JodaiTotal = getDataInt(rec, "上代合計"),
-				GedaiTotal = getDataInt(rec, "下代合計"),
-				Nebiki00Total = getDataInt(rec, "値引1") + getDataInt(rec, "値引2") + getDataInt(rec, "値引3"),
-				Nebiki01Meisai = 0,
-				Memo = getString(rec, "メモ"),
-				Jdetail = new BaseDetailClass() {
-					Yobi1 = getString(rec, "手入力伝票No"),
-					Yobi2 = getString(rec, "関連伝票NO2"),
-				},
-				Id_Shain = id_shain,
-				VShain = shain,
-				Id_Soko = id_soko,
-				VSoko = soko,
-				Id_Tenpo = id_tokui,
-				VTenpo = tokui,
-				Id_Customer = id_kokyaku,
-				VCustomer = kokyaku,
-				Code_Customer = getString(rec, "顧客TEL"),
-			};
-			var detailRows = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$tran_tori1 where ヘッダNO=@0 order by 行NO", getDataInt(rec, "SEQ_NO"));
-
-			List<Tran99Meisai>? meisaiList = null;
-			if (detailRows.Count > 0) {
-				meisaiList = new List<Tran99Meisai>(detailRows.Count);
-				foreach (var detailRec in detailRows) {
-					var shohin = getMaster<MasterShohin>(getString(detailRec, "商品CD"));
-					var col = getMaster<MasterMeisho>(getString(detailRec, "色CD"));
-					var siz = getMaster<MasterMeisho>(getString(detailRec, "サイズCD"));
-
-					meisaiList.Add(new Tran99Meisai() {
-						No = getDataInt(detailRec, "行NO"),
-						Kubun = getDataInt(detailRec, "明細取引区分"),
-						Id_Shohin = shohin?.Id ?? 0,
-						Code_Shohin = shohin?.Code ?? string.Empty,
-						Mei_Shohin = shohin?.Name ?? string.Empty,
-						JanCode = getString(detailRec, "JANCODE"),
-						Id_Col = col?.Id ?? 0,
-						Code_Col = col?.Code ?? string.Empty,
-						Mei_Col = col?.Name ?? string.Empty,
-						Id_Siz = siz?.Id ?? 0,
-						Code_Siz = siz?.Code ?? string.Empty,
-						Mei_Siz = siz?.Name ?? string.Empty,
-						Su = getDataInt(detailRec, "数量"),
-						Tanka = getDataInt(detailRec, "単価"),
-						Kingaku = getDataInt(detailRec, "金額"),
-						Jodai = getDataInt(detailRec, "上代金額"),
-						Gedai = getDataInt(detailRec, "下代金額"),
-						Nebiki00 = getDataInt(detailRec, "明細値引"),
-						Nebiki01 = getDataInt(detailRec, "明細値引1"),
-						Nebiki02 = getDataInt(detailRec, "小計値引") + getDataInt(detailRec, "小計値引1"),
-						Memo = getString(detailRec, "明細メモ"),
-					});
-				}
-			}
-
-			list.Add(item);
-		}
-		_toDb.BeginTransaction();
-		_toDb.InsertBulk<Tran01Tenuri>(list);
-		_toDb.CompleteTransaction();
-		return list.Count;
+				return new Tran01Tenuri() {
+					DenDay = getString(rec, "在庫計上日", "19010101"),
+					Kubun = kubun,
+					CalcFlag = getCalcFlag(kubun),
+					RelateNo1 = getDataInt(rec, "関連伝票NO"),
+					SuTotal = getDataInt(rec, "数量合計"),
+					KingakuTotal = getDataInt(rec, "明細金額合計"),
+					JodaiTotal = getDataInt(rec, "上代合計"),
+					GedaiTotal = getDataInt(rec, "下代合計"),
+					Nebiki00Total = getHeaderNebiki(rec),
+					Nebiki01Meisai = 0,
+					Memo = getString(rec, "メモ"),
+					Jdetail = new BaseDetailClass() {
+						Yobi1 = getString(rec, "手入力伝票NO"),
+						Yobi2 = getString(rec, "関連伝票NO2"),
+					},
+					Jmeisai = meisaiList,
+					Id_Shain = id_shain,
+					VShain = shain,
+					Id_Soko = id_soko,
+					VSoko = soko,
+					Id_Tenpo = id_tenpo,
+					VTenpo = tenpo,
+					Id_Customer = (int)id_kokyaku,
+					VCustomer = kokyaku,
+					Code_Customer = kokyakuCode,
+				};
+			});
 	}
 
 
@@ -426,6 +333,70 @@ TAG発行FLG                         NOT NULL NUMBER(2)
 			>= 20 and < 40 => -1,
 			_ => 1,
 		};
+	}
+
+	int getHeaderNebiki(Dictionary<string, object> rec) {
+		return getDataInt(rec, "値引1") + getDataInt(rec, "値引2") + getDataInt(rec, "値引3");
+	}
+
+	List<Tran99Meisai>? BuildTranMeisaiList(Dictionary<string, object> rec) {
+		var detailRows = _fromDb.Fetch<Dictionary<string, object>>("select * from HC$tran_tori1 where ヘッダNO=@0 order by 行NO", getDataInt(rec, "SEQ_NO"));
+		if (detailRows.Count == 0)
+			return null;
+
+		List<Tran99Meisai> meisaiList = new(detailRows.Count);
+		foreach (var detailRec in detailRows) {
+			var shohinCode = getString(detailRec, "商品CD");
+			var colCode = getString(detailRec, "色CD");
+			var sizCode = getString(detailRec, "サイズCD");
+			var shohin = getMaster<MasterShohin>(shohinCode);
+			var col = getMeisho("COL", colCode);
+			var siz = getMeisho("SIZ", sizCode);
+
+			meisaiList.Add(new Tran99Meisai() {
+				No = getDataInt(detailRec, "行NO"),
+				Kubun = getDataInt(detailRec, "明細取引区分"),
+				Id_Shohin = shohin?.Id ?? 0,
+				Code_Shohin = shohin?.Code ?? shohinCode,
+				Mei_Shohin = shohin?.Name ?? getString(detailRec, "明細名称"),
+				JanCode = getString(detailRec, "JANCODE"),
+				Id_Col = col?.Id ?? 0,
+				Code_Col = col?.Code ?? colCode,
+				Mei_Col = col?.Name ?? string.Empty,
+				Id_Siz = siz?.Id ?? 0,
+				Code_Siz = siz?.Code ?? sizCode,
+				Mei_Siz = siz?.Name ?? string.Empty,
+				Su = getDataInt(detailRec, "数量"),
+				Tanka = getDataInt(detailRec, "単価"),
+				Kingaku = getDataInt(detailRec, "金額"),
+				Jodai = getDataInt(detailRec, "上代金額"),
+				Gedai = getDataInt(detailRec, "下代金額"),
+				Nebiki00 = getDataInt(detailRec, "明細値引"),
+				Nebiki01 = getDataInt(detailRec, "明細値引1"),
+				Nebiki02 = getDataInt(detailRec, "小計値引") + getDataInt(detailRec, "小計値引1"),
+				Memo = getString(detailRec, "明細メモ"),
+			});
+		}
+
+		return meisaiList;
+	}
+
+	int ConvertTranHeaders<T>(int denpyoShoriKubun, bool isInit, Func<Dictionary<string, object>, T> converter) where T : class {
+		var tranHeader = _fromDb.Fetch<Dictionary<string, object>>($"select * from HC$tran_tori0 where 伝票処理区分={denpyoShoriKubun} order by SEQ_NO");
+		_toDb.CreateTable(typeof(T), isInit);
+
+		if (tranHeader.Count == 0)
+			return 0;
+
+		List<T> list = new(tranHeader.Count);
+		foreach (var rec in tranHeader) {
+			list.Add(converter(rec));
+		}
+
+		_toDb.BeginTransaction();
+		_toDb.InsertBulk<T>(list);
+		_toDb.CompleteTransaction();
+		return list.Count;
 	}
 
 	CodeNameView? getCodeNameView<T>(string code, out long id) where T : BaseDbClass, IBaseCodeName, new() {
