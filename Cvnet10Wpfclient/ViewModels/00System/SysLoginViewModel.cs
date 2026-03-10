@@ -50,7 +50,7 @@ internal partial class SysLoginViewModel : Helpers.BaseMenteViewModel<SysLogin> 
 		var selWin = new Views.Sub.SelectWinView();
 		var vm = selWin.DataContext as Sub.SelectWinViewModel;
 		if (vm == null) return;
-		vm.SetParam(typeof(MasterShain), "");
+		vm.SetParam(typeof(MasterShain), order: "Code", startPos: CurrentEdit.Id_Shain);
 		vm.InitParam = (int)CurrentEdit.Id_Shain;
 		var ret = ClientLib.ShowDialogView(selWin, this);
 		if (ret != true) return;

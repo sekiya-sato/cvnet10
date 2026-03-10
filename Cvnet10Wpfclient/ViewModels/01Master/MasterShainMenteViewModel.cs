@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewModels.Sub;
-using Cvnet10Wpfclient.Views.Sub;
 using Cvnet10Wpfclient.ViewServices;
 
 namespace Cvnet10Wpfclient.ViewModels._01Master;
@@ -57,7 +56,7 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 		var selWin = new Views.Sub.SelectWinView();
 		var vm = selWin.DataContext as Sub.SelectWinViewModel;
 		if (vm == null) return;
-		vm.SetParam(typeof(MasterTokui), "TenType=6", "Code");
+		vm.SetParam(typeof(MasterTokui), "TenType=6", "Code", startPos: CurrentEdit.Id_Tenpo);
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		var meisho = vm.Current as MasterTokui;
 		CurrentEdit.Id_Tenpo = meisho?.Id ?? 0;
@@ -68,7 +67,7 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 		var selWin = new Views.Sub.SelectWinView();
 		var vm = selWin.DataContext as Sub.SelectWinViewModel;
 		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='BMN'", "Code");
+		vm.SetParam(typeof(MasterMeisho), "Kubun='BMN'", "Code", startPos: CurrentEdit.Id_Bumon);
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		var meisho = vm.Current as MasterMeisho;
 		CurrentEdit.Id_Bumon = meisho?.Id ?? 0;

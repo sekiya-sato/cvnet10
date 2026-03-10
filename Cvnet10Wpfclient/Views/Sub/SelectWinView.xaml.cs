@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Cvnet10Wpfclient.Helpers;
+using System.Windows.Controls;
 
 namespace Cvnet10Wpfclient.Views.Sub;
 
@@ -11,8 +11,8 @@ public partial class SelectWinView : Helpers.BaseWindow {
 
 	protected override void OnContentRendered(EventArgs e) {
 		base.OnContentRendered(e);
-		WeakReferenceMessenger.Default.Register<ShortMsg>(this, (recipient, message) => {
-			FocusDataGrid(recipient, message);
+		WeakReferenceMessenger.Default.Register<SelectItemMessage>(this, (recipient, message) => {
+			FocusDataGrid(recipient, message.Value);
 		});
 	}
 
@@ -21,19 +21,17 @@ public partial class SelectWinView : Helpers.BaseWindow {
 		base.OnClosed(e);
 	}
 
-	private void FocusDataGrid(object recipient, ShortMsg message) {
+	private void FocusDataGrid(object recipient, long initId) {
 		SelectGrid.Focus();
-		if (long.TryParse(message.Value, out var initId)) {
+		if (initId != 0) {
 			if (SelectGrid.Items == null || SelectGrid.Items.Count == 0) return;
 			if (SelectGrid.Columns == null || SelectGrid.Columns.Count < 2) return;
-			var selectedIndex = SelectGrid.SelectedIndex;
-			if (selectedIndex > 0 && SelectGrid.Items.Count > (selectedIndex + 12)) {
-				selectedIndex += 12;
+			if (SelectGrid.SelectedIndex != -1) {
+				SelectGrid.ScrollIntoView(SelectGrid.Items[SelectGrid.SelectedIndex]);
+				SelectGrid.CurrentCell = new DataGridCellInfo(SelectGrid.Items[0], SelectGrid.Columns[0]);
+				SelectGrid.CurrentItem = SelectGrid.SelectedItem;
+				SelectGrid.CurrentCell = new DataGridCellInfo();
 			}
-			SelectGrid.ScrollIntoView(SelectGrid.Items[selectedIndex]);
-			SelectGrid.CurrentCell = new DataGridCellInfo(SelectGrid.Items[0], SelectGrid.Columns[0]);
-			SelectGrid.CurrentItem = SelectGrid.SelectedItem;
-			SelectGrid.CurrentCell = new DataGridCellInfo();
 		}
 	}
 }
