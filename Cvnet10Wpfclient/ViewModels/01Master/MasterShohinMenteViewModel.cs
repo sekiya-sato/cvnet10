@@ -13,7 +13,7 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 	protected override string? ListWhere => BuildSelectCodeWhere(selectCodeParam);
 	protected override string? ListOrder => "Code";
 
-	SelectCodeParameter? selectCodeParam;
+	SelectParameter? selectCodeParam;
 
 	protected override int? ListMaxCount => selectCodeParam?.MaxCount;
 
@@ -89,5 +89,30 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		if (meisho == null) return;
 		CurrentEdit.Id_Maker = meisho?.Id ?? 0;
 		CurrentEdit.VMaker = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+	}
+
+	[RelayCommand]
+	void DoSelectSizeKu() {
+		var selWin = new Views.Sub.SelectKubunView();
+		var vm = selWin.DataContext as Sub.SelectKubunViewModel;
+		if (vm == null) return;
+		vm.SetParam("Kubun='IDX' and (Code='SIZ' or Code Like 'US%')", CurrentEdit.SizeKu);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return;
+		var meisho = vm.Current as MasterMeisho;
+		if (meisho == null) return;
+		CurrentEdit.SizeKu = meisho?.Code ?? "";
+	}
+
+	[RelayCommand]
+	void DoSelectSoko() {
+		var selWin = new Views.Sub.SelectWinView();
+		var vm = selWin.DataContext as Sub.SelectWinViewModel;
+		if (vm == null) return;
+		vm.SetParam(typeof(MasterTokui), "TenType=0", "Code", startPos: CurrentEdit.Id_Soko);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return;
+		var tokui = vm.Current as MasterTokui;
+		if (tokui == null) return;
+		CurrentEdit.Id_Soko = tokui?.Id ?? 0;
+		CurrentEdit.VSoko = new() { Sid = tokui?.Id ?? 0, Cd = tokui?.Code ?? "", Mei = tokui?.Name ?? "" };
 	}
 }

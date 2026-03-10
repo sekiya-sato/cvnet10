@@ -114,10 +114,10 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 
 	[RelayCommand]
 	void DoSelectKubun() {
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
+		var selWin = new Views.Sub.SelectKubunView();
+		var vm = selWin.DataContext as Sub.SelectKubunViewModel;
 		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='IDX'", "Code");
+		vm.SetParam("Kubun='IDX'", CurrentEdit.Kubun);
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		var meisho = vm.Current as MasterMeisho;
 		CurrentEdit.Kubun = meisho?.Code ?? CurrentEdit.Kubun;

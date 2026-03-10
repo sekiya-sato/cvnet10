@@ -13,7 +13,7 @@ public partial class MasterShainMenteViewModel : Helpers.BaseMenteViewModel<Mast
 	protected override string? ListWhere => BuildSelectCodeWhere(selectCodeParam);
 	protected override string? ListOrder => "Code";
 
-	SelectCodeParameter? selectCodeParam;
+	SelectParameter? selectCodeParam;
 
 	protected override int? ListMaxCount => selectCodeParam?.MaxCount;
 

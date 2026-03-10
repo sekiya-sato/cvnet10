@@ -3,13 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Base;
+using Cvnet10Wpfclient.ViewModels.Sub;
 using Cvnet10Wpfclient.ViewServices;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
-using Cvnet10Wpfclient.ViewModels.Sub;
 
 namespace Cvnet10Wpfclient.Helpers;
 
@@ -120,24 +120,24 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 		return true;
 	}
 
-	protected virtual bool TryShowSelectCodeDialog(SelectCodeParameter? currentParameter, string displayName, out SelectCodeParameter parameter) {
-		var selWin = new Views.Sub.SelectCodeView();
-		if (selWin.DataContext is not SelectCodeViewModel vm) {
-			parameter = currentParameter ?? new SelectCodeParameter { DisplayName = displayName };
+	protected virtual bool TryShowSelectCodeDialog(SelectParameter? currentParameter, string displayName, out SelectParameter parameter) {
+		var selWin = new Views.Sub.SelectParamView();
+		if (selWin.DataContext is not SelectParamViewModel vm) {
+			parameter = currentParameter ?? new SelectParameter { DisplayName = displayName };
 			return true;
 		}
 
-		vm.Initialize(currentParameter ?? new SelectCodeParameter { DisplayName = displayName });
+		vm.Initialize(currentParameter ?? new SelectParameter { DisplayName = displayName });
 		if (ClientLib.ShowDialogView(selWin, this, true) != true) {
 			parameter = vm.Parameter;
 			return false;
 		}
 
-		parameter = NormalizeSelectCodeParameter(vm.Parameter, displayName);
+		parameter = NormalizeSelectParameter(vm.Parameter, displayName);
 		return true;
 	}
 
-	protected virtual SelectCodeParameter NormalizeSelectCodeParameter(SelectCodeParameter? parameter, string? displayName = null) =>
+	protected virtual SelectParameter NormalizeSelectParameter(SelectParameter? parameter, string? displayName = null) =>
 		new() {
 			FromId = parameter?.FromId,
 			ToId = parameter?.ToId,
@@ -148,7 +148,7 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 			DisplayName = NormalizeNullableText(parameter?.DisplayName) ?? displayName
 		};
 
-	protected virtual string? BuildSelectCodeWhere(SelectCodeParameter? parameter) {
+	protected virtual string? BuildSelectCodeWhere(SelectParameter? parameter) {
 		if (parameter == null) {
 			return null;
 		}

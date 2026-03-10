@@ -1,6 +1,6 @@
 namespace Cvnet10Wpfclient.ViewModels.Sub;
 
-public class SelectCodeParameter {
+public class SelectParameter {
 	public long? FromId { get; set; }
 	public long? ToId { get; set; }
 	public string? FromCode { get; set; }

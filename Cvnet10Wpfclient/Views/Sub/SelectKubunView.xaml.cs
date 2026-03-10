@@ -4,21 +4,20 @@ using System.Windows.Controls;
 
 namespace Cvnet10Wpfclient.Views.Sub;
 
-public partial class SelectWinView : Helpers.BaseWindow {
-	public SelectWinView() {
+public partial class SelectKubunView : Helpers.BaseWindow {
+	public SelectKubunView() {
 		InitializeComponent();
 	}
 
 	protected override void OnContentRendered(EventArgs e) {
 		base.OnContentRendered(e);
-		WeakReferenceMessenger.Default.Register<SelectItemMessage>(this, (recipient, message) => {
+		WeakReferenceMessenger.Default.Register<SelectStringMessage>(this, (recipient, message) => {
 			FocusDataGrid(recipient, message.Value);
 		});
 	}
-
-	private void FocusDataGrid(object recipient, long initId) {
+	private void FocusDataGrid(object recipient, string initKubun) {
 		SelectGrid.Focus();
-		if (initId != 0) {
+		if (!string.IsNullOrEmpty(initKubun)) {
 			if (SelectGrid.Items == null || SelectGrid.Items.Count == 0) return;
 			if (SelectGrid.Columns == null || SelectGrid.Columns.Count < 2) return;
 			if (SelectGrid.SelectedIndex != -1) {
