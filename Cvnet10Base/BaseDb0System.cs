@@ -117,7 +117,7 @@ public sealed partial class MasterSysTax : ObservableObject {
 [PrimaryKey("Id", AutoIncrement = true)]
 [KeyDml("uq1", true, ["Kubun", "Code"])]
 [KeyDml("nk2", false, ["Kubun", "Odr", "Code"])]
-public sealed partial class MasterMeisho : BaseDbClass {
+public sealed partial class MasterMeisho : BaseDbClass, IBaseCodeName {
 	/// <summary>
 	/// 区分
 	/// </summary>

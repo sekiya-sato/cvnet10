@@ -421,6 +421,23 @@ public sealed partial class Tran00Uriage : TranAllHeader {
 		get => (EnumUri00)Kubun;
 		set => Kubun = (int)value;
 	}
+	/// <summary>
+	/// Žè“ü—ÍNo
+	/// </summary>
+	[ObservableProperty]
+	[property: ColumnSizeDml(20)]
+	[property: System.ComponentModel.DefaultValue("")]
+	string manualNo = string.Empty;
+	/// <summary>
+	///	ŠÖ˜ANo1
+	/// </summary>
+	[ObservableProperty]
+	int relateNo1;
+	/// <summary>
+	///	ŠÖ˜ANo2
+	/// </summary>
+	[ObservableProperty]
+	int relateNo2;
 }
 
 public enum EnumUri00 : int {
@@ -485,6 +502,11 @@ public sealed partial class Tran01Tenuri : TranAllHeader {
 		get => (EnumUri01)Kubun;
 		set => Kubun = (int)value;
 	}
+	/// <summary>
+	///	ŠÖ˜ANo1
+	/// </summary>
+	[ObservableProperty]
+	int relateNo1;
 }
 public enum EnumUri01 : int {
 	Uriage = 10,
