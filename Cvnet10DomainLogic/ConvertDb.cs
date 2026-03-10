@@ -6,7 +6,7 @@ namespace Cvnet10DomainLogic;
 /// <summary>
 /// データベースを変換するクラス
 /// </summary>
-public class ConvertDb {
+public partial class ConvertDb {
 	ExDatabase _fromDb;
 	ExDatabase _toDb;
 	Logger _logger;
