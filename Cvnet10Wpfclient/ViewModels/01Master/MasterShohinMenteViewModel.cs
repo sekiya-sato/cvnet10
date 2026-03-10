@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewModels.Sub;
+using Cvnet10Wpfclient.ViewServices;
 
 namespace Cvnet10Wpfclient.ViewModels._01Master;
 
@@ -50,5 +51,43 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 
 		selectCodeParam = parameter;
 		return new ValueTask<bool>(true);
+	}
+	[RelayCommand]
+	void DoSelectBrand() {
+		var selWin = new Views.Sub.SelectWinView();
+		var vm = selWin.DataContext as Sub.SelectWinViewModel;
+		if (vm == null) return;
+		vm.SetParam(typeof(MasterMeisho), "Kubun='BRD'", "Code", startPos: CurrentEdit.Id_Brand);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return;
+		var meisho = vm.Current as MasterMeisho;
+		if (meisho == null) return;
+		CurrentEdit.Id_Brand = meisho?.Id ?? 0;
+		CurrentEdit.VBrand = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+	}
+
+	[RelayCommand]
+	void DoSelectItem() {
+		var selWin = new Views.Sub.SelectWinView();
+		var vm = selWin.DataContext as Sub.SelectWinViewModel;
+		if (vm == null) return;
+		vm.SetParam(typeof(MasterMeisho), "Kubun='ITM'", "Code", startPos: CurrentEdit.Id_Item);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return;
+		var meisho = vm.Current as MasterMeisho;
+		if (meisho == null) return;
+		CurrentEdit.Id_Item = meisho?.Id ?? 0;
+		CurrentEdit.VItem = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+	}
+
+	[RelayCommand]
+	void DoSelectMaker() {
+		var selWin = new Views.Sub.SelectWinView();
+		var vm = selWin.DataContext as Sub.SelectWinViewModel;
+		if (vm == null) return;
+		vm.SetParam(typeof(MasterMeisho), "Kubun='MKR'", "Code", startPos: CurrentEdit.Id_Maker);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return;
+		var meisho = vm.Current as MasterMeisho;
+		if (meisho == null) return;
+		CurrentEdit.Id_Maker = meisho?.Id ?? 0;
+		CurrentEdit.VMaker = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
 	}
 }
