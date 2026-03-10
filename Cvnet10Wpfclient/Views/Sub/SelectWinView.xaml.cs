@@ -16,11 +16,6 @@ public partial class SelectWinView : Helpers.BaseWindow {
 		});
 	}
 
-	protected override void OnClosed(EventArgs e) {
-		WeakReferenceMessenger.Default.Unregister<ShortMsg>(this);
-		base.OnClosed(e);
-	}
-
 	private void FocusDataGrid(object recipient, long initId) {
 		SelectGrid.Focus();
 		if (initId != 0) {

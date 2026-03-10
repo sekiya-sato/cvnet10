@@ -4,11 +4,11 @@ using Cvnet10Wpfclient.ViewServices;
 
 namespace Cvnet10Wpfclient.ViewModels.Sub;
 
-public partial class SelectCodeViewModel : Helpers.BaseViewModel {
+public partial class SelectParamViewModel : Helpers.BaseViewModel {
 	[ObservableProperty]
-	SelectCodeParameter parameter = new();
+	SelectParameter parameter = new();
 
-	public void Initialize(SelectCodeParameter? param) {
+	public void Initialize(SelectParameter? param) {
 		Parameter = param ?? new();
 	}
 
