@@ -121,8 +121,8 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 	}
 
 	protected virtual bool TryShowSelectCodeDialog(SelectParameter? currentParameter, string displayName, out SelectParameter parameter) {
-		var selWin = new Views.Sub.SelectParamView();
-		if (selWin.DataContext is not SelectParamViewModel vm) {
+		var selWin = new Views.Sub.RangeParamView();
+		if (selWin.DataContext is not RangeParamViewModel vm) {
 			parameter = currentParameter ?? new SelectParameter { DisplayName = displayName };
 			return true;
 		}

@@ -4,10 +4,13 @@ using Cvnet10Wpfclient.ViewServices;
 
 namespace Cvnet10Wpfclient.ViewModels.Sub;
 
-public partial class SelectParamViewModel : Helpers.BaseViewModel {
+/// <summary>範囲指定ミニ版 ViewModel（ID・件数のみ）</summary>
+public partial class RangeParamMiniViewModel : Helpers.BaseViewModel {
+
 	[ObservableProperty]
 	SelectParameter parameter = new();
 
+	/// <summary>表示前に呼び出す初期化メソッド</summary>
 	public void Initialize(SelectParameter? param) {
 		Parameter = param ?? new();
 	}
@@ -16,5 +19,4 @@ public partial class SelectParamViewModel : Helpers.BaseViewModel {
 	void Ok() {
 		ClientLib.ExitDialogResult(this, true);
 	}
-
 }

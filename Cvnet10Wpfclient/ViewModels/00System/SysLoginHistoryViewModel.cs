@@ -11,13 +11,18 @@ internal partial class SysLoginHistoryViewModel : Helpers.BaseMenteViewModel<Sys
 	[ObservableProperty]
 	string title = "ログイン履歴";
 
+
 	/// <summary>最新順に取得</summary>
 	protected override string? ListOrder => "Id DESC";
+
+	protected override int? ListMaxCount => 6;
+
 
 	[RelayCommand]
 	public async Task Init() {
 		await DoList(CancellationToken.None);
 	}
+
 
 	/// <summary>履歴テーブルは修正不可</summary>
 	protected override bool CanUpdate() => false;
