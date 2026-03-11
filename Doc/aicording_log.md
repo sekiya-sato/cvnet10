@@ -2,7 +2,6 @@
 
 ---
 
-
 ## [2026-03-11] 商品メンテ画面 - 日付フィールドを DatePicker に変更
 
 ### Agent
@@ -59,3 +58,27 @@
 - MSB3374 (`Up2Date` ファイルへのアクセス拒否) のみ発生。これは WSL2 上の NTFS パーミッション問題であり環境起因。コード起因のエラー・警告はゼロ
 
 ---
+
+## [2026-03-11] 仕入先マスタメンテ画面の新規作成
+
+### Agent
+- gpt-5.4 : OpenAI
+
+### Editor
+- OpenCode
+
+### 目的
+- ユーザーからの要望：`Cvnet10Wpfclient.csproj` の `MasterShiire` テーブル向けメンテ画面として、`MasterShiireMenteView.xaml`、`MasterShiireMenteView.xaml.cs`、`MasterShiireMenteViewModel.cs` を新規作成する。参考は `MasterTokuiMenteView.xaml` / `MasterTokuiMenteViewModel.cs`。
+
+### 実施内容
+- `Cvnet10Wpfclient/Views/01Master/MasterShiireMenteView.xaml`: 新規作成。`MasterShiire` 向けに一覧、基本情報、支払情報、名称リスト、詳細内容タブを実装
+- `Cvnet10Wpfclient/Views/01Master/MasterShiireMenteView.xaml.cs`: 新規作成。`BaseWindow` 継承の最小 code-behind を実装
+- `Cvnet10Wpfclient/ViewModels/01Master/MasterShiireMenteViewModel.cs`: 新規作成。`BaseMenteViewModel<MasterShiire>` を継承し、初期一覧、確認メッセージ、完了メッセージ、担当者・支払方法・支払先選択コマンドを実装
+
+### 技術決定 Why
+- `MasterShiire` は `MasterTorihiki` 継承で `MasterTokui` より項目数が少ないため、得意先専用の `TenType` / `IsZaiko` / `Mail` は除外し、共通取引先項目に絞って画面を構成した
+- `MasterShiire` の `Id_Paysaki` / `VPaysaki` は共通基底に存在するため、支払先選択は `MasterShiire` 自テーブル検索で統一した
+- SDK スタイルの WPF プロジェクトのため、`.csproj` への明示的な新規ファイル登録は不要と判断した
+
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` を実行し、Build OK（0 warning / 0 error）を確認
