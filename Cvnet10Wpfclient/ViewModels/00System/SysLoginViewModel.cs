@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Base;
+using Cvnet10Wpfclient.ViewModels.Sub;
 using Cvnet10Wpfclient.ViewServices;
 using System.Collections;
 
@@ -12,12 +13,32 @@ internal partial class SysLoginViewModel : Helpers.BaseMenteViewModel<SysLogin> 
 	[ObservableProperty]
 	string title = "ログインマスターメンテ画面";
 
+	SelectParameter? selectMiniParam;
+
+	protected override string? ListWhere => BuildSelectCodeWhere(selectMiniParam);
+
+	protected override int? ListMaxCount => selectMiniParam?.MaxCount;
+
 	[ObservableProperty]
 	string lastLoginDate = string.Empty;
 
 	[RelayCommand]
 	public async Task Init() {
 		await DoList(CancellationToken.None);
+	}
+
+	protected override ValueTask<bool> BeforeListAsync(CancellationToken ct) {
+		ct.ThrowIfCancellationRequested();
+		var selWin = new Views.Sub.RangeParamMiniView();
+		if (selWin.DataContext is not RangeParamMiniViewModel vm)
+			return new ValueTask<bool>(true);
+		vm.Initialize(selectMiniParam ?? new SelectParameter { DisplayName = "ログインID", MaxCount = 100 });
+		if (ClientLib.ShowDialogView(selWin, this, true) != true) {
+			selectMiniParam = vm.Parameter;
+			return new ValueTask<bool>(false);
+		}
+		selectMiniParam = NormalizeSelectParameter(vm.Parameter, "ログインマスタ");
+		return new ValueTask<bool>(true);
 	}
 
 	protected override bool ConfirmAction(string message) =>
@@ -75,5 +96,23 @@ internal partial class SysLoginViewModel : Helpers.BaseMenteViewModel<SysLogin> 
 		var newPass = Common.EncryptLoginRequest(cur.CryptPassword, cur.VdateC);
 		if (!string.IsNullOrEmpty(newPass))
 			cur.CryptPassword = newPass;
+	}
+	protected override string? BuildSelectCodeWhere(SelectParameter? parameter) {
+		if (parameter == null) {
+			return null;
+		}
+
+		List<string> clauses = [];
+		if (parameter.FromId.HasValue) {
+			clauses.Add($"Id >= {parameter.FromId.Value}");
+		}
+		if (parameter.ToId.HasValue) {
+			clauses.Add($"Id <= {parameter.ToId.Value}");
+		}
+		if (!string.IsNullOrWhiteSpace(parameter.Name)) {
+			clauses.Add($"LoginId LIKE '%{EscapeSqlLiteral(parameter.Name)}%'");
+		}
+
+		return clauses.Count == 0 ? null : string.Join(" AND ", clauses);
 	}
 }

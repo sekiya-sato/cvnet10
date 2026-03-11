@@ -80,6 +80,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\00System\SysLoginHistoryView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\00System\LoginVIew.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
