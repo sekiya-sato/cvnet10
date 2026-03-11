@@ -92,11 +92,6 @@ public partial class MenuData : ObservableObject {
 				IsDialog = false,
 			},
 			new() {
-				Header="得意先マスタメンテ",
-				ViewType = typeof(Views._01Master.MasterTokuiMenteView),
-				IsDialog = false,
-			},
-			new() {
 				Header = "顧客マスタメンテ",
 					AddInfo = "準備中",
 					ViewType = typeof(Views._01Master.MasterEndCustomerMenteView),
@@ -107,7 +102,17 @@ public partial class MenuData : ObservableObject {
 					ViewType = typeof(Views._01Master.MasterShohinMenteView),
 					IsDialog = false,
 				},
-			}
+			new() {
+				Header="得意先マスタメンテ",
+				ViewType = typeof(Views._01Master.MasterTokuiMenteView),
+				IsDialog = false,
+			},
+			new() {
+				Header="仕入先マスタメンテ",
+				ViewType = typeof(Views._01Master.MasterShiireMenteView),
+				IsDialog = false,
+			},
+			},
 		},
         /* ================================ */
 		new() {
