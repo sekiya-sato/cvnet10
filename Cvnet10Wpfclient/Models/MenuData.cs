@@ -137,7 +137,7 @@ public partial class MenuData : ObservableObject {
 		])),
 		new("■ 売上", new([
 			new("出荷・売上入力", typeof(Views._06Uriage.ShukkaUriageInputView), false, addInfo:"準備中"), // ShukkaUriageInputView
-			new("店舗売上入力", typeof(Views._06Uriage.ShopUriageInputView), false, addInfo:"準備中"), // ShopUriageInputView
+			new("店舗売上入力", typeof(Views._06Uriage.ShopUriageInputView), false), // ShopUriageInputView
 			new("POS日別精算入力", typeof(Views._06Uriage.PosDailySeisanInputView), false, addInfo:"準備中"), // PosDailySeisanInputView
 			new("売上金種Viewer", typeof(Views._06Uriage.UriageCashTypeReportView), false, addInfo:"準備中"), // UriageCashTypeReportView
 			new("品番別売上チェックリスト", typeof(Views._06Uriage.HinbanUriageCheckListView), false, addInfo:"準備中"), // HinbanUriageCheckListView
@@ -284,7 +284,7 @@ public partial class MenuData : ObservableObject {
 			new("RFMクロス分析表", typeof(Views._32LoyalCustomer.RfmCrossAnalysisTableView), false, addInfo:"準備中"), // RfmCrossAnalysisTableView
 		])),
 		new("店舗", new([
-			new("店舗売上入力", typeof(Views._40Shop.ShopUriageInputView), false, addInfo:"準備中"), // ShopUriageInputView
+			new("店舗売上入力", typeof(Views._40Shop.ShopUriageInputView), false), // ShopUriageInputView
 			new("棚卸明細表(原価無)", typeof(Views._40Shop.StockTakeDetailReportCostlessView), false, addInfo:"準備中"), // StockTakeDetailReportCostlessView
 			new("汎用在庫表(原価無)", typeof(Views._40Shop.GeneralInventoryTableCostlessView), false, addInfo:"準備中"), // GeneralInventoryTableCostlessView
 			new("売上速報(原価無)", typeof(Views._40Shop.SalesQuickReportCostlessView), false, addInfo:"準備中"), // SalesQuickReportCostlessView
