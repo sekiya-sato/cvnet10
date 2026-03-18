@@ -2,107 +2,6 @@
 
 ---
 
-## [2026-03-18] Views/ViewModels の .gitkeep 削除
-### Agent
-- gpt-5.2-codex : OpenAI
-### Editor
-- OpenCode
-### 目的
-- ユーザーからの要望：各 folder 内の不要な `.gitkeep` を削除する
-### 実施内容
-- `Cvnet10Wpfclient/Views/02Yosan/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/03Hatchu/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/04Juchu/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/05Shiire/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/06Uriage/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/07Haibun/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/08Zaiko/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/20UriageAnalysis/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/21OroshiAnalysis/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/22CPA/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/30HHT/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/31Monthly/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/32LoyalCustomer/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/40Shop/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/Views/41Logistics/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/02Yosan/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/03Hatchu/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/04Juchu/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/05Shiire/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/06Uriage/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/07Haibun/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/08Zaiko/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/20UriageAnalysis/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/21OroshiAnalysis/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/22CPA/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/30HHT/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/31Monthly/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/32LoyalCustomer/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/40Shop/.gitkeep`: 不要ファイルの削除
-- `Cvnet10Wpfclient/ViewModels/41Logistics/.gitkeep`: 不要ファイルの削除
-### 技術決定 Why
-- 空フォルダ維持の目的がなくなったため、不要な管理ファイルを削除してツリーを簡素化した
-### 確認
-- 変更はファイル削除のみのため Build は未実施
-
----
-
-## [2026-03-18] 受注/売上入力向け指示書のMarkdown完成
-### Agent
-- gpt-5.2-codex : OpenAI
-### Editor
-- OpenCode
-### 目的
-- ユーザーからの要望：`Doc/instruction_20260317_17_HachuInputView.txt` を受注入力・売上入力のような複雑画面作成のための Markdown 仕様で完成させる
-### 実施内容
-- `Doc/instruction_20260317_17_HachuInputView.txt`: 画面構成、UI要素、操作、ViewModel設計、XAML方針、明細行VM、画面フロー、注意点を追加し複雑画面向け仕様として整備
-### 技術決定 Why
-- 受注/売上のようにヘッダー・明細・サマリが同居する画面は UI/VM 仕様を明確に分けて記述した方が再利用性と実装一貫性が高いため
-### 確認
-- ドキュメント更新のみのため Build は未実施
-
----
-
-## [2026-03-17] vmcreate指示に基づくView/ViewModel一括生成とメニュー接続
-### Agent
-- gpt-5.3-codex : OpenAI
-### Editor
-- OpenCode
-### 目的
-- ユーザーからの要望：`Doc/instruction_20260317_10_vmcreate.md` に従って View/XAML・code-behind・ViewModel を作成し、`MenuData.cs` を接続し、最後にドキュメント更新する
-### 実施内容
-- `Cvnet10Wpfclient/Views/`: 指示リスト（`00System`〜`41Logistics`）に対応する初期 `*.xaml` / `*.xaml.cs` を一括作成
-- `Cvnet10Wpfclient/ViewModels/`: 指示リストに対応する初期 `*ViewModel.cs`（`Helpers.BaseViewModel` 継承）を一括作成
-- `Cvnet10Wpfclient/Models/MenuData.cs`: `CreateDefault()` 内の対象 `typeof(object)` を生成した View 型へ置換し、各行末に `// [View名]` コメントを追加
-- `Doc/instruction_20260317_10_vmcreate.md`: 実体と齟齬が出ないよう `03Hatchu` 表記、`売上週報･月報`、`ポイントマスタ（ベース）（管理者用)` を追記・修正
-- `Cvnet10Wpfclient/Views/32LoyalCustomer/PointMasterBaseView.xaml`: 指示修正に伴い不要となった旧名称ファイルを削除
-- `Cvnet10Wpfclient/Views/32LoyalCustomer/PointMasterBaseView.xaml.cs`: 指示修正に伴い不要となった旧名称ファイルを削除
-- `Cvnet10Wpfclient/ViewModels/32LoyalCustomer/PointMasterBaseViewModel.cs`: 指示修正に伴い不要となった旧名称ファイルを削除
-### 技術決定 Why
-- 大量の雛形作成は手作業より生成スクリプトの方が命名・namespace・DataContext の表記揺れを防ぎ、差分品質を一定化できるため
-- 既存プロジェクト構成に合わせ、`03Hachu` は実フォルダ名の `03Hatchu` に統一して参照不整合を防止した
-### 確認
-- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` を実行し、Build OK（0 warning / 0 error）を確認
-
----
-
-## [2026-03-17] vmcreate手順書の作成対象リスト未完成部補完
-### Agent
-- gpt-5.3-codex : OpenAI
-### Editor
-- OpenCode
-### 目的
-- ユーザーからの要望：`Doc/instruction_20260317_10_vmcreate.md` の作成対象リスト未完成部分を `Cvnet10Wpfclient/Models/plan-name.txt` を元に第一候補で完成させる
-### 実施内容
-- `Doc/instruction_20260317_10_vmcreate.md`: `03Hachu` の不足3項目を追加し、`04Juchu` / `05Shiire` / `06Uriage` / `07Haibun` / `08Zaiko` を第一候補名で新規補完
-- `Doc/instruction_20260317_10_vmcreate.md`: 空フォルダ名・空項目（``）のプレースホルダをすべて解消
-### 技術決定 Why
-- 命名の揺れを避けるため、`plan-name.txt` の各メニューに対して先頭（第一候補）の View 名を採用して一覧を確定した
-### 確認
-- ドキュメント更新のみのため Build は未実施
-
----
-
 ## [2026-03-11] 商品メンテ画面 - 日付フィールドを DatePicker に変更
 
 ### Agent
@@ -186,6 +85,23 @@
 
 ---
 
+## [2026-03-17] vmcreate手順書の作成対象リスト未完成部補完
+### Agent
+- gpt-5.3-codex : OpenAI
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：`Doc/instruction_20260317_10_vmcreate.md` の作成対象リスト未完成部分を `Cvnet10Wpfclient/Models/plan-name.txt` を元に第一候補で完成させる
+### 実施内容
+- `Doc/instruction_20260317_10_vmcreate.md`: `03Hachu` の不足3項目を追加し、`04Juchu` / `05Shiire` / `06Uriage` / `07Haibun` / `08Zaiko` を第一候補名で新規補完
+- `Doc/instruction_20260317_10_vmcreate.md`: 空フォルダ名・空項目（``）のプレースホルダをすべて解消
+### 技術決定 Why
+- 命名の揺れを避けるため、`plan-name.txt` の各メニューに対して先頭（第一候補）の View 名を採用して一覧を確定した
+### 確認
+- ドキュメント更新のみのため Build は未実施
+
+---
+
 ## [2026-03-17] Views/ViewModels 業務カテゴリフォルダの追加と文書化
 ### Agent
 - gpt-5.3-codex : OpenAI
@@ -222,5 +138,107 @@
 - 40Tenpo - 店舗関連
 - 41Butsuryu - 物流関連
 ```
+
+---
+
+## [2026-03-17] vmcreate指示に基づくView/ViewModel一括生成とメニュー接続
+### Agent
+- gpt-5.3-codex : OpenAI
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：`Doc/instruction_20260317_10_vmcreate.md` に従って View/XAML・code-behind・ViewModel を作成し、`MenuData.cs` を接続し、最後にドキュメント更新する
+### 実施内容
+- `Cvnet10Wpfclient/Views/`: 指示リスト（`00System`〜`41Logistics`）に対応する初期 `*.xaml` / `*.xaml.cs` を一括作成
+- `Cvnet10Wpfclient/ViewModels/`: 指示リストに対応する初期 `*ViewModel.cs`（`Helpers.BaseViewModel` 継承）を一括作成
+- `Cvnet10Wpfclient/Models/MenuData.cs`: `CreateDefault()` 内の対象 `typeof(object)` を生成した View 型へ置換し、各行末に `// [View名]` コメントを追加
+- `Doc/instruction_20260317_10_vmcreate.md`: 実体と齟齬が出ないよう `03Hatchu` 表記、`売上週報･月報`、`ポイントマスタ（ベース）（管理者用)` を追記・修正
+- `Cvnet10Wpfclient/Views/32LoyalCustomer/PointMasterBaseView.xaml`: 指示修正に伴い不要となった旧名称ファイルを削除
+- `Cvnet10Wpfclient/Views/32LoyalCustomer/PointMasterBaseView.xaml.cs`: 指示修正に伴い不要となった旧名称ファイルを削除
+- `Cvnet10Wpfclient/ViewModels/32LoyalCustomer/PointMasterBaseViewModel.cs`: 指示修正に伴い不要となった旧名称ファイルを削除
+### 技術決定 Why
+- 大量の雛形作成は手作業より生成スクリプトの方が命名・namespace・DataContext の表記揺れを防ぎ、差分品質を一定化できるため
+- 既存プロジェクト構成に合わせ、`03Hachu` は実フォルダ名の `03Hatchu` に統一して参照不整合を防止した
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` を実行し、Build OK（0 warning / 0 error）を確認
+
+---
+
+## [2026-03-18] Views/ViewModels の .gitkeep 削除
+### Agent
+- gpt-5.2-codex : OpenAI
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：各 folder 内の不要な `.gitkeep` を削除する
+### 実施内容
+- `Cvnet10Wpfclient/Views/02Yosan/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/03Hatchu/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/04Juchu/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/05Shiire/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/06Uriage/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/07Haibun/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/08Zaiko/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/20UriageAnalysis/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/21OroshiAnalysis/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/22CPA/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/30HHT/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/31Monthly/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/32LoyalCustomer/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/40Shop/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/Views/41Logistics/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/02Yosan/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/03Hatchu/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/04Juchu/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/05Shiire/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/06Uriage/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/07Haibun/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/08Zaiko/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/20UriageAnalysis/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/21OroshiAnalysis/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/22CPA/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/30HHT/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/31Monthly/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/32LoyalCustomer/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/40Shop/.gitkeep`: 不要ファイルの削除
+- `Cvnet10Wpfclient/ViewModels/41Logistics/.gitkeep`: 不要ファイルの削除
+### 技術決定 Why
+- 空フォルダ維持の目的がなくなったため、不要な管理ファイルを削除してツリーを簡素化した
+### 確認
+- 変更はファイル削除のみのため Build は未実施
+
+
+## [2026-03-18] RangeInputParamView 範囲選択画面の追加
+### Agent
+- gpt-5.2-codex : OpenAI
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：`Doc/instruction_20260318_14_RangeInputParamView.txt` に従い、入力画面ヘッダ一覧用の範囲選択画面を作成する
+### 実施内容
+- `Cvnet10Wpfclient/Views/Sub/RangeInputParamView.xaml`: 伝票No/日付/仕入先CD/入庫先CD/商品CD/件数の範囲入力レイアウトを追加
+- `Cvnet10Wpfclient/Views/Sub/RangeInputParamView.xaml.cs`: `BaseWindow` 継承の最小 code-behind を追加
+- `Cvnet10Wpfclient/ViewModels/Sub/RangeInputParamViewModel.cs`: `SelectInputParameter` を保持し OK でダイアログ結果を返す VM を追加
+- `Cvnet10Wpfclient/ViewModels/Sub/SelectInputParameter.cs`: 入力条件パラメータクラスを追加
+### 技術決定 Why
+- 既存の範囲指定ダイアログ構成に合わせ、入力ヘッダ用の from/to 条件を明示したため
+### 確認
+- 追加実装のみのため Build は未実施
+
+---
+
+## [2026-03-18] 受注/売上入力向け指示書のMarkdown完成
+### Agent
+- gpt-5.2-codex : OpenAI
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：`Doc/instruction_20260317_17_HachuInputView.txt` を受注入力・売上入力のような複雑画面作成のための Markdown 仕様で完成させる
+### 実施内容
+- `Doc/instruction_20260317_17_HachuInputView.txt`: 画面構成、UI要素、操作、ViewModel設計、XAML方針、明細行VM、画面フロー、注意点を追加し複雑画面向け仕様として整備
+### 技術決定 Why
+- 受注/売上のようにヘッダー・明細・サマリが同居する画面は UI/VM 仕様を明確に分けて記述した方が再利用性と実装一貫性が高いため
+### 確認
+- ドキュメント更新のみのため Build は未実施
 
 ---
