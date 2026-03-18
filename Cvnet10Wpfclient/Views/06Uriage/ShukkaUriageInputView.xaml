@@ -24,7 +24,8 @@
 			</Style>
 		</Grid.Resources>
 
-		<TabControl Style="{StaticResource MaterialDesignTabControl}">
+		<TabControl Style="{StaticResource MaterialDesignTabControl}"
+			SelectedIndex="{Binding SelectedTabIndex}">
 			<TabItem Header="ヘッダ一覧画面">
 				<Grid Margin="10">
 					<Grid.RowDefinitions>
@@ -46,6 +47,11 @@
 								AutomationProperties.Name="一覧"
 								Command="{Binding ShowHeaderListCommand}"
 								Content="一覧" />
+							<Button Width="90" Height="30"
+								Margin="8,0,0,0"
+								AutomationProperties.Name="明細"
+								Command="{Binding GoToDetailTabCommand}"
+								Content="明細" />
 						</StackPanel>
 						<TextBlock Margin="12,2,0,0" VerticalAlignment="Center"
 							Foreground="{DynamicResource MaterialDesignBody}"
@@ -60,7 +66,12 @@
 						SelectedItem="{Binding Current}"
 						Style="{StaticResource MaterialDesignDataGrid}"
 						VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
-						AutomationProperties.Name="売上一覧">
+						AutomationProperties.Name="売上一一覧">
+						<behaviors:Interaction.Triggers>
+							<behaviors:EventTrigger EventName="MouseDoubleClick">
+								<behaviors:InvokeCommandAction Command="{Binding GoToDetailTabCommand}" />
+							</behaviors:EventTrigger>
+						</behaviors:Interaction.Triggers>
 						<DataGrid.Columns>
 							<DataGridTextColumn Width="90"
 								Binding="{Binding Id}"
