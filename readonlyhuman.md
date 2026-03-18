@@ -252,7 +252,8 @@ server {
     - SelectWinView, SelectCodeViewのコードのクリーンアップ、軽微なバグ修正 同じGPT-5.4 でVSのGitHubCopilot と OpenCodeの両方を併用、OpenCodeのほうが早く理解度が高い。
     - OpenCode https://github.com/anomalyco/opencode/releases
     - MenuDataの整理
-
+    - Copilotでサブエージェントでtaskを回したらrate_limitに引っかかった。2hと書いてあったが、2hたっても解消せず。
+    
 
 
 

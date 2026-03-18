@@ -1,0 +1,170 @@
+﻿<helpers:BaseWindow x:Class="Cvnet10Wpfclient.Views.Sub.RangeInputParamView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:helpers="clr-namespace:Cvnet10Wpfclient.Helpers" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:Cvnet10Wpfclient.ViewModels.Sub"
+	Title="{Binding Parameter.DisplayName, TargetNullValue=入力, StringFormat={}{0}一覧条件}"
+	Width="640" Height="480"
+	Background="{DynamicResource AppCommonBackgroundBrush}"
+	FontSize="18" WindowStartupLocation="CenterOwner"
+	mc:Ignorable="d">
+	<helpers:BaseWindow.DataContext>
+		<vm:RangeInputParamViewModel />
+	</helpers:BaseWindow.DataContext>
+
+	<Grid Margin="16">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0"
+			Margin="0,0,0,12"
+			FontSize="20" FontWeight="Bold"
+			Foreground="{DynamicResource MaterialDesignBody}"
+			Text="{Binding Parameter.DisplayName, TargetNullValue=入力, StringFormat={}{0}一覧の対象範囲を指定してください}" />
+		<Border Grid.Row="1"
+			Padding="16"
+			Background="{DynamicResource MaterialDesignPaper}"
+			CornerRadius="6">
+			<Grid Margin="8">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="170" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="10" />
+					<ColumnDefinition Width="40" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Grid.Row="0" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="伝票No" /></TextBlock>
+				<TextBox Grid.Row="0" Grid.Column="1"
+					Height="36"
+					Margin="4,4,4,4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="0"
+					Text="{Binding Parameter.FromId, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="0" Grid.Column="3"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="-" /></TextBlock>
+				<TextBox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="1"
+					Text="{Binding Parameter.ToId, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="1" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="日付" /></TextBlock>
+				<DatePicker Grid.Row="1" Grid.Column="1"
+					Height="36"
+					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					FontSize="16" IsTodayHighlighted="False"
+					SelectedDate="{Binding Parameter.FromDate, Converter={StaticResource DateYmd8Converter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+					TabIndex="2" />
+
+				<TextBlock Grid.Row="1" Grid.Column="3"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="-" /></TextBlock>
+				<DatePicker Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4" VerticalContentAlignment="Center"
+					FontSize="16" IsTodayHighlighted="False"
+					SelectedDate="{Binding Parameter.ToDate, Converter={StaticResource DateYmd8Converter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+					TabIndex="3" />
+
+				<TextBlock Grid.Row="2" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="仕入先CD" /></TextBlock>
+				<TextBox Grid.Row="2" Grid.Column="1"
+					Height="36"
+					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="4"
+					Text="{Binding Parameter.FromToriCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="2" Grid.Column="3"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="-" /></TextBlock>
+				<TextBox Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="5"
+					Text="{Binding Parameter.ToToriCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="3" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="入庫先CD" /></TextBlock>
+				<TextBox Grid.Row="3" Grid.Column="1"
+					Height="36"
+					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="6"
+					Text="{Binding Parameter.FromSokoCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="3" Grid.Column="3"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="-" /></TextBlock>
+				<TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="7"
+					Text="{Binding Parameter.ToSokoCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="4" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="商品CD" /></TextBlock>
+				<TextBox Grid.Row="4" Grid.Column="1"
+					Height="36"
+					Margin="4,4,4,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="8"
+					Text="{Binding Parameter.FromShohinCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="4" Grid.Column="3"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="-" /></TextBlock>
+				<TextBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,0,4" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="9"
+					Text="{Binding Parameter.ToShohinCd, UpdateSourceTrigger=PropertyChanged}" />
+
+				<TextBlock Grid.Row="5" Grid.Column="0"
+					VerticalAlignment="Center"
+					FontWeight="SemiBold"><Run Language="ja-jp" Text="件数" /></TextBlock>
+				<TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+					Height="36"
+					Margin="4,4,4,4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+					FontSize="16" TabIndex="10"
+					Text="{Binding Parameter.MaxCount, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3"
+					VerticalAlignment="Center"
+					Foreground="Gray" Text="(空白:全件取得)" />
+
+			</Grid>
+		</Border>
+
+		<StackPanel Grid.Row="2"
+			Margin="0,16,0,0" HorizontalAlignment="Right"
+			Orientation="Horizontal">
+			<Button Width="120" Height="38"
+				Margin="0,0,8,0"
+				Background="DarkSlateBlue"
+				Command="{Binding OkCommand}"
+				Content="選択確定" FontSize="16" Foreground="White" IsDefault="True" TabIndex="11" />
+			<Button Width="140" Height="38"
+				Background="Gray"
+				Command="{Binding ExitCommand}"
+				Content="戻る" FontSize="16" Foreground="White" IsCancel="True" TabIndex="12" />
+		</StackPanel>
+	</Grid>
+</helpers:BaseWindow>

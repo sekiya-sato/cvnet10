@@ -81,9 +81,10 @@
 - Summarize impact and verification results clearly.
 
 ## After-Completion
-- 作業完了時には、必ず以下のフォーマットで doc/aicording_log.md の最後に履歴を記録すること：
+- 作業完了時には、必ず以下のフォーマットで doc/aicording_log.md の**最後**に履歴を記録する
+- 履歴を追加すると400行をこえる場合、既存の履歴ファイルをaicoding_log_[001-999].mdとして連番でリネーム保存し、新規に同様の書式で aicording_log.md を作成し履歴を記録する。
 '''
-## [YYYY-MM-DD] 作業タイトル
+## [YYYY-MM-DD] hh:mm 作業タイトル
 ### Agent
 - [使用した AI Model 名 : AI Provider 名]
 ### Editor
