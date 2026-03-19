@@ -11,11 +11,8 @@ namespace Cvnet10Wpfclient.ViewModels._06Uriage;
 
 public partial class ShopUriageInputViewModel : Helpers.BaseMenteViewModel<Tran01Tenuri> {
 	// タブ選択インデックス
-	int _selectedTabIndex;
-	public int SelectedTabIndex {
-		get => _selectedTabIndex;
-		set => SetProperty(ref _selectedTabIndex, value);
-	}
+	[ObservableProperty]
+	public int selectedTabIndex;
 
 	// 売上日 (DenDay の DateTime ラッパー)
 	DateTime _uriageDate = DateTime.Today;
