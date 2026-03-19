@@ -341,3 +341,21 @@
 - 作成ファイル: AGENTS.md（改訂）、doc/opencode_usage_guide.md、doc/ai_tool_selection_guide.md、doc/aicording_log.md（ヘッダ追加）、doc/opencode_prompts.md
 
 ---
+
+## [2026-03-19] 11:57 受注入力画面の明細グリッド再設計
+### Agent
+- [claude-sonnet-4.5 : GitHub-Copilot]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：`refer/cvnetclient/CvnetClient/Views/v991Inp/SubDlgInp12View.xaml` を参照し、`JuchuInputViewModel` に対応する `Views/04Juchu/JuchuInputView.xaml` の画面を構築する。現行の画面は `<Grid></Grid>` のみに一旦クリアし、再設計する。ViewModelに適切にバインド。ヘッダは `Tran12Jyuchu` の各項目、明細は `Tran12Jyuchu.Jmeisai` の `List<Tran99Meisai>?` を使用。変更するのは `JuchuInputView.xaml` のみに限定。
+### 実施内容
+- `Cvnet10Wpfclient/Views/04Juchu/JuchuInputView.xaml`: 明細DataGridを参照ファイルのレイアウトに基づき再設計。商品CD/色/サイズ/数量/単価/上代/納品日・備考を DataGridTemplateColumn で実装。Tran99Meisai の各プロパティ（Code_Shohin/Mei_Shohin/Code_Col/Mei_Col/Code_Siz/Mei_Siz/Su/Tanka/Kingaku/Jodai/JodaiAmount/NouhinDay/Biko）を適切にバインド。各列にTextChangedイベントでViewModelコマンド（LookupShohinByCodeCommand/GridSizeChangedCommand/QuantityChangedCommand/UnitPriceChangedCommand/JodaiChangedCommand）を接続。
+### 技術決定 Why
+- 参照ファイル（SubDlgInp12View.xaml）の2行構成DataGridTemplateColumnパターンを踏襲することで、商品CD/商品名、色/色名、サイズ/サイズ名を1列にまとめ、視認性と入力効率を向上
+- Tran99Meisaiの各プロパティは既にObservableObjectを継承しているため、Mode=TwoWay/UpdateSourceTrigger=PropertyChangedで自動的に双方向バインディングが機能する
+- ViewModelの既存コマンド構造に合わせ、参照ファイルのコマンド名をCurrentEditのJmeisaiリストにバインドする形で統一した
+### 確認
+- XAMLファイル更新のみのため、Buildは未実施（環境起因のNuGetパス問題があるため）
+
+---
