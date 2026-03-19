@@ -70,6 +70,7 @@ public partial class ShopUriageInputViewModel : Helpers.BaseMenteViewModel<Tran0
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		selectInputParam = vm.Parameter;
 		await DoList(ct);
+		SelectedTabIndex = 0;
 	}
 
 	// 明細タブへ移動
