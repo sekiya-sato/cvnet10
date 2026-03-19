@@ -170,6 +170,7 @@ public partial class ShukkaUriageInputViewModel : Helpers.BaseMenteViewModel<Tra
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		selectInputParam = vm.Parameter;
 		await DoList(CancellationToken.None);
+		SelectedTabIndex = 0;
 	}
 
 	[RelayCommand]
