@@ -15,7 +15,9 @@ namespace Cvnet10Wpfclient.ViewModels._04Juchu;
 
 public partial class JuchuInputViewModel : Helpers.BaseMenteViewModel<Tran12Jyuchu> {
 
-	SelectInputParameter selectInputParam = new();
+	[ObservableProperty]
+	SelectInputParameter selectInitParam = new();
+
 	bool suppressDetailRecalc;
 
 	public IReadOnlyList<EnumUri00> KubunItems { get; } = Enum.GetValues<EnumUri00>();
@@ -62,22 +64,22 @@ public partial class JuchuInputViewModel : Helpers.BaseMenteViewModel<Tran12Jyuc
 			itemType: typeof(Tran12Jyuchu),
 			where: BuildListWhere(),
 			order: "DenDay desc, Id desc",
-			maxCount: selectInputParam.MaxCount
+			maxCount: SelectInitParam.MaxCount
 		);
 
 	string? BuildListWhere() {
 		List<string> clauses = [];
-		if (selectInputParam.FromId.HasValue) {
-			clauses.Add($"Id >= {selectInputParam.FromId.Value}");
+		if (SelectInitParam.FromId.HasValue) {
+			clauses.Add($"Id >= {SelectInitParam.FromId.Value}");
 		}
-		if (selectInputParam.ToId.HasValue) {
-			clauses.Add($"Id <= {selectInputParam.ToId.Value}");
+		if (SelectInitParam.ToId.HasValue) {
+			clauses.Add($"Id <= {SelectInitParam.ToId.Value}");
 		}
-		if (!string.IsNullOrWhiteSpace(selectInputParam.FromDate)) {
-			clauses.Add($"DenDay >= '{EscapeSqlLiteral(selectInputParam.FromDate)}'");
+		if (!string.IsNullOrWhiteSpace(SelectInitParam.FromDate)) {
+			clauses.Add($"DenDay >= '{EscapeSqlLiteral(SelectInitParam.FromDate)}'");
 		}
-		if (!string.IsNullOrWhiteSpace(selectInputParam.ToDate)) {
-			clauses.Add($"DenDay <= '{EscapeSqlLiteral(selectInputParam.ToDate)}'");
+		if (!string.IsNullOrWhiteSpace(SelectInitParam.ToDate)) {
+			clauses.Add($"DenDay <= '{EscapeSqlLiteral(SelectInitParam.ToDate)}'");
 		}
 
 		return clauses.Count == 0 ? null : string.Join(" AND ", clauses);
@@ -167,9 +169,9 @@ public partial class JuchuInputViewModel : Helpers.BaseMenteViewModel<Tran12Jyuc
 		var selWin = new Views.Sub.RangeInputParamView();
 		var vm = selWin.DataContext as RangeInputParamViewModel;
 		if (vm == null) return;
-		vm.Initialize(selectInputParam);
+		vm.Initialize(SelectInitParam);
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		selectInputParam = vm.Parameter;
+		SelectInitParam = vm.Parameter;
 		await DoList(CancellationToken.None);
 	}
 

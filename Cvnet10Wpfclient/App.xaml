@@ -8,6 +8,7 @@
 			<helpers:DateYmd8Converter x:Key="DateYmd8Converter" />
 			<helpers:DateTimeYmdHmsConverter x:Key="DateTimeYmdHmsConverter" />
 			<helpers:EnumShimeDisplayConverter x:Key="EnumShimeDisplayConverter" />
+			<helpers:IntToBoolConverter x:Key="IntToBoolConverter" />
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/Resources/UIColors.xaml" />
 				<ResourceDictionary Source="/Resources/UICommon.xaml" />
