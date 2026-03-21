@@ -54,7 +54,7 @@ MasterShohinMenteView.xaml を参考に、
 ### 1.2 複雑な入力画面（ヘッダー・明細構成）
 
 ```
-doc/instruction_20260318_16_InputView.txt の指示に従って、
+Doc/instruction_20260318_16_InputView.txt の指示に従って、
 [フォルダ名]フォルダに [画面名]InputView を作成してください。
 
 以下の構成にしてください：
@@ -106,7 +106,7 @@ MenuData.cs に3つのメニューエントリを追加してください。
 - 保存処理
 
 重複が見つかったら、[基底クラス名] に共通メソッドとして移動してください。
-影響範囲を doc/refactoring_[YYYYMMDD].md に記録してください。
+影響範囲を Doc/refactoring_[YYYYMMDD].md に記録してください。
 
 作業完了後、Buildして結果を確認してください。
 ```
@@ -122,7 +122,7 @@ ViewModels/01Master/ 配下のすべての ViewModel で重複しているコー
 - 保存処理
 
 重複が見つかったら、BaseMenteViewModel に共通メソッドとして移動してください。
-影響範囲を doc/refactoring_20260319.md に記録してください。
+影響範囲を Doc/refactoring_20260319.md に記録してください。
 
 作業完了後、Buildして結果を確認してください。
 ```
@@ -169,7 +169,7 @@ CommunityToolkit.Mvvm の [ObservableProperty] 属性を使用する形式に変
 
 ```
 [プロジェクト名] プロジェクトのアーキテクチャ設計書を
-doc/architecture_[プロジェクト名].md として作成してください。
+Doc/architecture_[プロジェクト名].md として作成してください。
 
 以下の内容を含めてください：
 - プロジェクトの責務
@@ -187,7 +187,7 @@ doc/architecture_[プロジェクト名].md として作成してください。
 
 ```
 [サービス名] の gRPC API 仕様書を
-doc/api_[サービス名].md として作成してください。
+Doc/api_[サービス名].md として作成してください。
 
 以下の形式で記載してください：
 - サービス概要
@@ -208,7 +208,7 @@ doc/api_[サービス名].md として作成してください。
 
 ```
 以下のタスクを実行する手順書を
-doc/procedure_[タスク名].md として作成してください：
+Doc/procedure_[タスク名].md として作成してください：
 
 タスク：[内容]
 
@@ -256,7 +256,7 @@ doc/procedure_[タスク名].md として作成してください：
 - ベストプラクティスの適用
 
 問題点を優先度順にリストアップし、
-改善提案を doc/review_[YYYYMMDD].md に記録してください。
+改善提案を Doc/review_[YYYYMMDD].md に記録してください。
 ```
 
 ---
@@ -477,7 +477,7 @@ Cvnet10Server プロジェクトに、
 ```
 [タスク内容]
 
-影響範囲を doc/[ドキュメント名].md に記録してください。
+影響範囲を Doc/[ドキュメント名].md に記録してください。
 
 作業完了後、Buildして結果を確認してください。
 ```
@@ -543,8 +543,8 @@ Cvnet10Server プロジェクトに、
 4. Read-Onlyプロジェクトの編集時は明示的に許可を記載
 
 **関連ドキュメント：**
-- OpenCode利用ガイド: `doc/opencode_usage_guide.md`
-- AI使い分けガイド: `doc/ai_tool_selection_guide.md`
+- OpenCode利用ガイド: `Doc/opencode_usage_guide.md`
+- AI使い分けガイド: `Doc/ai_tool_selection_guide.md`
 - OpenCode設定: `AGENTS.md`
 
 ---

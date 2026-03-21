@@ -29,7 +29,7 @@ oc
 
 **プロンプト例：**
 ```
-doc/instruction_20260317_10_vmcreate.md の指示に従って、
+Doc/instruction_20260317_10_vmcreate.md の指示に従って、
 02Yosan フォルダに「予算入力View」を作成してください。
 MasterShohinMenteView.xaml を参考にしてください。
 ```
@@ -41,7 +41,7 @@ MasterShohinMenteView.xaml を参考にしてください。
 - `02Yosan/YosanInputViewModel.cs` を作成
 - `MenuData.cs` に新しいメニューエントリを追加
 - Build確認
-- `doc/aicording_log.md` に作業履歴を記録
+- `Doc/aicording_log.md` に作業履歴を記録
 
 ---
 
@@ -51,7 +51,7 @@ MasterShohinMenteView.xaml を参考にしてください。
 ```
 Cvnet10Wpfclient/ViewModels/01Master/ 配下の全ViewModelで、
 重複している初期化ロジックを BaseMenteViewModel に移動してください。
-影響範囲をdoc/に記録してください。
+影響範囲をDoc/に記録してください。
 ```
 
 **OpenCodeの強み：**
@@ -67,7 +67,7 @@ Cvnet10Wpfclient/ViewModels/01Master/ 配下の全ViewModelで、
 **プロンプト例：**
 ```
 Cvnet10DomainLogic プロジェクトの主要クラスについて、
-アーキテクチャ設計書を doc/ に作成してください。
+アーキテクチャ設計書を Doc/ に作成してください。
 クラス図とシーケンス図をMermaid形式で含めてください。
 ```
 
@@ -190,13 +190,13 @@ CodeShare プロジェクトに新しいメソッドを追加して  # Read-Only
 | ドキュメント作成 | OpenCode |
 | XAML バインディング補完 | GitHub Copilot |
 
-詳細は `doc/ai_tool_selection_guide.md` を参照してください。
+詳細は `Doc/ai_tool_selection_guide.md` を参照してください。
 
 ---
 
 ### Q2: OpenCodeが作業履歴を記録しない場合は？
 
-**A:** OpenCodeは通常、作業完了時に自動的に `doc/aicording_log.md` へ記録します。
+**A:** OpenCodeは通常、作業完了時に自動的に `Doc/aicording_log.md` へ記録します。
 記録されない場合は、以下を確認してください：
 
 - `AGENTS.md` の "After-Completion" セクションが正しく記載されているか
@@ -333,9 +333,9 @@ dotnet format "Cvnet10.slnx"
 
 - **OpenCode公式ドキュメント:** https://opencode.ai/docs
 - **GitHub Copilot設定:** `.github/copilot-instructions.md`
-- **AI使い分けガイド:** `doc/ai_tool_selection_guide.md`
-- **プロンプトライブラリ:** `doc/opencode_prompts.md`
-- **作業履歴:** `doc/aicording_log.md`
+- **AI使い分けガイド:** `Doc/ai_tool_selection_guide.md`
+- **プロンプトライブラリ:** `Doc/opencode_prompts.md`
+- **作業履歴:** `Doc/aicording_log.md`
 
 ---
 
