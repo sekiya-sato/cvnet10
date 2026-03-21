@@ -398,3 +398,24 @@
 - スキル定義ファイル更新のみのため、Build は未実施
 
 ---
+
+## [2026-03-22] 15:30 テストプロジェクトを Microsoft.Testing.Platform へ移行
+### Agent
+- [big-pickle : OpenCode]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：テストプロジェクト（TestLogin, Tests.Cvnet10Server）を Microsoft.Testing.Platform に移行する
+### 実施内容
+- `Directory.Packages.props`: Microsoft.NET.Test.Sdk を 18.3.0、MSTest を 4.1.0 に更新。Microsoft.Extensions.Configuration 系パッケージを追加
+- `TestLogin/TestLogin.csproj`: `EnableMSTestRunner` を削除し、OutputType=Exe を維持（Program.cs が必要）
+- `Tests.Cvnet10Server/Tests.Cvnet10Server.csproj`: `ManagePackageVersionsCentrally=false` を削除し、Central Package Management へ完全移行
+### 技術決定 Why
+- Microsoft.Testing.Platform は MSTest 4.1.0 の一部として提供されるため、追加パッケージ不要
+- Central Package Management への完全移行で버전 일관성 보장
+- TestLogin は Program.cs により Exe として実行されるため EnableMSTestRunner 不要
+### 確認
+- Build OK（TestLogin, Tests.Cvnet10Server 双方とも 0 warning / 0 error）
+- Remote push: github.com:sekiya-sato/cvnet10.git (master)
+
+---
