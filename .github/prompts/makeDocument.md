@@ -8,9 +8,9 @@ argument-hint: Doc/aicording_log.md に作業ログを記録
 
 ---
 
-作業完了時には、必ず以下のフォーマットで doc/aicording_log.md の最後に履歴を記録すること：
+作業完了時には、必ず以下のフォーマットで Doc/aicording_log.md の最後に履歴を記録すること：
 '''
-## [YYYY-MM-DD] 作業タイトル
+## [YYYY-MM-DD hh:mm] 作業タイトル
 ### Agent
 - [使用した AI Model 名 : AI Provider 名]
 ### Editor

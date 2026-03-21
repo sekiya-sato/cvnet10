@@ -1,7 +1,7 @@
 # AGENTS.md - OpenCode AI Agent Instructions
 
 ## Purpose
-- **This file is specifically designed for OpenCode AI agents** working in `/mnt/gitroot/new2022/cvnet10`.
+- **This file is specifically designed for OpenCode AI agents** .
 - For GitHub Copilot, see `.github/copilot-instructions.md` instead.
 - Prefer small, reviewable changes that match existing C# 14 / .NET 10 conventions.
 - The main stack is gRPC server + WPF client + shared/domain/data projects.
@@ -9,7 +9,7 @@
 ## AI Tool Separation Policy
 - **OpenCode**: Use for multi-file features, large-scale refactoring, cross-project changes, documentation, troubleshooting
 - **GitHub Copilot**: Use for inline completion, quick fixes, small edits within Visual Studio 2026
-- Both tools share the same logging format in `doc/aicording_log.md`
+- Both tools share the same logging format in `Doc/aicording_log.md`
 
 ## Repository Snapshot
 - Solution file: `Cvnet10.slnx`.
@@ -100,11 +100,11 @@
 - Run targeted tests when possible.
 - If you changed WPF resources, verify `App.xaml` references still resolve.
 - **TodoWrite tool で全タスクが completed になっているか確認**
-- **大規模変更の場合、影響範囲を doc/ に記録したか確認**
+- **大規模変更の場合、影響範囲を Doc/ に記録したか確認**
 - Summarize impact and verification results clearly.
 
 ## After-Completion
-- 作業完了時には、必ず以下のフォーマットで doc/aicording_log.md の**最後**に履歴を記録する
+- 作業完了時には、必ず以下のフォーマットで Doc/aicording_log.md の**最後**に履歴を記録する
 - 履歴を追加すると400行をこえる場合、既存の履歴ファイルをaicoding_log_[001-999].mdとして連番でリネーム保存し、新規に同様の書式で aicording_log.md を作成し履歴を記録する。
 '''
 ## [YYYY-MM-DD] hh:mm 作業タイトル
