@@ -171,7 +171,7 @@
 ### 実施内容
 - `Cvnet10Wpfclient/Views/`: `02Yosan` から `41Butsuryu` までの 15 フォルダを新規追加し、各フォルダに `.gitkeep` を配置
 - `Cvnet10Wpfclient/ViewModels/`: `Views` 側と同名の 15 フォルダを新規追加し、各フォルダに `.gitkeep` を配置
-- `doc/Cvnet10Wpfclient_View_ViewModel_FolderPlan.md`: 命名ルール、ローマ字統一方針、追加フォルダ一覧を新規作成
+- `Doc/Cvnet10Wpfclient_View_ViewModel_FolderPlan.md`: 命名ルール、ローマ字統一方針、追加フォルダ一覧を新規作成
 ### 技術決定 Why
 - `Views` と `ViewModels` を同名フォルダで対にすることで、画面と ViewModel の対応関係を探索しやすくし、運用時の迷いを減らすため
 - 空フォルダは Git 管理対象外のため、初期構成を確実に共有できるよう `.gitkeep` を配置した
@@ -327,10 +327,10 @@
 - ユーザーからの要望：OpenCodeの導入計画を策定し、標準構成で実施する。GitHub Copilotと併用する形で、使い分けルールとドキュメントを整備する。
 ### 実施内容
 - `AGENTS.md`: OpenCode専用に改訂。Purpose/AI Tool Separation Policy/High Priority OpenCode Rules/Read-Only強化/Pre-Completion Checklistを更新
-- `doc/opencode_usage_guide.md`: 新規作成。OpenCodeの起動方法、基本的な使い方、プロンプト例、FAQ、トラブルシューティングを記載
-- `doc/ai_tool_selection_guide.md`: 新規作成。GitHub CopilotとOpenCodeの使い分け基準、シーン別推奨ツール一覧、判断フローチャート、実践シナリオを記載
-- `doc/aicording_log.md`: ヘッダにフォーマット説明とアーカイブルールを追加。使用するAIツール（GitHub Copilot/OpenCode）の記載方法を明確化
-- `doc/opencode_prompts.md`: 新規作成。頻出タスク向けプロンプト集（新規画面作成/リファクタリング/ドキュメント/コードレビュー/トラブルシューティング/テスト/DB/gRPC）を整備
+- `Doc/opencode_usage_guide.md`: 新規作成。OpenCodeの起動方法、基本的な使い方、プロンプト例、FAQ、トラブルシューティングを記載
+- `Doc/ai_tool_selection_guide.md`: 新規作成。GitHub CopilotとOpenCodeの使い分け基準、シーン別推奨ツール一覧、判断フローチャート、実践シナリオを記載
+- `Doc/aicording_log.md`: ヘッダにフォーマット説明とアーカイブルールを追加。使用するAIツール（GitHub Copilot/OpenCode）の記載方法を明確化
+- `Doc/opencode_prompts.md`: 新規作成。頻出タスク向けプロンプト集（新規画面作成/リファクタリング/ドキュメント/コードレビュー/トラブルシューティング/テスト/DB/gRPC）を整備
 ### 技術決定 Why
 - AGENTS.mdをOpenCode専用とすることで、GitHub Copilotの`.github/copilot-instructions.md`と明確に分離し、各ツールに最適化されたルールセットを提供
 - 使い分けガイドを作成することで、開発者が状況に応じて適切なツールを選択でき、開発効率を最大化できる

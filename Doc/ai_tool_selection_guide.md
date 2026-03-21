@@ -20,7 +20,7 @@ Cvnet10プロジェクトでは、**GitHub Copilot** と **OpenCode** の2つの
 - **設定ファイル:** `AGENTS.md`
 
 ### 共通ルール
-- どちらのツールも作業履歴は `doc/aicording_log.md` に記録
+- どちらのツールも作業履歴は `Doc/aicording_log.md` に記録
 - Layer構造とRead-Onlyプロジェクトのルールを厳守
 - 日本語でのコメント・ドキュメント記述
 
@@ -187,7 +187,7 @@ Cvnet10プロジェクトでは、**GitHub Copilot** と **OpenCode** の2つの
 2. **OpenCodeでリファクタリング（30分）**
    ```
    検出した重複ロジックを BaseMenteViewModel に移動してください。
-   影響範囲を doc/ に記録してください。
+   影響範囲を Doc/ に記録してください。
    ```
    - 複数ファイルを同時編集
    - Build確認まで自動実行
@@ -262,7 +262,7 @@ CS1061: 'MasterTokuiMenteViewModel' does not contain a definition for 'InitComma
 迷ったら、まずCopilotで試して、複雑なら OpenCode へ切り替える。
 
 ### 2. 履歴の一元化
-両ツールとも `doc/aicording_log.md` に記録。
+両ツールとも `Doc/aicording_log.md` に記録。
 どちらのツールで何を実施したか、後から追跡可能にする。
 
 ### 3. 定期的な見直し
@@ -315,7 +315,7 @@ CS1061: 'MasterTokuiMenteViewModel' does not contain a definition for 'InitComma
    - Copilotで実装 → OpenCodeでレビュー・リファクタリング
 
 4. **作業履歴の一元管理**
-   - どちらのツールを使っても `doc/aicording_log.md` に記録
+   - どちらのツールを使っても `Doc/aicording_log.md` に記録
    - プロジェクト全体の変更履歴を把握
 
 ### 使い分けの成功指標（KPI）
@@ -329,11 +329,11 @@ CS1061: 'MasterTokuiMenteViewModel' does not contain a definition for 'InitComma
 
 ## 関連ドキュメント
 
-- **OpenCode利用ガイド:** `doc/opencode_usage_guide.md`
-- **OpenCodeプロンプト集:** `doc/opencode_prompts.md`
+- **OpenCode利用ガイド:** `Doc/opencode_usage_guide.md`
+- **OpenCodeプロンプト集:** `Doc/opencode_prompts.md`
 - **OpenCode設定:** `AGENTS.md`
 - **GitHub Copilot設定:** `.github/copilot-instructions.md`
-- **作業履歴:** `doc/aicording_log.md`
+- **作業履歴:** `Doc/aicording_log.md`
 
 ---
 
