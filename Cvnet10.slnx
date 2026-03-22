@@ -1,7 +1,7 @@
 <Solution>
-  <Folder Name="/tests/">
-    <Project Path="tests/TestCvnet10Server/TestCvnet10Server.csproj" />
-    <Project Path="tests/TestLogin/TestLogin.csproj" />
+  <Folder Name="/Tests/">
+    <Project Path="Tests/TestCvnet10Server/TestCvnet10Server.csproj" />
+    <Project Path="Tests/TestLogin/TestLogin.csproj" />
   </Folder>
   <Folder Name="/ソリューション項目/">
     <File Path="AGENTS.md" />

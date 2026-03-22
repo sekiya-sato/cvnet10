@@ -163,7 +163,6 @@ $RECYCLE.BIN/
 # Additional Folder
 # =========================
 wrk/
-tests/
 refer/
 *.pdf
 appsettings.DevU*.json
