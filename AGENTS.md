@@ -21,7 +21,7 @@
 
 ## High Priority OpenCode Rules
 - Write plans, explanations, and code comments in **Japanese**
-- Follow the workflow: **Analyze → Plan (TodoWrite) → Execute → Verify → Log**
+- **IMPORTANT!** Follow the workflow: **Analyze → Plan (TodoWrite) → Execute → Verify → Write-Log → Git-Commit** 
 - Use .NET 10 and C# 14 features where they improve clarity
 - Mark todos as `in_progress` when starting work, `completed` immediately after finishing
 - Only have ONE task `in_progress` at a time
@@ -88,8 +88,8 @@
 - **大規模変更の場合、影響範囲を Doc/ に記録したか確認**
 - Summarize impact and verification results clearly.
 
-## After-Completion
-- 作業完了時には、必ず以下のフォーマットで Doc/aicording_log.md の**最後**に履歴を記録する (git関連の操作は除く)
+## Write-Log
+- 作業完了時には、必ず以下のフォーマットで Doc/aicording_log.md の**最後**に履歴を記録する
 - 履歴を追加すると400行をこえる場合、既存の履歴ファイルをaicoding_log_[001-999].mdとして連番でリネーム保存し、新規に同様の書式で aicording_log.md を作成し履歴を記録する。
 '''
 ## [YYYY-MM-DD] hh:mm 作業タイトル
@@ -107,6 +107,20 @@
 - [Buildした結果を確認。クロスプラットフォームの場合はBuild Error がでる可能性があるので省略可]
 
 ---
+'''
+
+## Git-Commit
+- コミット時には以下の内容を記述
+'''
+[作業内容]
+[使用した AI Model 名 : AI Provider 名 : エージェント名]
+作業時間 [開始時間] - [終了時間] : [作業時間]
+'''
+例)
+'''
+SelectKubunView.xamlのMaterialDesignスタイルへの変更
+GPT-5.4-mini : OpenAI : Build
+16:00 - 17:30 : 1時間30分
 '''
 
  
