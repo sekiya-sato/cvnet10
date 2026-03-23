@@ -16,6 +16,22 @@
 
 ---
 
+## [2026-03-23] 15:17 社員マスタ画面のデザイン統一
+### Agent
+- [gpt-5.4-mini : OpenAI]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：`MasterShainMenteView.xaml` を商品マスタ風に統一し、履歴記録後に commit と push まで実行する
+### 実施内容
+- `Cvnet10Wpfclient/Views/01Master/MasterShainMenteView.xaml`: `MasterShohinMenteView.xaml` を参考に ColorZone ヘッダー、Card レイアウト、テーマベース DataGrid、Outlined フォームへ刷新
+### 技術決定 Why
+- 社員マスタを商品マスタと同じレイアウト構成に揃え、操作系の位置と編集UIを統一することで、マスタ群全体の学習コストを下げた
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功
+
+---
+
 ## [2026-03-23] 14:43 名称マスタ画面のデザイン統一
 ### Agent
 - [gpt-5.4-mini : OpenAI]
