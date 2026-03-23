@@ -16,6 +16,22 @@
 
 ---
 
+## [2026-03-23] 14:43 名称マスタ画面のデザイン統一
+### Agent
+- [gpt-5.4-mini : OpenAI]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：`MasterMeishoMenteView` を商品マスタ風に統一し、コミットと push まで実行する
+### 実施内容
+- `Cvnet10Wpfclient/Views/01Master/MasterMeishoMenteView.xaml`: `MasterShohinMenteView.xaml` のデザインパターンに合わせて ColorZone ヘッダー、Card レイアウト、テーマベースの DataGrid、Outlined 系フォームを導入し、区分選択もヘッダーへ統合
+### 技術決定 Why
+- 商品マスタと同じ視覚構造へ揃えることで、マスタ画面群の操作感と見た目の一貫性を高めた
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功
+
+---
+
 ## [2026-03-23] 14:32 顧客マスタ画面のデザイン統一
 ### Agent
 - [gpt-5.4-mini : OpenAI]
