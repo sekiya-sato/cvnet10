@@ -16,6 +16,22 @@
 
 ---
 
+## [2026-03-23] 14:32 顧客マスタ画面のデザイン統一
+### Agent
+- [gpt-5.4-mini : OpenAI]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：`MasterEndCustomerMenteView.xaml` を商品マスタのデザインに合わせて修正し、参考レイアウトとして `MasterShohinMenteView.xaml` を使う
+### 実施内容
+- `Cvnet10Wpfclient/Views/01Master/MasterEndCustomerMenteView.xaml`: `MasterShohinMenteView.xaml` の構成に合わせて ColorZone ヘッダー、Card レイアウト、DataGridAssist、共通フォームスタイルを適用し、顧客マスタの項目群を新デザインへ移植
+### 技術決定 Why
+- 商品マスタと同じ Visual Language（ColorZone + Card + MaterialDesignOutlined 系スタイル + テーマブラシ）へ寄せることで、同じマスタ画面群としての一貫性を確保した
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功
+
+---
+
 ## [2026-03-23] 14:14 RangeInputParamViewのレイアウト再調整
 ### Agent
 - [gpt-5.4-mini : OpenAI]
