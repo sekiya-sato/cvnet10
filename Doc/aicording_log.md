@@ -206,3 +206,19 @@
 - dotnet build は該当作業外のため未実行
 
 ---
+
+## [2026-03-23] 19:50 システム管理マスタ画面デザイン統一
+### Agent
+- [gpt-5.4-mini : OpenAI]
+### Editor
+- [OpenCode]
+### 目的
+- ユーザーからの要望：`MasterSysKanriMenteView` を `MasterShohinMenteView` の ColorZone + Card + MaterialDesignOutlined デザインへ揃える
+### 実施内容
+- `Cvnet10Wpfclient/Views/01Master/MasterSysKanriMenteView.xaml`: ColorZone ツールバー、Card 配置、FormTextBox 風スタイル、履歴情報を含むフォーム構造へ再構成し、右側カード内に登録/修正日時表示を追加
+### 技術決定 Why
+- 一貫性のあるマスタUIを確保するため、既存の `MasterShohinMenteView` のヘッダー・フォームテンプレートを再利用しつつ、左右パネルの比率を維持した
+### 確認
+- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功
+
+---
