@@ -147,18 +147,45 @@
 
 ---
 
-## [2026-03-23] 16:00 仕入マスタ画面のデザイン統一
+## [2026-03-23] 17:30 MasterShiireMenteViewの支払情報タブレイアウト修正と詳細内容タブ追加
+
 ### Agent
 - [grok-code-fast-1 : github-copilot/grok-code-fast-1]
+
 ### Editor
 - [OpenCode]
+
 ### 目的
-- ユーザーからの要望：`MasterShiireMenteView` を商品マスタ風に統一し、履歴記録後に commit と push まで実行する
+- ユーザーからの要望：支払フラグを1行上に移動、支払フラグ/支払先を分割し仕入先検索レイアウトを修正、詳細内容タブに登録日/修正日表示を追加
+
 ### 実施内容
-- `Cvnet10Wpfclient/Views/01Master/MasterShiireMenteView.xaml`: `MasterShohinMenteView.xaml` を参考に ColorZone ヘッダー、Card レイアウト、テーマベース DataGrid、Outlined フォームへ刷新
+- Cvnet10Wpfclient/Views/01Master/MasterShiireMenteView.xaml: 支払情報タブのRowDefinitionsを8行に拡張、支払フラグをRow5に移動、支払方法をRow6、仕入先をRow7に配置、詳細内容タブにRow3に登録日/修正日表示を追加
+
 ### 技術決定 Why
-- 仕入マスタを商品マスタと同じレイアウト構成に揃え、操作系の位置と編集UIを統一することで、マスタ群全体の学習コストを下げた
+- 支払情報タブのレイアウトを改善し、支払フラグの位置を明確にし、検索レイアウトを統一、詳細内容タブに共通のタイムスタンプ表示を追加することで、一貫性を高めた
+
+---
+
+## [2026-03-23] 18:00 MasterShiireMenteViewのデザイン統一とレイアウト修正
+
+### Agent
+- grok-code-fast-1 : github-copilot/grok-code-fast-1
+
+### Editor
+- OpenCode
+
+### 目的
+- ユーザーからの要望：MasterShiireMenteViewのデザインをMasterShohinMenteViewに統一し、支払情報タブのレイアウト修正、詳細内容タブに日付追加
+
+### 実施内容
+- Cvnet10Wpfclient/Views/01Master/MasterShiireMenteView.xaml: ColorZoneヘッダー、Cardレイアウト、テーマベースDataGrid、Outlinedフォームへ統一、支払フラグ移動、分割、検索レイアウト修正、詳細内容タブに登録日/修正日追加
+- Cvnet10Wpfclient/Views/01Master/MasterShainMenteView.xaml: 参照用調整（変更理由不明）
+- Doc/aicording_log.md: 履歴追記
+
+### 技術決定 Why
+- マスタ画面群の統一性確保とUI改善のため
+
 ### 確認
-- `dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功
+- dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false 成功
 
 ---

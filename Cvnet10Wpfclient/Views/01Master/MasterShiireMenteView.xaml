@@ -416,6 +416,7 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 
 								<TextBlock Grid.Row="0"
@@ -460,8 +461,19 @@
 
 								<TextBlock Grid.Row="5"
 									Style="{StaticResource FormLabel}"
+									Text="支払フラグ" />
+								<ComboBox Grid.Row="5" Grid.Column="1"
+									Margin="0,4"
+									SelectedIndex="{Binding CurrentEdit.IsPay, Mode=TwoWay}"
+									Style="{StaticResource MaterialDesignOutlinedComboBox}">
+									<ComboBoxItem Content="しない" />
+									<ComboBoxItem Content="する" />
+								</ComboBox>
+
+								<TextBlock Grid.Row="6"
+									Style="{StaticResource FormLabel}"
 									Text="支払方法" />
-								<DockPanel Grid.Row="5" Grid.Column="1"
+								<DockPanel Grid.Row="6" Grid.Column="1"
 									Margin="0,4">
 									<helpers:SearchTextBox Width="120" Height="36"
 										BorderThickness="0,0,0,1"
@@ -481,34 +493,20 @@
 									</TextBlock>
 								</DockPanel>
 
-								<TextBlock Grid.Row="6"
+								<TextBlock Grid.Row="7"
 									Style="{StaticResource FormLabel}"
-									Text="支払フラグ / 支払先" />
-								<StackPanel Grid.Row="6" Grid.Column="1"
-									Margin="10,10,10,0">
-									<ComboBox Height="36"
-										SelectedIndex="{Binding CurrentEdit.IsPay, Mode=TwoWay}">
-										<ComboBoxItem Content="しない" />
-										<ComboBoxItem Content="する" />
-									</ComboBox>
-									<helpers:SearchTextBox Height="40"
-										Margin="0,10,0,0"
+									Text="仕入先" />
+								<DockPanel Grid.Row="7" Grid.Column="1"
+									Margin="0,4">
+									<helpers:SearchTextBox Width="120" Height="36"
 										BorderThickness="0,0,0,1"
 										Command="{Binding DoSelectPaysakiCommand}"
+										DockPanel.Dock="Left"
+										Style="{StaticResource MenteSearchTextBox}"
 										Text="{Binding CurrentEdit.Id_Paysaki, UpdateSourceTrigger=PropertyChanged}"
-										TextHorizontalContentAlignment="Left">
-										<helpers:SearchTextBox.Style>
-											<Style TargetType="{x:Type helpers:SearchTextBox}">
-												<Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
-												<Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}" />
-												<Setter Property="ButtonBackground" Value="{DynamicResource SearchButtonBackgroundBrush}" />
-											</Style>
-										</helpers:SearchTextBox.Style>
-									</helpers:SearchTextBox>
-									<TextBlock Height="36"
-										Margin="0,10,0,0"
-										Foreground="{DynamicResource MaterialDesignBody}"
-										TextWrapping="Wrap">
+										TextHorizontalContentAlignment="Left" />
+									<TextBlock Margin="10,0,0,0" VerticalAlignment="Center"
+										Foreground="{DynamicResource MaterialDesignBody}">
 										<TextBlock.Text>
 											<MultiBinding StringFormat="{}{0} {1}">
 												<Binding Path="CurrentEdit.VPaysaki.Cd" />
@@ -516,7 +514,7 @@
 											</MultiBinding>
 										</TextBlock.Text>
 									</TextBlock>
-								</StackPanel>
+								</DockPanel>
 							</Grid>
 						</ScrollViewer>
 					</TabItem>
@@ -563,6 +561,7 @@
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
 
 							<TextBlock Grid.Row="0"
@@ -588,6 +587,18 @@
 								materialDesign:HintAssist.Hint="振込先3"
 								Style="{StaticResource FormTextBox}"
 								Text="{Binding CurrentEdit.Jdetail.BankAccount3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+							<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+								Margin="20"
+								Foreground="{DynamicResource MaterialDesignBody}"
+								TextWrapping="Wrap">
+								<TextBlock.Text>
+									<MultiBinding StringFormat="{}登録日={0}  修正日={1}">
+										<Binding Path="CurrentEdit.VdateC" />
+										<Binding Path="CurrentEdit.VdateU" />
+									</MultiBinding>
+								</TextBlock.Text>
+							</TextBlock>
 						</Grid>
 					</TabItem>
 				</TabControl>
