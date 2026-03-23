@@ -22,6 +22,7 @@
 ## High Priority OpenCode Rules
 - Write plans, explanations, and code comments in **Japanese**
 - **IMPORTANT!** Follow the workflow: **Analyze → Plan (TodoWrite) → Execute → Verify → Write-Log → Git-Commit** 
+- Plan 段階では、**必ず Todo リストを作成し**、 Execute 段階では、**Todo を一つずつ完了させていく**こと
 - Use .NET 10 and C# 14 features where they improve clarity
 - Mark todos as `in_progress` when starting work, `completed` immediately after finishing
 - Only have ONE task `in_progress` at a time
@@ -115,12 +116,14 @@
 [作業内容]
 [使用した AI Model 名 : AI Provider 名 : エージェント名]
 作業時間 [開始時間] - [終了時間] : [作業時間]
+[ユーザ指示の概略]
 '''
 例)
 '''
 SelectKubunView.xamlのMaterialDesignスタイルへの変更
 GPT-5.4-mini : OpenAI : Build
 16:00 - 17:30 : 1時間30分
+SelectKubunView のデザインをMasterMeishoのデザインに統一する
 '''
 
  
