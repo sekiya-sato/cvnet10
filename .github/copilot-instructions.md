@@ -87,13 +87,13 @@ refer/ Foloder and exist-Project : [READ-ONLY] [reference-Only] [No-Include This
 '''
 [作業内容]
 [使用した AI Model 名 : AI Provider 名 : エージェント名]
-作業時間 [開始時間] - [終了時間] : [作業時間]
+作業時間 [開始時間] - [終了時間] : [作業時間] (JST)
 [ユーザ指示の概略]
 '''
 例)
 '''
 SelectKubunView.xamlのMaterialDesignスタイルへの変更
 GPT-5.4-mini : OpenAI : Build
-16:00 - 17:30 : 1時間30分
+16:00 - 17:30 : 1時間30分 (JSTで記録)
 SelectKubunView のデザインをMasterMeishoのデザインに統一する
 '''
