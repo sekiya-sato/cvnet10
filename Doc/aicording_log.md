@@ -350,3 +350,28 @@
 - `dotnet build Cvnet10Wpfclient/Cvnet10Wpfclient.csproj /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功（0 warnings, 0 errors）
 
 ---
+
+## [2026-03-24] 22:00 Master系ViewModelのリファクタリング — BaseMenteViewModelへの共通ロジック集約
+### Agent
+- claude-opus-4.6 : github-copilot
+### Editor
+- OpenCode
+### 目的
+- ユーザーからの要望：Cvnet10Wpfclient の Master系ViewModelのリファクタリング。統合できるロジックは BaseMenteViewModel に集約し、各派生VMを簡素化する（ViewModel中心、XAML変更なし）
+### 実施内容
+- Cvnet10Wpfclient/Helpers/ViewModels/BaseMenteViewModel.cs: GetCode()ヘルパー追加（IBaseCodeName対応）、Confirm/Afterメッセージを GetCode() 使用に変更、SelectCodeParam/SelectCodeDisplayName/BeforeListAsync にコード範囲選択ダイアログ統合、ShowSelectDialog<TResult>() 汎用ヘルパー追加、using Cvnet10Base.Share 追加
+- Cvnet10Wpfclient/ViewModels/01Master/MasterTokuiMenteViewModel.cs: 104行→約45行に簡素化。重複ロジックを基底クラスに移行
+- Cvnet10Wpfclient/ViewModels/01Master/MasterShiireMenteViewModel.cs: 96行→約44行に簡素化。同上
+- Cvnet10Wpfclient/ViewModels/01Master/MasterShainMenteViewModel.cs: 77行→約32行に簡素化。同上
+- Cvnet10Wpfclient/ViewModels/01Master/MasterEndCustomerMenteViewModel.cs: 67行→約25行に簡素化。同上
+- Cvnet10Wpfclient/ViewModels/01Master/MasterShohinMenteViewModel.cs: 345行→約240行に簡素化。Confirm/After/コード範囲選択を基底委譲
+- Cvnet10Wpfclient/ViewModels/01Master/MasterMeishoMenteViewModel.cs: 132行→約107行に簡素化。LoadKubunListAsyncをSendMessageAsync使用に変更、文字化け修正
+- Cvnet10Wpfclient/ViewModels/01Master/MasterSysKanriMenteViewModel.cs: BaseViewModel→BaseMenteViewModel<MasterSysman>に移行（97行→約39行）。CreateUpdateParamでCurrentを送信、CanDelete()=false
+### 技術決定 Why
+- BaseDbClassにはCodeプロパティが存在しないため、IBaseCodeName インターフェースを用いた GetCode() パターンマッチングヘルパーを導入。MasterSysmanはIBaseCodeNameを実装しないため、Id.ToString()にフォールバックする安全な設計
+- MasterSysKanriMenteViewModelはXAMLがCurrent.*に直接バインドしているため、CreateUpdateParamでCurrentEditではなくCurrentを送信するオーバーライドが必要
+- ShowSelectDialogは型パラメータTResultで汎用化し、各VMでのダイアログ呼び出しコードを削減
+### 確認
+- `dotnet build Cvnet10Wpfclient/Cvnet10Wpfclient.csproj /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功（0 warnings, 0 errors）
+
+---

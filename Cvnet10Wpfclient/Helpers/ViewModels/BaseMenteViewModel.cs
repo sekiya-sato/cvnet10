@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Base;
+using Cvnet10Base.Share;
 using Cvnet10Wpfclient.ViewModels.Sub;
 using Cvnet10Wpfclient.ViewServices;
 using Newtonsoft.Json;
@@ -59,9 +60,16 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 	string message = string.Empty;
 
 	protected virtual Type Tabletype => typeof(T);
-	protected virtual string? ListWhere => null;
-	protected virtual string? ListOrder => null;
-	protected virtual int? ListMaxCount => null;
+	protected virtual string? ListOrder => "Code";
+	protected virtual int? ListMaxCount => SelectCodeParam?.MaxCount;
+
+	/// <summary>コード範囲ダイアログのパラメータ（nullならBeforeListAsyncでダイアログ非表示）</summary>
+	protected SelectParameter? SelectCodeParam;
+
+	/// <summary>コード範囲選択ダイアログの表示名称（nullならダイアログをスキップ）</summary>
+	protected virtual string? SelectCodeDisplayName => null;
+
+	protected virtual string? ListWhere => BuildSelectCodeWhere(SelectCodeParam);
 
 	protected virtual string[]? ListParams => null;
 	protected virtual Window? ActiveWindow => ClientLib.GetActiveView(this);
@@ -69,9 +77,9 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 	protected virtual bool ConfirmAction(string message) =>
 		MessageEx.ShowQuestionDialog(message, owner: ActiveWindow) == MessageBoxResult.Yes;
 
-	protected virtual string GetInsertConfirmMessage() => "追加しますか？";
-	protected virtual string GetUpdateConfirmMessage() => "修正しますか？";
-	protected virtual string GetDeleteConfirmMessage() => "削除しますか？";
+	protected virtual string GetInsertConfirmMessage() => $"追加しますか？ (CD={GetCode(CurrentEdit)})";
+	protected virtual string GetUpdateConfirmMessage() => $"修正しますか？ (CD={GetCode(CurrentEdit)}, Id={CurrentEdit.Id})";
+	protected virtual string GetDeleteConfirmMessage() => $"削除しますか？ (CD={GetCode(CurrentEdit)}, Id={CurrentEdit.Id})";
 
 	protected virtual bool CanUpdate() => true;
 
@@ -90,9 +98,9 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 		new DeleteParam(Tabletype, Common.SerializeObject(CurrentEdit));
 
 	protected virtual void AfterList(IList list) { }
-	protected virtual void AfterInsert(T item) { }
-	protected virtual void AfterUpdate(T item) { }
-	protected virtual void AfterDelete(T removedItem) { }
+	protected virtual void AfterInsert(T item) => Message = $"追加しました (CD={GetCode(item)}, Id={item.Id})";
+	protected virtual void AfterUpdate(T item) => Message = $"修正しました (CD={GetCode(item)}, Id={item.Id})";
+	protected virtual void AfterDelete(T removedItem) => Message = $"削除しました (CD={GetCode(removedItem)}, Id={removedItem.Id})";
 
 	protected virtual QueryListParam CreateListQueryParam() =>
 		new(
@@ -184,12 +192,24 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 
 	protected static string EscapeSqlLiteral(string value) => value.Replace("'", "''");
 
+	protected static string GetCode(BaseDbClass item) =>
+		item is IBaseCodeName cn ? cn.Code : item.Id.ToString();
+
 	/// <summary>
 	/// 一覧取得
 	/// </summary>
 	/// <param name="ct"></param>
 	/// <returns></returns>
-	protected virtual ValueTask<bool> BeforeListAsync(CancellationToken ct) => new ValueTask<bool>(true);
+	protected virtual ValueTask<bool> BeforeListAsync(CancellationToken ct) {
+		if (string.IsNullOrEmpty(SelectCodeDisplayName)) return new ValueTask<bool>(true);
+
+		ct.ThrowIfCancellationRequested();
+		if (!TryShowSelectCodeDialog(SelectCodeParam, SelectCodeDisplayName, out var parameter)) {
+			return new ValueTask<bool>(false);
+		}
+		SelectCodeParam = parameter;
+		return new ValueTask<bool>(true);
+	}
 
 	[RelayCommand(IncludeCancelCommand = true)]
 	protected async Task DoList(CancellationToken ct) {
@@ -338,6 +358,14 @@ public abstract partial class BaseMenteViewModel<T> : BaseViewModel where T : Ba
 			Message = $"削除失敗：{ex.Message}";
 			MessageEx.ShowErrorDialog(Message, owner: ActiveWindow);
 		}
+	}
+
+	protected TResult? ShowSelectDialog<TResult>(Type tableType, string where, string order, long startPos = 0) where TResult : BaseDbClass {
+		var selWin = new Views.Sub.SelectWinView();
+		if (selWin.DataContext is not SelectWinViewModel vm) return null;
+		vm.SetParam(tableType, where, order, startPos: startPos);
+		if (ClientLib.ShowDialogView(selWin, this) != true) return null;
+		return vm.Current as TResult;
 	}
 
 	[RelayCommand(IncludeCancelCommand = true)]

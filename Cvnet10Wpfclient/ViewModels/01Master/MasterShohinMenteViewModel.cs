@@ -14,10 +14,7 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 	[ObservableProperty]
 	string title = "商品マスターメンテ";
 
-	protected override string? ListWhere => BuildSelectCodeWhere(selectCodeParam);
-	protected override string? ListOrder => "Code";
-
-	SelectParameter? selectCodeParam;
+	protected override string? SelectCodeDisplayName => "商品";
 
 	[ObservableProperty]
 	MasterShohinColSiz? selectedJcolsiz;
@@ -51,8 +48,6 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		"B06", "B07", "B08", "B09", "B10"
 	]);
 	public List<MasterMeisho> KubunList = [];
-
-	protected override int? ListMaxCount => selectCodeParam?.MaxCount;
 
 
 	protected override void OnCurrentEditChangedCore(MasterShohin? oldValue, MasterShohin newValue) {
@@ -94,7 +89,6 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 
 	[RelayCommand]
 	async Task Init() {
-
 		await DoGetKubun(CancellationToken.None);
 		await DoList(CancellationToken.None);
 	}
@@ -129,74 +123,28 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		}
 	}
 
-
-	protected override string GetInsertConfirmMessage() =>
-		$"追加しますか？ (CD={CurrentEdit.Code})";
-
-	protected override string GetUpdateConfirmMessage() =>
-		$"修正しますか？ (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
-
-	protected override string GetDeleteConfirmMessage() =>
-		$"削除しますか？ (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
-
-	protected override void AfterInsert(MasterShohin item) {
-		Message = $"追加しました (CD={item.Code}, Id={item.Id})";
-	}
-
-	protected override void AfterUpdate(MasterShohin item) {
-		Message = $"修正しました (CD={item.Code}, Id={item.Id})";
-	}
-
-	protected override void AfterDelete(MasterShohin removedItem) {
-		Message = $"削除しました (CD={removedItem.Code}, Id={removedItem.Id})";
-	}
-
-	protected override ValueTask<bool> BeforeListAsync(CancellationToken ct) {
-		ct.ThrowIfCancellationRequested();
-		if (!TryShowSelectCodeDialog(selectCodeParam, "商品", out var parameter)) {
-			return new ValueTask<bool>(false);
-		}
-
-		selectCodeParam = parameter;
-		return new ValueTask<bool>(true);
-	}
 	[RelayCommand]
 	void DoSelectBrand() {
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='BRD'", "Code", startPos: CurrentEdit.Id_Brand);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), "Kubun='BRD'", "Code", startPos: CurrentEdit.Id_Brand);
 		if (meisho == null) return;
-		CurrentEdit.Id_Brand = meisho?.Id ?? 0;
-		CurrentEdit.VBrand = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+		CurrentEdit.Id_Brand = meisho.Id;
+		CurrentEdit.VBrand = new() { Sid = meisho.Id, Cd = meisho.Code ?? "", Mei = meisho.Name ?? "" };
 	}
 
 	[RelayCommand]
 	void DoSelectItem() {
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='ITM'", "Code", startPos: CurrentEdit.Id_Item);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), "Kubun='ITM'", "Code", startPos: CurrentEdit.Id_Item);
 		if (meisho == null) return;
-		CurrentEdit.Id_Item = meisho?.Id ?? 0;
-		CurrentEdit.VItem = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+		CurrentEdit.Id_Item = meisho.Id;
+		CurrentEdit.VItem = new() { Sid = meisho.Id, Cd = meisho.Code ?? "", Mei = meisho.Name ?? "" };
 	}
 
 	[RelayCommand]
 	void DoSelectMaker() {
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='MKR'", "Code", startPos: CurrentEdit.Id_Maker);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), "Kubun='MKR'", "Code", startPos: CurrentEdit.Id_Maker);
 		if (meisho == null) return;
-		CurrentEdit.Id_Maker = meisho?.Id ?? 0;
-		CurrentEdit.VMaker = new() { Sid = meisho?.Id ?? 0, Cd = meisho?.Code ?? "", Mei = meisho?.Name ?? "" };
+		CurrentEdit.Id_Maker = meisho.Id;
+		CurrentEdit.VMaker = new() { Sid = meisho.Id, Cd = meisho.Code ?? "", Mei = meisho.Name ?? "" };
 	}
 
 	[RelayCommand]
@@ -208,31 +156,20 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		if (ClientLib.ShowDialogView(selWin, this) != true) return;
 		var meisho = vm.Current as MasterMeisho;
 		if (meisho == null) return;
-		CurrentEdit.SizeKu = meisho?.Code ?? "";
+		CurrentEdit.SizeKu = meisho.Code ?? "";
 	}
 
 	[RelayCommand]
 	void DoSelectSoko() {
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterTokui), "TenType=0", "Code", startPos: CurrentEdit.Id_Soko);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var tokui = vm.Current as MasterTokui;
+		var tokui = ShowSelectDialog<MasterTokui>(typeof(MasterTokui), "TenType=0", "Code", startPos: CurrentEdit.Id_Soko);
 		if (tokui == null) return;
-		CurrentEdit.Id_Soko = tokui?.Id ?? 0;
-		CurrentEdit.VSoko = new() { Sid = tokui?.Id ?? 0, Cd = tokui?.Code ?? "", Mei = tokui?.Name ?? "" };
+		CurrentEdit.Id_Soko = tokui.Id;
+		CurrentEdit.VSoko = new() { Sid = tokui.Id, Cd = tokui.Code ?? "", Mei = tokui.Name ?? "" };
 	}
 
 	[RelayCommand]
 	void DoSelectCol(long? id) {
-
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='COL'", "Code", startPos: SelectedJcolsiz?.Id_Col ?? 0);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), "Kubun='COL'", "Code", startPos: SelectedJcolsiz?.Id_Col ?? 0);
 		if (meisho == null || SelectedJcolsiz == null) return;
 		SelectedJcolsiz.Id_Col = meisho.Id;
 		SelectedJcolsiz.Code_Col = meisho.Code ?? "";
@@ -241,14 +178,8 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 
 	[RelayCommand]
 	void DoSelectSiz(long? id) {
-
 		var sizeKu = (CurrentEdit.SizeKu ?? string.Empty).Replace("'", "''");
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), $"Kubun='{sizeKu}'", "Code", startPos: SelectedJcolsiz?.Id_Siz ?? 0);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), $"Kubun='{sizeKu}'", "Code", startPos: SelectedJcolsiz?.Id_Siz ?? 0);
 		if (meisho == null || SelectedJcolsiz == null) return;
 		SelectedJcolsiz.Id_Siz = meisho.Id;
 		SelectedJcolsiz.Code_Siz = meisho.Code ?? "";
@@ -296,12 +227,7 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 	[RelayCommand]
 	void DoSelectHinshitu() {
 		if (SelectedJgrade == null) return;
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), "Kubun='HIN'", "Code", startPos: 0);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), "Kubun='HIN'", "Code", startPos: 0);
 		if (meisho == null) return;
 		SelectedJgrade.Hinshitu = meisho.Name ?? "";
 	}
@@ -325,12 +251,7 @@ public partial class MasterShohinMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		if (SelectedJsub == null) return;
 		var kb = (SelectedJsub.Kb ?? string.Empty).Replace("'", "''");
 		if (string.IsNullOrEmpty(kb)) return;
-		var selWin = new Views.Sub.SelectWinView();
-		var vm = selWin.DataContext as Sub.SelectWinViewModel;
-		if (vm == null) return;
-		vm.SetParam(typeof(MasterMeisho), $"Kubun='{kb}'", "Code", startPos: SelectedJsub.Sid);
-		if (ClientLib.ShowDialogView(selWin, this) != true) return;
-		var meisho = vm.Current as MasterMeisho;
+		var meisho = ShowSelectDialog<MasterMeisho>(typeof(MasterMeisho), $"Kubun='{kb}'", "Code", startPos: SelectedJsub.Sid);
 		if (meisho == null) return;
 		SelectedJsub.Cd = meisho.Code ?? "";
 		SelectedJsub.Mei = meisho.Name ?? "";

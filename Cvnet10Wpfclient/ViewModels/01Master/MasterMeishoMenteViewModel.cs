@@ -1,23 +1,22 @@
-using CodeShare;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Cvnet10Asset;
 using Cvnet10Base;
 using Cvnet10Wpfclient.ViewServices;
+using System.Collections;
 using System.Collections.ObjectModel;
 
 namespace Cvnet10Wpfclient.ViewModels._01Master;
 
 public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<MasterMeisho> {
 	[ObservableProperty]
-	string title = "–¼Ìƒ}ƒXƒ^[ƒƒ“ƒe";
+	string title = "åç§°ãƒã‚¹ã‚¿ãƒ¼ãƒ¡ãƒ³ãƒ†";
 
 	[ObservableProperty]
 	ObservableCollection<MasterMeisho> kubunList = new();
 
 	[ObservableProperty]
 	MasterMeisho? selectedKubun;
-
 
 	bool suppressSelectedKubunChanged;
 
@@ -33,7 +32,6 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		}
 	}
 
-	// ‰Šú‰»
 	[RelayCommand]
 	async Task Init(CancellationToken ct) {
 		await LoadKubunListAsync(ct);
@@ -53,10 +51,9 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 	async Task LoadKubunListAsync(CancellationToken ct) {
 		try {
 			ClientLib.Cursor2Wait();
-			var coreService = AppGlobal.GetgRPCService<ICvnetCoreService>();
-			var msg = new CvnetMsg {
+			var msg = new CodeShare.CvnetMsg {
 				Code = 0,
-				Flag = CvnetFlag.Msg101_Op_Query,
+				Flag = CodeShare.CvnetFlag.Msg101_Op_Query,
 				DataType = typeof(QueryListParam),
 				DataMsg = Common.SerializeObject(new QueryListParam(
 					itemType: typeof(MasterMeisho),
@@ -65,16 +62,16 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 				))
 			};
 
-			var reply = await coreService.QueryMsgAsync(msg, AppGlobal.GetDefaultCallContext(ct));
-			if (Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) is System.Collections.IList list) {
+			var reply = await SendMessageAsync(msg, ct);
+			if (Common.DeserializeObject(reply.DataMsg ?? "[]", reply.DataType) is IList list) {
 				KubunList = new ObservableCollection<MasterMeisho>(list.Cast<MasterMeisho>());
 			}
 		}
 		catch (OperationCanceledException) {
-			Message = "‹æ•ªˆê——æ“¾‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚Ü‚µ‚½";
+			Message = "åŒºåˆ†ä¸€è¦§å–å¾—ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¾ã—ãŸ";
 		}
 		catch (Exception ex) {
-			Message = $"‹æ•ªˆê——æ“¾¸”s: {ex.Message}";
+			Message = $"åŒºåˆ†ä¸€è¦§å–å¾—å¤±æ•—: {ex.Message}";
 			MessageEx.ShowErrorDialog(Message, owner: ClientLib.GetActiveView(this));
 		}
 		finally {
@@ -89,27 +86,6 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 			return;
 		}
 		await DoListCommand.ExecuteAsync(ct);
-	}
-
-	protected override string GetInsertConfirmMessage() =>
-		$"’Ç‰Á‚µ‚Ü‚·‚©H (CD={Current.Code})";
-
-	protected override string GetUpdateConfirmMessage() =>
-		$"C³‚µ‚Ü‚·‚©H (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
-
-	protected override string GetDeleteConfirmMessage() =>
-		$"íœ‚µ‚Ü‚·‚©H (CD={CurrentEdit.Code}, Id={CurrentEdit.Id})";
-
-	protected override void AfterInsert(MasterMeisho item) {
-		Message = $"’Ç‰Á‚µ‚Ü‚µ‚½ (CD={item.Code}, Id={item.Id})";
-	}
-
-	protected override void AfterUpdate(MasterMeisho item) {
-		Message = $"C³‚µ‚Ü‚µ‚½ (CD={item.Code}, Id={item.Id})";
-	}
-
-	protected override void AfterDelete(MasterMeisho removedItem) {
-		Message = $"íœ‚µ‚Ü‚µ‚½ (CD={removedItem.Code}, Id={removedItem.Id})";
 	}
 
 	[RelayCommand]
@@ -129,4 +105,3 @@ public partial class MasterMeishoMenteViewModel : Helpers.BaseMenteViewModel<Mas
 		_ = RefreshListForSelectedKubunAsync(CancellationToken.None);
 	}
 }
-
