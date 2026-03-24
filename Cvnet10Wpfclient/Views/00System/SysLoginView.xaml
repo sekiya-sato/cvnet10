@@ -13,6 +13,44 @@
 	<helpers:BaseWindow.DataContext>
 		<vm:SysLoginViewModel />
 	</helpers:BaseWindow.DataContext>
+
+	<!--  SearchTextBox 共通スタイル  -->
+	<helpers:BaseWindow.Resources>
+		<Style x:Key="MenteSearchTextBox"
+			TargetType="{x:Type helpers:SearchTextBox}">
+			<Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
+			<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+			<Setter Property="ButtonBackground" Value="{DynamicResource SearchButtonBackgroundBrush}" />
+		</Style>
+
+		<!--  DataGrid ヘッダースタイル（テーマカラーベース）  -->
+		<Style x:Key="MenteDataGridColumnHeader"
+			BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+			TargetType="DataGridColumnHeader">
+			<Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+			<Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+			<Setter Property="Padding" Value="12,8" />
+			<Setter Property="FontWeight" Value="SemiBold" />
+		</Style>
+
+		<!--  編集フォームのラベルスタイル  -->
+		<Style x:Key="FormLabel"
+			TargetType="TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="FontWeight" Value="Medium" />
+			<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}" />
+			<Setter Property="Margin" Value="4,0,8,0" />
+		</Style>
+
+		<!--  編集フォームの TextBox スタイル  -->
+		<Style x:Key="FormTextBox"
+			BasedOn="{StaticResource MaterialDesignOutlinedTextBox}"
+			TargetType="TextBox">
+			<Setter Property="Margin" Value="0,4" />
+			<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+			<Setter Property="materialDesign:HintAssist.FloatingScale" Value="0.7" />
+		</Style>
+	</helpers:BaseWindow.Resources>
 	<helpers:BaseWindow.InputBindings>
 		<KeyBinding Command="{Binding DoUpdateCommand}"
 			Gesture="F2" />
@@ -25,231 +63,337 @@
 		<KeyBinding Command="{Binding DoOutputJsonCommand}"
 			Gesture="F6" />
 	</helpers:BaseWindow.InputBindings>
-	<Grid x:Name="grid0">
-		<!-- 配置が確定してから
-        <Viewbox Stretch="Uniform">
-        </Viewbox>
-		-->
-		<Grid Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}"
-			Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="12*" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="88*" />
-			</Grid.RowDefinitions>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!--  ===== ヘッダー: ColorZone ツールバー =====  -->
+		<materialDesign:ColorZone Grid.Row="0"
+			Padding="12,8"
+			materialDesign:ElevationAssist.Elevation="Dp4" Mode="PrimaryMid">
+			<DockPanel>
+				<!--  右側: CRUD ボタン群  -->
+				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+					<Button Margin="4,0"
+						Command="{Binding DoUpdateCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="修正 (F2)">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon VerticalAlignment="Center"
+								Kind="Pencil" />
+							<TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+								Text="修正" />
+						</StackPanel>
+					</Button>
+					<Button Margin="4,0"
+						Command="{Binding DoDeleteCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="削除 (F3)">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon VerticalAlignment="Center"
+								Kind="Delete" />
+							<TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+								Text="削除" />
+						</StackPanel>
+					</Button>
+					<Button Margin="4,0"
+						Command="{Binding DoInsertCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="追加 (F4)">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon VerticalAlignment="Center"
+								Kind="Plus" />
+							<TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+								Text="追加" />
+						</StackPanel>
+					</Button>
+					<Rectangle Width="1"
+						Margin="8,4"
+						Fill="{DynamicResource PrimaryHueMidForegroundBrush}"
+						Opacity="0.3" />
+					<Button Margin="4,0"
+						Command="{Binding DoOutputJsonCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="JSON出力 (F6)">
+						<materialDesign:PackIcon Kind="FileExport" />
+					</Button>
+				</StackPanel>
+
+				<!--  左側: タイトル + 操作  -->
+				<StackPanel Orientation="Horizontal">
+					<Button Margin="0,0,8,0"
+						Command="{Binding ExitCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="閉じる (Esc)">
+						<materialDesign:PackIcon Kind="ArrowLeft" />
+					</Button>
+					<materialDesign:PackIcon Width="28" Height="28"
+						VerticalAlignment="Center"
+						Kind="AccountKey" />
+					<TextBlock Margin="10,0,0,0" VerticalAlignment="Center"
+						FontSize="20" FontWeight="SemiBold"
+						Text="{Binding Title}" />
+					<Rectangle Width="1"
+						Margin="16,4"
+						Fill="{DynamicResource PrimaryHueMidForegroundBrush}"
+						Opacity="0.3" />
+					<Button Command="{Binding DoListCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}"
+						ToolTip="一覧取得 (F5)">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon VerticalAlignment="Center"
+								Kind="DatabaseSearch" />
+							<TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+								Text="一覧取得" />
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</DockPanel>
+		</materialDesign:ColorZone>
+
+		<!--  ===== メインコンテンツ =====  -->
+		<Grid Grid.Row="1"
+			Margin="12">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="45*" />
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="55*" />
 			</Grid.ColumnDefinitions>
-			<Grid Grid.Row="0" Grid.Column="0">
-				<Button Width="70" Height="30"
-					Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Background="Gray"
-					Command="{Binding ExitCommand}"
-					Content="閉じる" />
-				<Button Width="110" Height="30"
-					Margin="106,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Command="{Binding DoListCommand}"
-					Content="一覧取得 F5" />
-				<Button Width="100" Height="30"
-					Margin="242,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Command="{Binding DoOutputJsonCommand}"
-					Content="JSON出力 F6" />
-				<Label Height="34"
-					Margin="20,49,99,0" VerticalAlignment="Top"
-					d:Content="Title"
-					Content="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-					FontSize="14" />
-				<materialDesign:PackIcon Width="62" Height="70"
-					Margin="362,10,0,0"
-					Foreground="Blue" Kind="AccountKey" />
-			</Grid>
-			<GridSplitter Grid.Row="1" Grid.ColumnSpan="3"
-				Height="3"
-				Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-				Background="DarkGray" />
-			<GridSplitter Grid.RowSpan="3" Grid.Column="1"
-				Width="3"
-				Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Stretch"
-				Background="DarkGray" />
-			<Grid Grid.Row="2" Grid.Column="0">
-				<DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"
-					AutoGenerateColumns="False"
-					Background="{DynamicResource AppCommonBackgroundBrush}"
-					FrozenColumnCount="1" IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
-					ItemsSource="{Binding ListData}"
-					SelectedItem="{Binding Current}">
-					<DataGrid.ColumnHeaderStyle>
-						<Style TargetType="DataGridColumnHeader">
-							<Setter Property="Background" Value="Black" />
-							<Setter Property="BorderBrush" Value="White" />
-							<Setter Property="BorderThickness" Value="1" />
-							<Setter Property="Foreground" Value="white" />
-						</Style>
-					</DataGrid.ColumnHeaderStyle>
-					<DataGrid.Columns>
-						<!--  LoginId,ExpDate,LastDate,CryptPassword,Id,Vdc,Vdu,Id_Shain,Id_Role  -->
-						<DataGridTextColumn Binding="{Binding LoginId}"
-							Header="Login ID" />
-						<DataGridTextColumn Binding="{Binding ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
-							Header="有効期限" />
-						<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
-							Header="最終ログイン" />
-						<DataGridTextColumn Binding="{Binding CryptPassword}"
-							Header="パスワード" />
-						<DataGridTextColumn Binding="{Binding VdateC}"
-							Header="作成日" />
-						<DataGridTextColumn Binding="{Binding VdateU}"
-							Header="修正日" />
-						<DataGridTextColumn Binding="{Binding Id}"
-							Header="Id" />
-						<DataGridTextColumn Binding="{Binding Id_Shain}"
-							Header="社員Id" />
-						<DataGridTextColumn Binding="{Binding Id_Role}"
-							Header="グループId" />
-					</DataGrid.Columns>
-				</DataGrid>
-			</Grid>
-			<Grid Grid.Row="0" Grid.Column="2">
-				<Button Width="100" Height="30"
-					Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Background="Purple"
-					Command="{Binding DoUpdateCommand}"
-					Content="修正 F2" />
-				<Button Width="100" Height="30"
-					Margin="130,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Background="Purple"
-					Command="{Binding DoDeleteCommand}"
-					Content="削除 F3" />
-				<Button Width="100" Height="30"
-					Margin="250,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Background="Purple"
-					Command="{Binding DoInsertCommand}"
-					Content="追加 F4" />
-				<Label Height="40"
-					Margin="383,10,0,0" VerticalAlignment="Top"
-					d:Content="4567"
-					Content="{Binding Count}"
-					ContentStringFormat="{}件数={0:N0}" />
-				<Label Height="34"
-					Margin="24,55,0,0" VerticalAlignment="Top"
-					d:Content="4567"
-					Content="{Binding Message}"
-					FontSize="14" />
-			</Grid>
-			<Grid x:Name="Detail"
-				Grid.Row="2" Grid.Column="2">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="30*" />
-					<ColumnDefinition Width="70*" />
-				</Grid.ColumnDefinitions>
-				<Label Height="40"
-					Margin="15,20,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					Content="ID" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,20,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					IsReadOnly="True"
-					Text="{Binding CurrentEdit.Id}"
-					TextWrapping="Wrap" />
-				<Label Height="40"
-					Margin="15,80,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					Content="Login ID" />
-				<Label Height="40"
-					Margin="15,137,0,0" VerticalAlignment="Top"
-					Content="パスワード" />
-				<Label Height="40"
-					Margin="15,220,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					Content="有効期限" />
-				<Label Height="40"
-					Margin="15,290,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					Content="Group" />
-				<Label Height="40"
-					Margin="15,420,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					Content="最終ログイン" />
-				<Label Height="40"
-					Margin="15,494,0,0" VerticalAlignment="Top"
-					Content="作成日/修正日" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,80,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					d:Text="コード：デザイン画面"
-					Text="{Binding CurrentEdit.LoginId}"
-					TextWrapping="Wrap" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,150,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					d:Text="名前：デザイン画面"
-					Text="{Binding CurrentEdit.CryptPassword}"
-					TextWrapping="Wrap" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,220,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					d:Text="202612311000"
-					Text="{Binding CurrentEdit.ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
-					TextWrapping="Wrap" />
-				<TextBox Grid.Column="1"
-					Width="60" Height="40"
-					Margin="10,290,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Right"
-					d:Text="123" IsReadOnly="True"
-					Text="{Binding CurrentEdit.Id_Role}"
-					TextWrapping="Wrap" />
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,420,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					d:Text="有効期限：デザイン画面" IsReadOnly="True"
-					Text="{Binding LastLoginDate}"
-					TextWrapping="Wrap" />
-				<!--
-                <TextBox Grid.Column="1" Height="40" Margin="10,300,10,0" TextWrapping="Wrap" Text="{Binding Current.VdateC,StringFormat={}{0}}" d:Text="作成日/修正日" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-				-->
-				<TextBox Grid.Column="1"
-					Height="40"
-					Margin="10,360,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Left"
-					d:Text="区分名" IsReadOnly="True" TextWrapping="Wrap">
-					<TextBox.Text>
-						<MultiBinding StringFormat="{}{0} {1}">
-							<Binding Path="CurrentEdit.VShain.Cd" />
-							<Binding Path="CurrentEdit.VShain.Mei" />
-						</MultiBinding>
-					</TextBox.Text>
+			<!--  ===== 左パネル: 一覧グリッド (Card) =====  -->
+			<materialDesign:Card Grid.Column="0"
+				Padding="0"
+				materialDesign:ElevationAssist.Elevation="Dp2" UniformCornerRadius="8">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
 
-				</TextBox>
-				<TextBlock Grid.Column="1"
-					Margin="10,500,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					FontSize="16">
-					<TextBlock.Text>
-						<MultiBinding StringFormat="{} {0} - {1}">
-							<Binding Path="CurrentEdit.VdateC" />
-							<Binding Path="CurrentEdit.VdateU" />
-						</MultiBinding>
-					</TextBlock.Text>
-					<d:TextBlock.Text>aaaaaaaaaaa - bbbbbbbbbbbbb</d:TextBlock.Text>
-				</TextBlock>
-				<Label Grid.Column="1"
-					Height="40"
-					Margin="141,290,0,0" VerticalAlignment="Top"
-					d:Content="This is work area" Content="" ContentStringFormat="{}Id={0}" />
-				<Button Width="100" Height="30"
-					Margin="20,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-					Command="{Binding DoSetPassCommand}"
-					Content="パス暗号化" />
-				<helpers:SearchTextBox Width="135" Height="30"
-					Margin="0,370,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
-					BorderThickness="0,0,0,1"
-					Command="{Binding DoSelectShainCommand}"
-					Text="{Binding CurrentEdit.Id_Shain, UpdateSourceTrigger=PropertyChanged}"
-					TextHorizontalContentAlignment="Right">
-					<helpers:SearchTextBox.Style>
-						<Style TargetType="{x:Type helpers:SearchTextBox}">
-							<Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}" />
-							<Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}" />
-							<Setter Property="ButtonBackground" Value="{DynamicResource SearchButtonBackgroundBrush}" />
-						</Style>
-					</helpers:SearchTextBox.Style>
-				</helpers:SearchTextBox>
-			</Grid>
+					<!--  カードヘッダー: 件数 + メッセージ  -->
+					<Border Grid.Row="0"
+						Padding="12,8"
+						Background="{DynamicResource MaterialDesignToolBarBackground}"
+						CornerRadius="8,8,0,0">
+						<DockPanel>
+							<TextBlock VerticalAlignment="Center"
+								DockPanel.Dock="Right" FontSize="13"
+								Foreground="{DynamicResource MaterialDesignBodyLight}"
+								Text="{Binding Count, StringFormat={}件数: {0:N0}}" />
+							<TextBlock VerticalAlignment="Center"
+								FontSize="13"
+								Foreground="{DynamicResource MaterialDesignBodyLight}"
+								Text="{Binding Message}"
+								TextTrimming="CharacterEllipsis" />
+						</DockPanel>
+					</Border>
+
+					<!--  DataGrid 一覧  -->
+					<DataGrid x:Name="LoginGrid"
+						Grid.Row="1"
+						d:ItemsSource="{d:SampleData ItemCount=5}"
+						helpers:DataGridSelectionBehavior.AutoScrollToSelectedItem="True" materialDesign:DataGridAssist.CellPadding="12,6" materialDesign:DataGridAssist.ColumnHeaderPadding="12,8"
+						AutoGenerateColumns="False" EnableRowVirtualization="True" FrozenColumnCount="1" GridLinesVisibility="Horizontal"
+						HorizontalGridLinesBrush="{DynamicResource MaterialDesignDivider}"
+						IsReadOnly="True" IsSynchronizedWithCurrentItem="True"
+						ItemsSource="{Binding ListData}"
+						SelectedItem="{Binding Current}"
+						Style="{StaticResource MaterialDesignDataGrid}"
+						VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+						<DataGrid.Columns>
+							<!--  LoginId,ExpDate,LastDate,CryptPassword,Id,Vdc,Vdu,Id_Shain,Id_Role  -->
+							<DataGridTextColumn Binding="{Binding LoginId}"
+								Header="Login ID" />
+							<DataGridTextColumn Binding="{Binding ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
+								Header="有効期限" />
+							<DataGridTextColumn Binding="{Binding LastDate, Converter={StaticResource DateTimeYmdHmsConverter}}"
+								Header="最終ログイン" />
+							<DataGridTextColumn Binding="{Binding CryptPassword}"
+								Header="パスワード" />
+							<DataGridTextColumn Binding="{Binding VdateC}"
+								Header="作成日" />
+							<DataGridTextColumn Binding="{Binding VdateU}"
+								Header="修正日" />
+							<DataGridTextColumn Binding="{Binding Id}"
+								Header="Id" />
+							<DataGridTextColumn Binding="{Binding Id_Shain}"
+								Header="社員Id" />
+							<DataGridTextColumn Binding="{Binding Id_Role}"
+								Header="グループId" />
+						</DataGrid.Columns>
+						<DataGrid.ColumnHeaderStyle>
+							<Style BasedOn="{StaticResource MenteDataGridColumnHeader}"
+								TargetType="DataGridColumnHeader" />
+						</DataGrid.ColumnHeaderStyle>
+					</DataGrid>
+				</Grid>
+			</materialDesign:Card>
+
+			<!--  スプリッタ  -->
+			<GridSplitter Grid.Column="1"
+				Width="6"
+				Margin="3,0" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+				Background="Transparent" />
+			<!--  ===== 右パネル: 編集エリア (Card + TabControl) =====  -->
+			<materialDesign:Card Grid.Column="2"
+				Padding="0"
+				materialDesign:ElevationAssist.Elevation="Dp2" UniformCornerRadius="8">
+				<TabControl Style="{StaticResource MaterialDesignTabControl}">
+
+					<!--  タブ1: 基本情報  -->
+					<TabItem>
+						<TabItem.Header>
+							<StackPanel Orientation="Horizontal">
+								<materialDesign:PackIcon Margin="0,0,6,0" VerticalAlignment="Center"
+									Kind="InformationOutline" />
+								<TextBlock Text="{Binding CurrentEdit.Id, StringFormat={}Id:{0}}" />
+							</StackPanel>
+						</TabItem.Header>
+						<ScrollViewer Padding="10,10,20,20"
+							VerticalScrollBarVisibility="Auto">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="110" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<!--  ID  -->
+								<TextBlock Grid.Row="0"
+									Style="{StaticResource FormLabel}"
+									Text="ID" />
+								<TextBox Grid.Row="0" Grid.Column="1"
+									materialDesign:HintAssist.Hint="ID"
+									Style="{StaticResource FormTextBox}"
+									IsReadOnly="True"
+									Text="{Binding CurrentEdit.Id}" />
+
+								<!--  Login ID  -->
+								<TextBlock Grid.Row="1"
+									Style="{StaticResource FormLabel}"
+									Text="Login ID" />
+								<TextBox Grid.Row="1" Grid.Column="1"
+									materialDesign:HintAssist.Hint="Login ID"
+									Style="{StaticResource FormTextBox}"
+									Text="{Binding CurrentEdit.LoginId}" />
+
+								<!--  パスワード  -->
+								<TextBlock Grid.Row="2"
+									Style="{StaticResource FormLabel}"
+									Text="パスワード" />
+								<TextBox Grid.Row="2" Grid.Column="1"
+									materialDesign:HintAssist.Hint="パスワード"
+									Style="{StaticResource FormTextBox}"
+									Text="{Binding CurrentEdit.CryptPassword}" />
+
+								<!--  有効期限  -->
+								<TextBlock Grid.Row="3"
+									Style="{StaticResource FormLabel}"
+									Text="有効期限" />
+								<TextBox Grid.Row="3" Grid.Column="1"
+									materialDesign:HintAssist.Hint="有効期限"
+									Style="{StaticResource FormTextBox}"
+									Text="{Binding CurrentEdit.ExpDate, Converter={StaticResource DateTimeYmdHmsConverter}}" />
+
+								<!--  Group  -->
+								<TextBlock Grid.Row="4"
+									Style="{StaticResource FormLabel}"
+									Text="Group" />
+								<TextBox Grid.Row="4" Grid.Column="1"
+									Width="120" Height="36"
+									HorizontalAlignment="Left"
+									materialDesign:HintAssist.Hint="Group"
+									Style="{StaticResource FormTextBox}"
+									IsReadOnly="True"
+									Text="{Binding CurrentEdit.Id_Role}" />
+
+								<!--  社員選択  -->
+								<TextBlock Grid.Row="5"
+									Style="{StaticResource FormLabel}"
+									Text="社員" />
+								<DockPanel Grid.Row="5" Grid.Column="1"
+									Margin="0,4">
+									<helpers:SearchTextBox Width="120" Height="36"
+										BorderThickness="0,0,0,1"
+										Command="{Binding DoSelectShainCommand}"
+										DockPanel.Dock="Left"
+										Style="{StaticResource MenteSearchTextBox}"
+										Text="{Binding CurrentEdit.Id_Shain, UpdateSourceTrigger=PropertyChanged}"
+										TextHorizontalContentAlignment="Left" />
+									<TextBlock Margin="10,0,0,0" VerticalAlignment="Center"
+										Foreground="{DynamicResource MaterialDesignBody}">
+										<TextBlock.Text>
+											<MultiBinding StringFormat="{}{0} {1}">
+												<Binding Path="CurrentEdit.VShain.Cd" />
+												<Binding Path="CurrentEdit.VShain.Mei" />
+											</MultiBinding>
+										</TextBlock.Text>
+									</TextBlock>
+								</DockPanel>
+
+								<!--  最終ログイン  -->
+								<TextBlock Grid.Row="6"
+									Style="{StaticResource FormLabel}"
+									Text="最終ログイン" />
+								<TextBox Grid.Row="6" Grid.Column="1"
+									materialDesign:HintAssist.Hint="最終ログイン"
+									Style="{StaticResource FormTextBox}"
+									IsReadOnly="True"
+									Text="{Binding LastLoginDate}" />
+
+								<!--  パスワード設定ボタン  -->
+								<TextBlock Grid.Row="7"
+									Style="{StaticResource FormLabel}"
+									Text="" />
+								<Button Grid.Row="7" Grid.Column="1"
+									Width="120" Height="36"
+									Margin="0,4" HorizontalAlignment="Left"
+									Command="{Binding DoSetPassCommand}"
+									Style="{StaticResource MaterialDesignOutlinedButton}">
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon VerticalAlignment="Center"
+											Kind="Lock" />
+										<TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+											Text="パス暗号化" />
+									</StackPanel>
+								</Button>
+
+								<!--  作成日/修正日  -->
+								<TextBlock Grid.Row="8"
+									Style="{StaticResource FormLabel}"
+									Text="作成日/修正日" />
+								<TextBlock Grid.Row="8" Grid.Column="1"
+									Margin="0,4" VerticalAlignment="Center"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									FontSize="14">
+									<TextBlock.Text>
+										<MultiBinding StringFormat="{}{0} - {1}">
+											<Binding Path="CurrentEdit.VdateC" />
+											<Binding Path="CurrentEdit.VdateU" />
+										</MultiBinding>
+									</TextBlock.Text>
+								</TextBlock>
+							</Grid>
+						</ScrollViewer>
+					</TabItem>
+
+				</TabControl>
+			</materialDesign:Card>
 
 
 

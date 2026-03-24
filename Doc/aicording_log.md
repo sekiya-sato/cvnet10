@@ -255,8 +255,27 @@
 - Cvnet10Wpfclient/ViewModels/01Master/MasterShohinMenteViewModel.cs: SelectedJgenka/SelectedJgrade/SelectedJsub ObservableProperty追加、KubunOptions（B01-B10）追加、各タブのAdd/Delete/検索コマンド追加（AddJgenkaCommand, DeleteJgenkaCommand, AddJcolsizCommand, DeleteJcolsizCommand, AddJgradeCommand, DeleteJgradeCommand, DoSelectHinshituCommand, AddJsubCommand, DeleteJsubCommand, DoSelectJsubCodeCommand）、SortJsub/ValidateJsubKubunメソッド追加
 ### 技術決定 Why
 - DataGrid内での直接行操作を禁止し、外部ボタン経由で追加・削除を行うことで誤操作を防止。MultiBindingによるカラム統合で表示を簡潔化。SelectWinViewを利用した検索は既存パターン（サイズ検索・カラー検索）を踏襲
+---
+
+## [2026-03-24] 12:00 SysLoginView の MaterialDesign 風デザイン統一
+
+### Agent
+- grok-code-fast-1 : github-copilot/grok-code-fast-1
+
+### Editor
+- OpenCode
+
+### 目的
+- ユーザーからの要望：SysLoginView を update-design-mente スキルを使って画面を修正
+
+### 実施内容
+- Cvnet10Wpfclient/Views/00System/SysLoginView.xaml: MaterialDesign風レイアウトに統一。ColorZoneヘッダー、Cardレイアウト、TabControl、MaterialDesignOutlinedスタイル適用。
+
+### 技術決定 Why
+- マスターメンテ画面のデザイン統一のため、MasterShohinMenteViewをテンプレートとして適用し、スキル update-design-mente を利用。
+
 ### 確認
-- `dotnet build Cvnet10Wpfclient/Cvnet10Wpfclient.csproj /p:EnableWindowsTargeting=true /p:UseAppHost=false` 成功（0 warnings, 0 errors）
+- dotnet build "Cvnet10Wpfclient/Cvnet10Wpfclient.csproj" /p:EnableWindowsTargeting=true /p:UseAppHost=false 成功 (0 警告、0 エラー)
 
 ---
 ## [2026-03-24] 16:35 名称リスト ComboBox「区分」変更時に区分名を自動セット
