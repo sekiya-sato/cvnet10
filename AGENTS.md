@@ -115,14 +115,14 @@ s
 '''
 [作業内容]
 [使用した AI Model 名 : AI Provider 名 : エージェント名]
-作業時間 [開始時間] - [終了時間] : [作業時間] (JST)
+作業時間 [開始時間] - [終了時間] : [作業時間] (**日本時間JSTで記録すること**)
 [ユーザ指示の概略]
 '''
 例)
 '''
 SelectKubunView.xamlのMaterialDesignスタイルへの変更
 GPT-5.4-mini : OpenAI : Build
-16:00 - 17:30 : 1時間30分 (JSTで記録)
+16:00 - 17:30 : 1時間30分
 SelectKubunView のデザインをMasterMeishoのデザインに統一する
 '''
 
