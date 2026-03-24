@@ -17,6 +17,9 @@ public partial class MasterSysKanriMenteViewModel : Helpers.BaseMenteViewModel<M
 	[ObservableProperty]
 	string? desc0;
 
+	// MasterSysman は単一レコードのため、ListOrderは不要だが、初期値がCodeのため上書きする必要がある
+	protected override string? ListOrder => "Id";
+
 	public IReadOnlyList<EnumShime> ShimeBiItems { get; } = Enum.GetValues<EnumShime>();
 
 	[RelayCommand]

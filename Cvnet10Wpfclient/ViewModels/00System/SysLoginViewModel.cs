@@ -17,6 +17,10 @@ internal partial class SysLoginViewModel : Helpers.BaseMenteViewModel<SysLogin> 
 
 	protected override string? ListWhere => BuildSelectCodeWhere(selectMiniParam);
 
+	// SysLogin はCode列を持たないので、初期値のCodeを上書きする必要がある
+	protected override string? ListOrder => "Id";
+
+
 	protected override int? ListMaxCount => selectMiniParam?.MaxCount;
 
 	[ObservableProperty]
