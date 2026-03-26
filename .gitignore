@@ -167,6 +167,7 @@ refer/
 printdata/
 printdll/
 server-dev.db
+printstream.jar
 *.pdf
 appsettings.DevU*.json
 appsettings.Development.json
@@ -177,6 +178,4 @@ appsettings.Local*.json
 .mcp.json
 nlog.config
 systemsettings.json
-printstream.jar
-printstream.dll
 
