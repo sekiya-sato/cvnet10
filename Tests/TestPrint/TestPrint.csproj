@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cvnet10prints\Cvnet10prints.csproj" />
+    <ProjectReference Include="..\..\Cvnet10Prints\Cvnet10Prints.csproj" />
   </ItemGroup>
 
 </Project>
